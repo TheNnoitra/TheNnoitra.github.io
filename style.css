@@ -1,31 +1,37 @@
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
-}
-
-.container {
+.crm-system {
     max-width: 800px;
 }
 
-.nav-tabs .nav-link {
+.crm-system__tabs .crm-system__tab-btn {
     color: #424242;
 }
 
-.nav-tabs .nav-link.active {
+.crm-system__tabs .crm-system__tab-btn.active {
     background-color: #6200ea;
     color: white;
 }
 
-.table th, .table td {
+.crm-system__table th,
+.crm-system__table td {
     vertical-align: middle;
 }
 
-.btn-primary {
+.crm-system__btn {
     background-color: #6200ea;
     border-color: #6200ea;
 }
 
-.btn-primary:hover {
+.crm-system__btn:hover {
     background-color: #3700b3;
     border-color: #3700b3;
+}
+
+.crm-system__search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.crm-system__search-input {
+    flex-grow: 1;
+    margin-right: 10px;
 }

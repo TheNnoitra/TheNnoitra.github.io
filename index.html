@@ -11,44 +11,48 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-<div class="container mt-5">
-  <h1 class="text-center mb-4">CRM-система для автосервиса</h1>
+<div class="container mt-5 crm-system">
+  <h1 class="crm-system__title text-center mb-4">CRM-система для автосервиса</h1>
 
   <!-- Вкладки -->
-  <ul class="nav nav-tabs nav-fill mb-4" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="true">Добавить автомобиль/работу</button>
+  <ul class="nav nav-tabs nav-fill crm-system__tabs mb-4" id="crm-system-tabs" role="tablist">
+    <li class="nav-item crm-system__tab-item" role="presentation">
+      <button class="nav-link crm-system__tab-btn active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="true">Добавить автомобиль/работу</button>
     </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="list-tab" data-bs-toggle="tab" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="false">Список автомобилей</button>
+    <li class="nav-item crm-system__tab-item" role="presentation">
+      <button class="nav-link crm-system__tab-btn" id="list-tab" data-bs-toggle="tab" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="false">Список автомобилей</button>
     </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab" aria-controls="current" aria-selected="false">Текущий автомобиль</button>
+    <li class="nav-item crm-system__tab-item" role="presentation">
+      <button class="nav-link crm-system__tab-btn" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab" aria-controls="current" aria-selected="false">Текущий автомобиль</button>
     </li>
   </ul>
 
   <!-- Содержимое вкладок -->
-  <div class="tab-content" id="myTabContent">
+  <div class="tab-content crm-system__content" id="crm-system-content">
     <!-- Вкладка "Добавить автомобиль/работу" -->
-    <div class="tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
-      <h3 class="mb-3">Добавить автомобиль или работу</h3>
-      <form id="add-form">
+    <div class="tab-pane fade show active crm-system__add-panel" id="add" role="tabpanel" aria-labelledby="add-tab">
+      <h3 class="crm-system__add-title mb-3">Добавить автомобиль или работу</h3>
+      <form class="crm-system__add-form" id="add-form">
         <div class="mb-3">
-          <label for="car-model" class="form-label">Модель автомобиля</label>
-          <input type="text" class="form-control" id="car-model" placeholder="Введите модель автомобиля">
+          <label for="car-model" class="form-label crm-system__label">Модель автомобиля</label>
+          <input type="text" class="form-control crm-system__input" id="car-model" placeholder="Введите модель автомобиля">
         </div>
         <div class="mb-3">
-          <label for="work-description" class="form-label">Описание работы</label>
-          <textarea class="form-control" id="work-description" rows="3" placeholder="Введите описание работы"></textarea>
+          <label for="work-description" class="form-label crm-system__label">Описание работы</label>
+          <textarea class="form-control crm-system__textarea" id="work-description" rows="3" placeholder="Введите описание работы"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        <button type="submit" class="btn btn-primary crm-system__btn">Добавить</button>
       </form>
     </div>
 
     <!-- Вкладка "Список автомобилей" -->
-    <div class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
-      <h3 class="mb-3">Список автомобилей</h3>
-      <table class="table table-striped">
+    <div class="tab-pane fade crm-system__list-panel" id="list" role="tabpanel" aria-labelledby="list-tab">
+      <h3 class="crm-system__list-title mb-3">Список автомобилей</h3>
+      <div class="input-group mb-3 crm-system__search-bar">
+        <input type="text" class="form-control crm-system__search-input" id="search-input" placeholder="Поиск по модели автомобиля">
+        <button class="btn btn-primary crm-system__search-btn" onclick="filterCars()">Поиск</button>
+      </div>
+      <table class="table table-striped crm-system__table">
         <thead>
         <tr>
           <th scope="col">#</th>
@@ -57,16 +61,16 @@
           <th scope="col">Действия</th>
         </tr>
         </thead>
-        <tbody id="car-list">
+        <tbody class="crm-system__table-body" id="car-list">
         <!-- Данные будут загружаться динамически -->
         </tbody>
       </table>
     </div>
 
     <!-- Вкладка "Текущий автомобиль" -->
-    <div class="tab-pane fade" id="current" role="tabpanel" aria-labelledby="current-tab">
-      <h3 class="mb-3">Текущий автомобиль</h3>
-      <p id="current-car-info">Выберите автомобиль из списка.</p>
+    <div class="tab-pane fade crm-system__current-panel" id="current" role="tabpanel" aria-labelledby="current-tab">
+      <h3 class="crm-system__current-title mb-3">Текущий автомобиль</h3>
+      <p class="crm-system__current-info" id="current-car-info">Выберите автомобиль из списка.</p>
     </div>
   </div>
 </div>
