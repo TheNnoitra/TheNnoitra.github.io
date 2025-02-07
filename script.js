@@ -1,20 +1,49 @@
-let tg = window.Telegram.WebApp;
+// Массив для хранения данных об автомобилях
+let cars = [];
 
-// Проверяем, что мы запущены как Web App
-if (!!tg?.ready) {
-  const userInfo = document.getElementById('user-info');
-  const sendBtn = document.getElementById('send-data-btn');
+// Функция для отображения списка автомобилей
+function renderCarList() {
+  const carList = document.getElementById('car-list');
+  carList.innerHTML = '';
 
-  // Получаем информацию о пользователе
-  const userFirstName = tg.initDataUnsafe.user.first_name;
-  const userLastName = tg.initDataUnsafe.user.last_name;
-
-  userInfo.textContent = `Привет, ${userFirstName} ${userLastName}!`;
-
-  // Обработка нажатия кнопки
-  sendBtn.addEventListener('click', () => {
-    const data = 'Данные от Web App';
-    tg.sendData(data); // Отправляем данные обратно в бота
-    tg.close(); // Закрываем Web App
+  cars.forEach((car, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <th scope="row">${index + 1}</th>
+      <td>${car.model}</td>
+      <td>${car.workDescription}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="selectCar(${index})">Выбрать</button>
+      </td>
+    `;
+    carList.appendChild(row);
   });
 }
+
+// Функция для выбора текущего автомобиля
+function selectCar(index) {
+  const currentCarInfo = document.getElementById('current-car-info');
+  const selectedCar = cars[index];
+  currentCarInfo.textContent = `Модель: ${selectedCar.model}, Работа: ${selectedCar.workDescription}`;
+  const tab = new bootstrap.Tab(document.querySelector('#current-tab'));
+  tab.show();
+}
+
+// Обработка формы "Добавить автомобиль/работу"
+document.getElementById('add-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const carModel = document.getElementById('car-model').value;
+  const workDescription = document.getElementById('work-description').value;
+
+  if (carModel && workDescription) {
+    cars.push({ model: carModel, workDescription });
+    renderCarList();
+    document.getElementById('add-form').reset();
+  } else {
+    alert('Заполните все поля!');
+  }
+});
+
+// Инициализация приложения
+renderCarList();
