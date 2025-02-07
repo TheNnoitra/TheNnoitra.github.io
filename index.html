@@ -38,8 +38,9 @@
           <input type="text" class="form-control crm-system__input" id="car-model" placeholder="Введите модель автомобиля">
         </div>
         <div class="mb-3">
-          <label for="work-description" class="form-label crm-system__label">Описание работы</label>
-          <textarea class="form-control crm-system__textarea" id="work-description" rows="3" placeholder="Введите описание работы"></textarea>
+          <label for="work-fields" class="form-label crm-system__label">Виды работ</label>
+          <div class="crm-system__work-fields" id="work-fields"></div>
+          <button type="button" class="btn btn-primary crm-system__btn" onclick="addWorkField()">Добавить вид работы</button>
         </div>
         <button type="submit" class="btn btn-primary crm-system__btn">Добавить</button>
       </form>
@@ -57,7 +58,7 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Модель автомобиля</th>
-          <th scope="col">Описание работы</th>
+          <th scope="col">Виды работ</th>
           <th scope="col">Действия</th>
         </tr>
         </thead>

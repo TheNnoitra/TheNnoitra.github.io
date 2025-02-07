@@ -43,7 +43,7 @@ const Renderer = (() => {
       row.innerHTML = `
         <th scope="row">${index + 1}</th>
         <td>${car.model}</td>
-        <td>${car.workDescription}</td>
+        <td>${car.workTypes.join(', ')}</td>
         <td>
           <button class="btn btn-sm btn-primary crm-system__select-btn" onclick="EventHandler.selectCar(${DataStore.getCars().indexOf(car)})">Выбрать</button>
         </td>
@@ -55,7 +55,7 @@ const Renderer = (() => {
   const setCurrentCarInfo = (car) => {
     const currentCarInfo = document.getElementById('current-car-info');
     if (car) {
-      currentCarInfo.textContent = `Модель: ${car.model}, Работа: ${car.workDescription}`;
+      currentCarInfo.textContent = `Модель: ${car.model}, Виды работ: ${car.workTypes.join(', ')}`;
     } else {
       currentCarInfo.textContent = 'Выберите автомобиль из списка.';
     }
@@ -73,35 +73,56 @@ const EventHandler = (() => {
     e.preventDefault();
 
     const carModel = document.getElementById('car-model').value.trim();
-    const workDescription = document.getElementById('work-description').value.trim();
+    const workFields = Array.from(document.querySelectorAll('.work-field'))
+      .map(input => input.value.trim())
+      .filter(value => value !== ''); // Удаляем пустые значения
 
-    if (carModel && workDescription) {
-      const newCar = { model: carModel, workDescription };
+    if (carModel && workFields.length > 0) {
+      const newCar = { model: carModel, workTypes: workFields }; // Создаем новый автомобиль
       const updatedCars = [...DataStore.getCars(), newCar];
-      DataStore.setCars(updatedCars);
-      Renderer.renderCarList();
-      document.getElementById('add-form').reset();
-      TabManager.activateTab('list');
+      DataStore.setCars(updatedCars); // Обновляем список автомобилей
+      Renderer.renderCarList(); // Перерисовываем список
+      document.getElementById('add-form').reset(); // Очищаем форму
+      clearWorkFields(); // Очищаем поля видов работ
+      TabManager.activateTab('list'); // Переходим на вкладку "Список автомобилей"
     } else {
       alert('Заполните все поля!');
     }
   };
 
-  const filterCars = () => {
-    const filter = document.getElementById('search-input').value;
-    Renderer.renderCarList(filter);
-  };
-
   const selectCar = (index) => {
     const selectedCar = DataStore.getCars()[index];
-    Renderer.setCurrentCarInfo(selectedCar);
-    TabManager.activateTab('current');
+    Renderer.setCurrentCarInfo(selectedCar); // Отображаем информацию о выбранном автомобиле
+    TabManager.activateTab('current'); // Переходим на вкладку "Текущий автомобиль"
+  };
+
+  const addWorkField = () => {
+    const workFieldsContainer = document.getElementById('work-fields');
+    const newField = document.createElement('div');
+    newField.classList.add('input-group', 'mb-2');
+    newField.innerHTML = `
+      <input type="text" class="form-control crm-system__input work-field" placeholder="Введите вид работы">
+      <button class="btn btn-danger crm-system__remove-btn" onclick="removeWorkField(this)">Удалить</button>
+    `;
+    workFieldsContainer.appendChild(newField);
+  };
+
+  const removeWorkField = (button) => {
+    button.closest('.input-group').remove(); // Удаляем поле
+  };
+
+  const clearWorkFields = () => {
+    const workFieldsContainer = document.getElementById('work-fields');
+    workFieldsContainer.innerHTML = ''; // Очищаем контейнер
+    addWorkField(); // Добавляем одно поле по умолчанию
   };
 
   return {
     handleAddFormSubmit,
-    filterCars,
     selectCar,
+    addWorkField,
+    removeWorkField,
+    clearWorkFields,
   };
 })();
 
@@ -163,10 +184,21 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-form').addEventListener('submit', EventHandler.handleAddFormSubmit);
 
   // Обработка фильтрации
-  document.getElementById('search-input').addEventListener('input', EventHandler.filterCars);
+  document.getElementById('search-input').addEventListener('input', filterCars);
+
+  // Добавляем одно поле для видов работ по умолчанию
+  EventHandler.addWorkField();
 });
+
+// Фильтрация автомобилей
+function filterCars() {
+  const filter = document.getElementById('search-input').value;
+  Renderer.renderCarList(filter);
+}
 
 // Экспорт функций для использования в HTML
 window.selectCar = EventHandler.selectCar;
-window.filterCars = EventHandler.filterCars;
+window.filterCars = filterCars;
+window.addWorkField = EventHandler.addWorkField;
+window.removeWorkField = EventHandler.removeWorkField;
 window.activateTab = TabManager.activateTab;

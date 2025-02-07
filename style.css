@@ -35,3 +35,23 @@
     flex-grow: 1;
     margin-right: 10px;
 }
+
+/* Стандартизация высоты полей ввода */
+.crm-system__input,
+.crm-system__remove-btn {
+    height: 40px; /* Устанавливаем фиксированную высоту */
+}
+
+/* Убираем margin у кнопки "Удалить" */
+.crm-system__remove-btn {
+    margin: 0; /* Убираем отступ */
+    height: 40px; /* Высота равна высоте поля ввода */
+    display: flex;
+    align-items: center; /* Центрируем содержимое кнопки вертикально */
+    justify-content: center; /* Центрируем содержимое кнопки горизонтально */
+}
+
+/* Опционально: добавляем небольшой отступ между группами полей */
+.crm-system__work-fields .input-group:not(:last-child) {
+    margin-bottom: 10px; /* Добавляем отступ между полями видов работ */
+}
