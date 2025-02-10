@@ -168,23 +168,30 @@ const EventHandler = (() => {
 
   const addWorkField = () => {
     const workFieldsContainer = document.getElementById('work-fields');
+    if (!workFieldsContainer) return;
+
     const newField = document.createElement('div');
-    newField.classList.add('input-group', 'mb-2');
+    newField.classList.add('input-group', 'mb-2'); // Добавляем классы Bootstrap
     newField.innerHTML = `
       <input type="text" class="form-control crm-system__input work-field" placeholder="Введите вид работы">
-      <button class="btn btn-danger crm-system__remove-btn" onclick="removeWorkField(this)">Удалить</button>
+      <button class="btn btn-danger crm-system__remove-btn" onclick="EventHandler.removeWorkField(this)">Удалить</button>
     `;
-    workFieldsContainer.appendChild(newField);
+    workFieldsContainer.appendChild(newField); // Добавляем новое поле в контейнер
   };
 
   const removeWorkField = (button) => {
-    button.closest('.input-group').remove();
+    const fieldGroup = button.closest('.input-group');
+    if (fieldGroup) {
+      fieldGroup.remove(); // Удаляем группу полей
+    }
   };
 
   const clearWorkFields = () => {
     const workFieldsContainer = document.getElementById('work-fields');
-    workFieldsContainer.innerHTML = '';
-    addWorkField();
+    if (workFieldsContainer) {
+      workFieldsContainer.innerHTML = ''; // Очищаем контейнер
+      addWorkField(); // Добавляем одно поле по умолчанию
+    }
   };
 
   return {
@@ -260,10 +267,11 @@ document.addEventListener('DOMContentLoaded', () => {
   TabManager.restoreActiveTab();
   TabManager.addTabClickHandlers();
 
+  // Добавляем одно поле для видов работ по умолчанию
+  EventHandler.addWorkField();
+
   document.getElementById('add-form').addEventListener('submit', EventHandler.handleAddFormSubmit);
   document.getElementById('search-input').addEventListener('input', filterCars);
-
-  EventHandler.addWorkField();
 });
 
 // Фильтрация автомобилей
