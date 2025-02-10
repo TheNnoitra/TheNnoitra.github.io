@@ -1,24 +1,26 @@
+/* Общие стили */
 .crm-system {
-    max-width: 800px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.crm-system__tabs .crm-system__tab-btn {
-    color: #424242;
+.crm-system__title {
+    font-size: 24px;
 }
 
-.crm-system__tabs .crm-system__tab-btn.active {
-    background-color: #6200ea;
-    color: white;
+.crm-system__label {
+    font-size: 16px;
 }
 
-.crm-system__table th,
-.crm-system__table td {
-    vertical-align: middle;
+.crm-system__input,
+.crm-system__remove-btn {
+    height: 40px;
 }
 
 .crm-system__btn {
     background-color: #6200ea;
     border-color: #6200ea;
+    color: white;
 }
 
 .crm-system__btn:hover {
@@ -26,32 +28,75 @@
     border-color: #3700b3;
 }
 
-.crm-system__search-bar {
-    display: flex;
-    align-items: center;
+/* Стили для карточек */
+.crm-system__card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    transition: transform 0.2s ease-in-out;
 }
 
-.crm-system__search-input {
-    flex-grow: 1;
-    margin-right: 10px;
+.crm-system__card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Стандартизация высоты полей ввода */
-.crm-system__input,
-.crm-system__remove-btn {
-    height: 40px; /* Устанавливаем фиксированную высоту */
+.crm-system__card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
-/* Убираем margin у кнопки "Удалить" */
-.crm-system__remove-btn {
-    margin: 0; /* Убираем отступ */
-    height: 40px; /* Высота равна высоте поля ввода */
-    display: flex;
-    align-items: center; /* Центрируем содержимое кнопки вертикально */
-    justify-content: center; /* Центрируем содержимое кнопки горизонтально */
+.crm-system__card-subtitle {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 16px;
 }
 
-/* Опционально: добавляем небольшой отступ между группами полей */
-.crm-system__work-fields .input-group:not(:last-child) {
-    margin-bottom: 10px; /* Добавляем отступ между полями видов работ */
+.crm-system__card-btn {
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.crm-system__card-btn:hover {
+    background-color: #3700b3;
+}
+
+/* Стили для статусов */
+.crm-system__status-work {
+    color: #ffab00;
+}
+
+.crm-system__status-done {
+    color: #4caf50;
+}
+
+.crm-system__status-new {
+    color: #6200ea;
+}
+
+.crm-system__status-in-progress {
+    color: #ffab00;
+}
+
+.crm-system__status-completed {
+    color: #4caf50;
+}
+
+/* Стили для списка видов работ */
+.crm-system__work-item {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.crm-system__work-item:hover {
+    background-color: #f0f0f0;
 }

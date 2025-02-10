@@ -2,15 +2,18 @@
 const DataStore = (() => {
   let cars = [];
   let activeTab = 'add'; // По умолчанию активна вкладка "Добавить автомобиль/работу"
+  let lastSelectedCarIndex = null; // Индекс последнего выбранного автомобиля
 
   const saveToLocalStorage = () => {
     localStorage.setItem('cars', JSON.stringify(cars));
     localStorage.setItem('activeTab', activeTab);
+    localStorage.setItem('lastSelectedCarIndex', lastSelectedCarIndex);
   };
 
   const loadFromLocalStorage = () => {
     cars = JSON.parse(localStorage.getItem('cars')) || [];
     activeTab = localStorage.getItem('activeTab') || 'add';
+    lastSelectedCarIndex = localStorage.getItem('lastSelectedCarIndex');
   };
 
   return {
@@ -24,6 +27,11 @@ const DataStore = (() => {
       activeTab = newTab;
       saveToLocalStorage();
     },
+    getLastSelectedCarIndex: () => lastSelectedCarIndex,
+    setLastSelectedCarIndex: (index) => {
+      lastSelectedCarIndex = index;
+      saveToLocalStorage();
+    },
     loadState: loadFromLocalStorage,
   };
 })();
@@ -31,39 +39,69 @@ const DataStore = (() => {
 // Блок отображения данных
 const Renderer = (() => {
   const renderCarList = (filter = '') => {
-    const carList = document.querySelector('.crm-system__table-body');
-    carList.innerHTML = '';
+    const carCardsContainer = document.getElementById('car-cards');
+    carCardsContainer.innerHTML = '';
 
     const filteredCars = DataStore.getCars()
       .filter(car => car.model.toLowerCase().includes(filter.toLowerCase()))
       .reverse();
 
     filteredCars.forEach((car, index) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <th scope="row">${index + 1}</th>
-        <td>${car.model}</td>
-        <td>${car.workTypes.join(', ')}</td>
-        <td>
-          <button class="btn btn-sm btn-primary crm-system__select-btn" onclick="EventHandler.selectCar(${DataStore.getCars().indexOf(car)})">Выбрать</button>
-        </td>
+      const card = document.createElement('div');
+      card.classList.add('col', 'crm-system__card-col');
+      card.innerHTML = `
+        <div class="card crm-system__card">
+          <h5 class="card-title crm-system__card-title">${car.model}</h5>
+          <p class="card-text crm-system__card-subtitle">Статус: <span class="crm-system__status-${car.status}">${getStatusLabel(car.status)}</span></p>
+          <button class="btn crm-system__card-btn" onclick="EventHandler.selectCar(${index})">Выбрать</button>
+        </div>
       `;
-      carList.appendChild(row);
+      carCardsContainer.appendChild(card);
     });
   };
 
   const setCurrentCarInfo = (car) => {
-    const currentCarInfo = document.getElementById('current-car-info');
+    const currentCarModel = document.getElementById('current-car-model');
+    const currentCarStatus = document.getElementById('current-car-status');
+    const startWorkBtn = document.getElementById('start-work-btn');
+    const workList = document.getElementById('current-car-works');
+
     if (car) {
-      currentCarInfo.textContent = `Модель: ${car.model}, Виды работ: ${car.workTypes.join(', ')}`;
+      currentCarModel.textContent = `Модель: ${car.model}`;
+      currentCarStatus.textContent = `Статус: ${getStatusLabel(car.status)}`;
+      currentCarStatus.className = `crm-system__current-info crm-system__status-${car.status}`;
+
+      // Отображение видов работ
+      workList.innerHTML = '';
+      car.workTypes.forEach(work => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item', `crm-system__work-item`, `crm-system__status-${work.status}`);
+        listItem.textContent = work.name;
+        listItem.onclick = () => toggleWorkStatus(car, work.name);
+        workList.appendChild(listItem);
+      });
+
+      // Показать/скрыть кнопку "В работу"
+      startWorkBtn.style.display = car.status === 'new' ? 'block' : 'none';
     } else {
-      currentCarInfo.textContent = 'Выберите автомобиль из списка.';
+      currentCarModel.textContent = 'Модель: ';
+      currentCarStatus.textContent = 'Статус: Выберите автомобиль из списка.';
+      workList.innerHTML = '';
+      startWorkBtn.style.display = 'none';
     }
+  };
+
+  const updateCarStatus = (car) => {
+    const allDone = car.workTypes.every(work => work.status === 'done');
+    car.status = allDone ? 'completed' : car.status === 'new' ? 'in-progress' : car.status;
+    DataStore.setCars(DataStore.getCars());
+    Renderer.renderCarList();
   };
 
   return {
     renderCarList,
     setCurrentCarInfo,
+    updateCarStatus,
   };
 })();
 
@@ -75,16 +113,20 @@ const EventHandler = (() => {
     const carModel = document.getElementById('car-model').value.trim();
     const workFields = Array.from(document.querySelectorAll('.work-field'))
       .map(input => input.value.trim())
-      .filter(value => value !== ''); // Удаляем пустые значения
+      .filter(value => value !== '');
 
     if (carModel && workFields.length > 0) {
-      const newCar = { model: carModel, workTypes: workFields }; // Создаем новый автомобиль
+      const newCar = {
+        model: carModel,
+        status: 'new',
+        workTypes: workFields.map(work => ({ name: work, status: 'work' })),
+      };
       const updatedCars = [...DataStore.getCars(), newCar];
-      DataStore.setCars(updatedCars); // Обновляем список автомобилей
-      Renderer.renderCarList(); // Перерисовываем список
-      document.getElementById('add-form').reset(); // Очищаем форму
-      clearWorkFields(); // Очищаем поля видов работ
-      TabManager.activateTab('list'); // Переходим на вкладку "Список автомобилей"
+      DataStore.setCars(updatedCars);
+      Renderer.renderCarList();
+      document.getElementById('add-form').reset();
+      clearWorkFields();
+      TabManager.activateTab('list');
     } else {
       alert('Заполните все поля!');
     }
@@ -92,8 +134,36 @@ const EventHandler = (() => {
 
   const selectCar = (index) => {
     const selectedCar = DataStore.getCars()[index];
-    Renderer.setCurrentCarInfo(selectedCar); // Отображаем информацию о выбранном автомобиле
-    TabManager.activateTab('current'); // Переходим на вкладку "Текущий автомобиль"
+    Renderer.setCurrentCarInfo(selectedCar);
+    TabManager.activateTab('current');
+    DataStore.setLastSelectedCarIndex(index); // Сохраняем индекс выбранного автомобиля
+  };
+
+  const toggleWorkStatus = (car, workName) => {
+    const updatedCars = DataStore.getCars().map(c => {
+      if (c === car) {
+        return {
+          ...c,
+          workTypes: c.workTypes.map(work =>
+            work.name === workName ? { ...work, status: work.status === 'work' ? 'done' : 'work' } : work
+          ),
+        };
+      }
+      return c;
+    });
+    DataStore.setCars(updatedCars);
+    Renderer.updateCarStatus(updatedCars.find(c => c === car)); // Обновляем статус автомобиля
+    Renderer.setCurrentCarInfo(car); // Обновляем информацию о текущем автомобиле
+  };
+
+  const startWork = () => {
+    const selectedCar = DataStore.getCars().find(car => car.status === 'new');
+    if (selectedCar) {
+      selectedCar.status = 'in-progress';
+      DataStore.setCars(DataStore.getCars());
+      Renderer.updateCarStatus(selectedCar);
+      Renderer.setCurrentCarInfo(selectedCar);
+    }
   };
 
   const addWorkField = () => {
@@ -108,18 +178,20 @@ const EventHandler = (() => {
   };
 
   const removeWorkField = (button) => {
-    button.closest('.input-group').remove(); // Удаляем поле
+    button.closest('.input-group').remove();
   };
 
   const clearWorkFields = () => {
     const workFieldsContainer = document.getElementById('work-fields');
-    workFieldsContainer.innerHTML = ''; // Очищаем контейнер
-    addWorkField(); // Добавляем одно поле по умолчанию
+    workFieldsContainer.innerHTML = '';
+    addWorkField();
   };
 
   return {
     handleAddFormSubmit,
     selectCar,
+    toggleWorkStatus,
+    startWork,
     addWorkField,
     removeWorkField,
     clearWorkFields,
@@ -146,19 +218,29 @@ const TabManager = (() => {
       activePane.classList.add('show', 'active');
     }
 
-    DataStore.setActiveTab(tabId); // Сохраняем активную вкладку
+    DataStore.setActiveTab(tabId);
   };
 
   const restoreActiveTab = () => {
     const savedTab = DataStore.getActiveTab();
-    activateTab(savedTab); // Активируем сохраненную вкладку
+    activateTab(savedTab);
+
+    // Восстанавливаем последний выбранный автомобиль
+    const lastSelectedCarIndex = DataStore.getLastSelectedCarIndex();
+    if (lastSelectedCarIndex !== null) {
+      const lastSelectedCar = DataStore.getCars()[lastSelectedCarIndex];
+      if (lastSelectedCar) {
+        Renderer.setCurrentCarInfo(lastSelectedCar);
+        activateTab('current');
+      }
+    }
   };
 
   const addTabClickHandlers = () => {
     const tabs = document.querySelectorAll('.crm-system__tab-btn');
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        const tabId = tab.getAttribute('id').split('-')[0]; // Получаем ID вкладки
+        const tabId = tab.getAttribute('id').split('-')[0];
         activateTab(tabId);
       });
     });
@@ -173,20 +255,14 @@ const TabManager = (() => {
 
 // Инициализация приложения
 document.addEventListener('DOMContentLoaded', () => {
-  DataStore.loadState(); // Загружаем состояние из localStorage
-  Renderer.renderCarList(); // Отображаем список автомобилей
-  TabManager.restoreActiveTab(); // Восстанавливаем активную вкладку
-
-  // Добавляем обработчики кликов для вкладок
+  DataStore.loadState();
+  Renderer.renderCarList();
+  TabManager.restoreActiveTab();
   TabManager.addTabClickHandlers();
 
-  // Обработка форм
   document.getElementById('add-form').addEventListener('submit', EventHandler.handleAddFormSubmit);
-
-  // Обработка фильтрации
   document.getElementById('search-input').addEventListener('input', filterCars);
 
-  // Добавляем одно поле для видов работ по умолчанию
   EventHandler.addWorkField();
 });
 
@@ -196,9 +272,12 @@ function filterCars() {
   Renderer.renderCarList(filter);
 }
 
-// Экспорт функций для использования в HTML
-window.selectCar = EventHandler.selectCar;
-window.filterCars = filterCars;
-window.addWorkField = EventHandler.addWorkField;
-window.removeWorkField = EventHandler.removeWorkField;
-window.activateTab = TabManager.activateTab;
+// Получение текстового представления статуса
+function getStatusLabel(status) {
+  const labels = {
+    new: 'Новый',
+    in_progress: 'В работе',
+    completed: 'Готово',
+  };
+  return labels[status] || 'Неизвестно';
+}
