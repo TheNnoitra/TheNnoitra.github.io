@@ -2,18 +2,18 @@
 const DataStore = (() => {
   let cars = [];
   let activeTab = 'add'; // По умолчанию активна вкладка "Добавить автомобиль/работу"
-  let lastSelectedCarIndex = null; // Индекс последнего выбранного автомобиля
+  let lastSelectedCarUID = null;
 
   const saveToLocalStorage = () => {
     localStorage.setItem('cars', JSON.stringify(cars));
     localStorage.setItem('activeTab', activeTab);
-    localStorage.setItem('lastSelectedCarIndex', lastSelectedCarIndex);
+    localStorage.setItem('lastSelectedCarUID', lastSelectedCarUID);
   };
 
   const loadFromLocalStorage = () => {
     cars = JSON.parse(localStorage.getItem('cars')) || [];
     activeTab = localStorage.getItem('activeTab') || 'add';
-    lastSelectedCarIndex = localStorage.getItem('lastSelectedCarIndex');
+    lastSelectedCarUID = localStorage.getItem('lastSelectedCarUID');
   };
 
   return {
@@ -27,9 +27,9 @@ const DataStore = (() => {
       activeTab = newTab;
       saveToLocalStorage();
     },
-    getLastSelectedCarIndex: () => lastSelectedCarIndex,
-    setLastSelectedCarIndex: (index) => {
-      lastSelectedCarIndex = index;
+    getLastSelectedCarUID: () => lastSelectedCarUID,
+    setLastSelectedCarUID: (uid) => {
+      lastSelectedCarUID = uid;
       saveToLocalStorage();
     },
     loadState: loadFromLocalStorage,
@@ -46,14 +46,18 @@ const Renderer = (() => {
       .filter(car => car.model.toLowerCase().includes(filter.toLowerCase()))
       .reverse();
 
-    filteredCars.forEach((car, index) => {
+    filteredCars.forEach(car => {
       const card = document.createElement('div');
       card.classList.add('col', 'crm-system__card-col');
       card.innerHTML = `
-        <div class="card crm-system__card">
+        <div class="card crm-system__card position-relative">
           <h5 class="card-title crm-system__card-title">${car.model}</h5>
-          <p class="card-text crm-system__card-subtitle">Статус: <span class="crm-system__status-${car.status}">${getStatusLabel(car.status)}</span></p>
-          <button class="btn crm-system__card-btn" onclick="EventHandler.selectCar(${index})">Выбрать</button>
+          <p class="card-text crm-system__card-subtitle d-flex justify-content-between align-items-center">
+            Статус: <span class="crm-system__status-${car.status}">${getStatusLabel(car.status)}</span>
+            <span class="crm-system__card-status-updated">${formatDate(car.statusUpdated)}</span>
+          </p>
+          <button class="btn crm-system__card-btn" onclick="EventHandler.selectCar('${car.createdAt}')">Выбрать</button>
+          <p class="crm-system__card-date">${formatDate(car.createdAt)}</p>
         </div>
       `;
       carCardsContainer.appendChild(card);
@@ -62,16 +66,19 @@ const Renderer = (() => {
 
   const setCurrentCarInfo = (car) => {
     const currentCarModel = document.getElementById('current-car-model');
+    const currentCarCreatedAt = document.getElementById('current-car-created-at');
     const currentCarStatus = document.getElementById('current-car-status');
+    const currentCarStatusUpdatedAt = document.getElementById('current-car-status-updated-at');
     const startWorkBtn = document.getElementById('start-work-btn');
     const workList = document.getElementById('current-car-works');
 
     if (car) {
       currentCarModel.textContent = `Модель: ${car.model}`;
+      currentCarCreatedAt.textContent = `Дата создания: ${formatDate(car.createdAt)}`;
       currentCarStatus.textContent = `Статус: ${getStatusLabel(car.status)}`;
       currentCarStatus.className = `crm-system__current-info crm-system__status-${car.status}`;
+      currentCarStatusUpdatedAt.textContent = `Дата обновления статуса: ${formatDate(car.statusUpdated)}`;
 
-      // Отображение видов работ
       workList.innerHTML = '';
       car.workTypes.forEach(work => {
         const listItem = document.createElement('li');
@@ -81,11 +88,12 @@ const Renderer = (() => {
         workList.appendChild(listItem);
       });
 
-      // Показать/скрыть кнопку "В работу"
       startWorkBtn.style.display = car.status === 'new' ? 'block' : 'none';
     } else {
       currentCarModel.textContent = 'Модель: ';
+      currentCarCreatedAt.textContent = 'Дата создания:';
       currentCarStatus.textContent = 'Статус: Выберите автомобиль из списка.';
+      currentCarStatusUpdatedAt.textContent = 'Дата обновления статуса:';
       workList.innerHTML = '';
       startWorkBtn.style.display = 'none';
     }
@@ -93,9 +101,21 @@ const Renderer = (() => {
 
   const updateCarStatus = (car) => {
     const allDone = car.workTypes.every(work => work.status === 'done');
-    car.status = allDone ? 'completed' : car.status === 'new' ? 'in-progress' : car.status;
+    const newStatus = allDone ? 'completed' : car.status === 'new' ? 'in-progress' : car.status;
+
+    if (newStatus !== car.status) {
+      car.status = newStatus;
+      car.statusUpdated = Date.now(); // Обновляем дату изменения статуса
+    }
+
     DataStore.setCars(DataStore.getCars());
     Renderer.renderCarList();
+
+    // Если автомобиль выбран, обновляем информацию на вкладке "Текущий автомобиль"
+    const lastSelectedCarUID = DataStore.getLastSelectedCarUID();
+    if (lastSelectedCarUID && car.createdAt === parseInt(lastSelectedCarUID)) {
+      Renderer.setCurrentCarInfo(car);
+    }
   };
 
   return {
@@ -119,6 +139,8 @@ const EventHandler = (() => {
       const newCar = {
         model: carModel,
         status: 'new',
+        createdAt: Date.now(),
+        statusUpdated: Date.now(), // Дата создания также является первой датой изменения статуса
         workTypes: workFields.map(work => ({ name: work, status: 'work' })),
       };
       const updatedCars = [...DataStore.getCars(), newCar];
@@ -132,16 +154,20 @@ const EventHandler = (() => {
     }
   };
 
-  const selectCar = (index) => {
-    const selectedCar = DataStore.getCars()[index];
-    Renderer.setCurrentCarInfo(selectedCar);
-    TabManager.activateTab('current');
-    DataStore.setLastSelectedCarIndex(index); // Сохраняем индекс выбранного автомобиля
+  const selectCar = (uid) => {
+    const selectedCar = DataStore.getCars().find(car => car.createdAt === parseInt(uid));
+    if (selectedCar) {
+      Renderer.setCurrentCarInfo(selectedCar);
+      TabManager.activateTab('current');
+      DataStore.setLastSelectedCarUID(uid);
+    } else {
+      alert('Автомобиль не найден!');
+    }
   };
 
   const toggleWorkStatus = (car, workName) => {
     const updatedCars = DataStore.getCars().map(c => {
-      if (c === car) {
+      if (c.createdAt === car.createdAt) {
         return {
           ...c,
           workTypes: c.workTypes.map(work =>
@@ -152,15 +178,20 @@ const EventHandler = (() => {
       return c;
     });
     DataStore.setCars(updatedCars);
-    Renderer.updateCarStatus(updatedCars.find(c => c === car)); // Обновляем статус автомобиля
-    Renderer.setCurrentCarInfo(car); // Обновляем информацию о текущем автомобиле
+
+    // Обновляем статус автомобиля
+    const updatedCar = updatedCars.find(c => c.createdAt === car.createdAt);
+    Renderer.updateCarStatus(updatedCar);
   };
 
   const startWork = () => {
-    const selectedCar = DataStore.getCars().find(car => car.status === 'new');
+    const selectedCar = DataStore.getCars().find(car => car.status === 'new' && car.createdAt === parseInt(DataStore.getLastSelectedCarUID()));
     if (selectedCar) {
       selectedCar.status = 'in-progress';
+      selectedCar.statusUpdated = Date.now(); // Обновляем дату изменения статуса
       DataStore.setCars(DataStore.getCars());
+
+      // Обновляем статус автомобиля
       Renderer.updateCarStatus(selectedCar);
       Renderer.setCurrentCarInfo(selectedCar);
     }
@@ -168,30 +199,23 @@ const EventHandler = (() => {
 
   const addWorkField = () => {
     const workFieldsContainer = document.getElementById('work-fields');
-    if (!workFieldsContainer) return;
-
     const newField = document.createElement('div');
-    newField.classList.add('input-group', 'mb-2'); // Добавляем классы Bootstrap
+    newField.classList.add('input-group', 'mb-2');
     newField.innerHTML = `
       <input type="text" class="form-control crm-system__input work-field" placeholder="Введите вид работы">
       <button class="btn btn-danger crm-system__remove-btn" onclick="EventHandler.removeWorkField(this)">Удалить</button>
     `;
-    workFieldsContainer.appendChild(newField); // Добавляем новое поле в контейнер
+    workFieldsContainer.appendChild(newField);
   };
 
   const removeWorkField = (button) => {
-    const fieldGroup = button.closest('.input-group');
-    if (fieldGroup) {
-      fieldGroup.remove(); // Удаляем группу полей
-    }
+    button.closest('.input-group').remove();
   };
 
   const clearWorkFields = () => {
     const workFieldsContainer = document.getElementById('work-fields');
-    if (workFieldsContainer) {
-      workFieldsContainer.innerHTML = ''; // Очищаем контейнер
-      addWorkField(); // Добавляем одно поле по умолчанию
-    }
+    workFieldsContainer.innerHTML = '';
+    addWorkField();
   };
 
   return {
@@ -232,13 +256,14 @@ const TabManager = (() => {
     const savedTab = DataStore.getActiveTab();
     activateTab(savedTab);
 
-    // Восстанавливаем последний выбранный автомобиль
-    const lastSelectedCarIndex = DataStore.getLastSelectedCarIndex();
-    if (lastSelectedCarIndex !== null) {
-      const lastSelectedCar = DataStore.getCars()[lastSelectedCarIndex];
-      if (lastSelectedCar) {
-        Renderer.setCurrentCarInfo(lastSelectedCar);
-        activateTab('current');
+    // Если последняя вкладка была "Текущий автомобиль", восстанавливаем выбранный автомобиль
+    if (savedTab === 'current') {
+      const lastSelectedCarUID = DataStore.getLastSelectedCarUID();
+      if (lastSelectedCarUID) {
+        const lastSelectedCar = DataStore.getCars().find(car => car.createdAt === parseInt(lastSelectedCarUID));
+        if (lastSelectedCar) {
+          Renderer.setCurrentCarInfo(lastSelectedCar);
+        }
       }
     }
   };
@@ -260,6 +285,22 @@ const TabManager = (() => {
   };
 })();
 
+// Форматирование даты
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// Получение текстового представления статуса
+function getStatusLabel(status) {
+  const labels = {
+    new: 'Новый',
+    in_progress: 'В работе',
+    completed: 'Готово',
+  };
+  return labels[status] || 'Неизвестно';
+}
+
 // Инициализация приложения
 document.addEventListener('DOMContentLoaded', () => {
   DataStore.loadState();
@@ -267,7 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
   TabManager.restoreActiveTab();
   TabManager.addTabClickHandlers();
 
-  // Добавляем одно поле для видов работ по умолчанию
   EventHandler.addWorkField();
 
   document.getElementById('add-form').addEventListener('submit', EventHandler.handleAddFormSubmit);
@@ -280,12 +320,11 @@ function filterCars() {
   Renderer.renderCarList(filter);
 }
 
-// Получение текстового представления статуса
-function getStatusLabel(status) {
-  const labels = {
-    new: 'Новый',
-    in_progress: 'В работе',
-    completed: 'Готово',
-  };
-  return labels[status] || 'Неизвестно';
-}
+// Экспорт функций для использования в HTML
+window.selectCar = EventHandler.selectCar;
+window.filterCars = filterCars;
+window.addWorkField = EventHandler.addWorkField;
+window.removeWorkField = EventHandler.removeWorkField;
+window.activateTab = TabManager.activateTab;
+window.toggleWorkStatus = EventHandler.toggleWorkStatus;
+window.startWork = EventHandler.startWork;
