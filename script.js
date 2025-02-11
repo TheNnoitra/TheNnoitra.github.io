@@ -101,7 +101,7 @@ const Renderer = (() => {
 
   const updateCarStatus = (car) => {
     const allDone = car.workTypes.every(work => work.status === 'done');
-    const newStatus = allDone ? 'completed' : car.status === 'new' ? 'in-progress' : car.status;
+    const newStatus = allDone ? 'completed' : car.status === 'new' ? 'in_progress' : car.status;
 
     if (newStatus !== car.status) {
       car.status = newStatus;
@@ -187,7 +187,7 @@ const EventHandler = (() => {
   const startWork = () => {
     const selectedCar = DataStore.getCars().find(car => car.status === 'new' && car.createdAt === parseInt(DataStore.getLastSelectedCarUID()));
     if (selectedCar) {
-      selectedCar.status = 'in-progress';
+      selectedCar.status = 'in_progress';
       selectedCar.statusUpdated = Date.now(); // Обновляем дату изменения статуса
       DataStore.setCars(DataStore.getCars());
 
