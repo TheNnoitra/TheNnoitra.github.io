@@ -69,6 +69,11 @@ const Renderer = (() => {
     const currentCarCreatedAt = document.getElementById('current-car-created-at');
     const currentCarStatus = document.getElementById('current-car-status');
     const currentCarStatusUpdatedAt = document.getElementById('current-car-status-updated-at');
+    const currentCarYear = document.getElementById('current-car-year');
+    const currentCarVin = document.getElementById('current-car-vin');
+    const currentCarMileage = document.getElementById('current-car-mileage');
+    const currentOwnerName = document.getElementById('current-owner-name');
+    const currentOwnerPhone = document.getElementById('current-owner-phone');
     const startWorkBtn = document.getElementById('start-work-btn');
     const workList = document.getElementById('current-car-works');
 
@@ -78,6 +83,11 @@ const Renderer = (() => {
       currentCarStatus.textContent = `Статус: ${getStatusLabel(car.status)}`;
       currentCarStatus.className = `crm-system__current-info crm-system__status-${car.status}`;
       currentCarStatusUpdatedAt.textContent = `Дата обновления статуса: ${formatDate(car.statusUpdated)}`;
+      currentCarYear.textContent = car.year || 'Не указано';
+      currentCarVin.textContent = car.vin || 'Не указано';
+      currentCarMileage.textContent = `${car.mileage || 0} км`;
+      currentOwnerName.textContent = car.owner?.name || 'Не указано';
+      currentOwnerPhone.textContent = car.owner?.phone || 'Не указано';
 
       workList.innerHTML = '';
       car.workTypes.forEach(work => {
@@ -94,6 +104,11 @@ const Renderer = (() => {
       currentCarCreatedAt.textContent = 'Дата создания:';
       currentCarStatus.textContent = 'Статус: Выберите автомобиль из списка.';
       currentCarStatusUpdatedAt.textContent = 'Дата обновления статуса:';
+      currentCarYear.textContent = 'Год выпуска:';
+      currentCarVin.textContent = 'VIN-номер:';
+      currentCarMileage.textContent = 'Пробег:';
+      currentOwnerName.textContent = 'Владелец:';
+      currentOwnerPhone.textContent = 'Телефон:';
       workList.innerHTML = '';
       startWorkBtn.style.display = 'none';
     }
@@ -101,7 +116,7 @@ const Renderer = (() => {
 
   const updateCarStatus = (car) => {
     const allDone = car.workTypes.every(work => work.status === 'done');
-    const newStatus = allDone ? 'completed' : car.status === 'new' ? 'in_progress' : car.status;
+    const newStatus = allDone ? 'completed' : car.status === 'new' ? 'in-progress' : car.status;
 
     if (newStatus !== car.status) {
       car.status = newStatus;
@@ -131,6 +146,11 @@ const EventHandler = (() => {
     e.preventDefault();
 
     const carModel = document.getElementById('car-model').value.trim();
+    const carYear = document.getElementById('car-year').value.trim() || null;
+    const carVin = document.getElementById('car-vin').value.trim() || null;
+    const carMileage = document.getElementById('car-mileage').value.trim() || 0;
+    const ownerName = document.getElementById('owner-name').value.trim() || null;
+    const ownerPhone = document.getElementById('owner-phone').value.trim() || null;
     const workFields = Array.from(document.querySelectorAll('.work-field'))
       .map(input => input.value.trim())
       .filter(value => value !== '');
@@ -138,9 +158,16 @@ const EventHandler = (() => {
     if (carModel && workFields.length > 0) {
       const newCar = {
         model: carModel,
+        year: carYear,
+        vin: carVin,
+        mileage: parseInt(carMileage),
+        owner: {
+          name: ownerName,
+          phone: ownerPhone,
+        },
         status: 'new',
         createdAt: Date.now(),
-        statusUpdated: Date.now(), // Дата создания также является первой датой изменения статуса
+        statusUpdated: Date.now(),
         workTypes: workFields.map(work => ({ name: work, status: 'work' })),
       };
       const updatedCars = [...DataStore.getCars(), newCar];
@@ -150,7 +177,7 @@ const EventHandler = (() => {
       clearWorkFields();
       TabManager.activateTab('list');
     } else {
-      alert('Заполните все поля!');
+      alert('Заполните все обязательные поля!');
     }
   };
 
@@ -187,7 +214,7 @@ const EventHandler = (() => {
   const startWork = () => {
     const selectedCar = DataStore.getCars().find(car => car.status === 'new' && car.createdAt === parseInt(DataStore.getLastSelectedCarUID()));
     if (selectedCar) {
-      selectedCar.status = 'in_progress';
+      selectedCar.status = 'in-progress';
       selectedCar.statusUpdated = Date.now(); // Обновляем дату изменения статуса
       DataStore.setCars(DataStore.getCars());
 

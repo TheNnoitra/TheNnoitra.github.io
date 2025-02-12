@@ -68,21 +68,20 @@
     background-color: #3700b3;
 }
 
-/* Стили для даты */
-.crm-system__card-date {
-    font-size: 12px;
-    color: #666;
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-}
-
+.crm-system__card-date,
 .crm-system__card-status-updated {
     font-size: 12px;
     color: #666;
     position: absolute;
     bottom: 8px;
+}
+
+.crm-system__card-date {
     right: 8px;
+}
+
+.crm-system__card-status-updated {
+    left: 8px;
 }
 
 .crm-system__current-info-container {
@@ -93,6 +92,10 @@
 
 .crm-system__current-info {
     margin: 0;
+}
+
+.crm-system__current-details p {
+    margin-bottom: 8px;
 }
 
 /* Стили для статусов */
