@@ -14,12 +14,28 @@
 .crm-system__input,
 .crm-system__remove-btn {
     height: 40px;
+    font-size: 16px;
 }
 
 .crm-system__btn {
     background-color: #6200ea;
     border-color: #6200ea;
     color: white;
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+/* Адаптация под маленькие экраны */
+@media (max-width: 768px) {
+    .crm-system__input {
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .crm-system__btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
 }
 
 .crm-system__btn:hover {
