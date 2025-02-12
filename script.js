@@ -467,6 +467,22 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('search-input').addEventListener('input', filterCars);
 });
 
+// Улучшение работы с фокусом на мобильных устройствах
+document.addEventListener('DOMContentLoaded', () => {
+  const inputFields = document.querySelectorAll('.crm-system__input');
+
+  inputFields.forEach(input => {
+    input.addEventListener('focus', () => {
+      input.classList.add('focused');
+    });
+
+    input.addEventListener('blur', () => {
+      input.classList.remove('focused');
+    });
+  });
+});
+
+
 // Фильтрация автомобилей
 function filterCars() {
   const filter = document.getElementById('search-input').value;

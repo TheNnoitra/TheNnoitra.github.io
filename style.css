@@ -1,4 +1,3 @@
-/* Общие стили */
 .crm-system {
     max-width: 1200px;
     margin: 0 auto;
@@ -28,7 +27,6 @@
     border-color: #3700b3;
 }
 
-/* Стили для карточек */
 .crm-system__card {
     background-color: white;
     border-radius: 8px;
@@ -86,8 +84,15 @@
 
 .crm-system__current-info-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+/*@media (min-width: 768px) {*/
+/*    flex-direction: row;*/
+/*    justify-content: space-between;*/
+/*    align-items: center;*/
+/*}*/
 }
 
 .crm-system__current-info {
@@ -96,6 +101,34 @@
 
 .crm-system__current-details p {
     margin-bottom: 8px;
+}
+
+.crm-system__edit-form {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .crm-system__card {
+        padding: 12px;
+    }
+
+    .crm-system__card-title {
+        font-size: 16px;
+    }
+
+    .crm-system__card-subtitle {
+        font-size: 12px;
+    }
+
+    .crm-system__card-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .crm-system__btn {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
 }
 
 /* Стили для статусов */
