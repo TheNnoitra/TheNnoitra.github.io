@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <title>Telegram Web App Example</title>
   <style>
@@ -63,11 +63,6 @@
     <input type="text" placeholder="Поле 8" required>
     <input type="text" placeholder="Поле 9" required>
     <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 122" required>
-    <input type="text" placeholder="Поле 22" required>
-    <input type="text" placeholder="Поле 22" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -86,20 +81,18 @@
 
   // Функция для установки высоты контейнера с учетом contentSafeAreaInsets
   function adjustContentHeight() {
-    setTimeout(() => {
-      const container = document.getElementById('contentContainer');
-      const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
+    webApp.showAlert("Вызов adjustContentHeight");
 
-      // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
-      const availableHeight = window.innerHeight - safeAreaInsets.bottom;
-      container.style.height = `${availableHeight}px`;
+    const container = document.getElementById('contentContainer');
+    const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
 
-      // Обновляем высоту iframe
-      const contentHeight = document.documentElement.scrollHeight;
-      webApp.setHeight(Math.max(availableHeight, contentHeight));
+    // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
+    const availableHeight = window.innerHeight - safeAreaInsets.bottom;
+    container.style.height = `${availableHeight}px`;
 
-      webApp.showAlert(`contentHeight: ${contentHeight} --- availableHeight: ${availableHeight}`);
-    });
+    // Обновляем высоту iframe
+    const contentHeight = document.documentElement.scrollHeight;
+    webApp.setHeight(Math.max(availableHeight, contentHeight));
   }
 
   // Вызываем функцию при загрузке страницы
@@ -107,30 +100,22 @@
 
   // Отслеживаем изменение размеров окна
   window.addEventListener('resize', () => {
+    webApp.showAlert("Событие resize");
     adjustContentHeight();
   });
 
   // Отслеживаем изменение высоты iframe через Telegram API
   webApp.setResizeHandler(() => {
+    webApp.showAlert("Событие setResizeHandler");
     adjustContentHeight();
   });
 
-  // Обработка отправки формы
-  document.getElementById('inputForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    // Собираем данные из всех инпутов
-    const formData = new FormData(e.target);
-    const data = {};
-    formData.forEach((value, key) => {
-      data[key] = value;
+  // Отслеживаем фокус на инпутах (работает на iOS)
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('focus', () => {
+      webApp.showAlert("Фокус на инпуте");
+      adjustContentHeight();
     });
-
-    // Отправляем данные боту через Telegram.WebApp.sendData
-    webApp.sendData(JSON.stringify(data));
-
-    // Закрываем Web App
-    webApp.close();
   });
 </script>
 </body>
