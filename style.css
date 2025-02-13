@@ -1,6 +1,13 @@
+:root {
+    --tg-content-safe-area-inset-left: 0;
+    --tg-content-safe-area-inset-top: 0;
+    --tg-content-safe-area-inset-right: 0;
+    --tg-content-safe-area-inset-bottom: 0;
+}
+
 body {
-    height: 100%;
-    width: 100%;
+    width: calc(100vw - var(--tg-content-safe-area-inset-left) - var(--tg-content-safe-area-inset-right));
+    height: calc(100vh - var(--tg-content-safe-area-inset-top) - var(--tg-content-safe-area-inset-bottom));
     position: fixed;
     top: var(--tg-content-safe-area-inset-top);
     bottom: var(--tg-content-safe-area-inset-bottom);
@@ -117,11 +124,11 @@ body {
     align-items: flex-start;
     gap: 8px;
 
-/*@media (min-width: 768px) {*/
-/*    flex-direction: row;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*}*/
+    /*@media (min-width: 768px) {*/
+    /*    flex-direction: row;*/
+    /*    justify-content: space-between;*/
+    /*    align-items: center;*/
+    /*}*/
 }
 
 .crm-system__current-info {
