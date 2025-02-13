@@ -21,7 +21,7 @@
           max-width: 400px;
           margin: 0 auto;
           overflow-y: auto; /* Добавляем скролл для контейнера */
-          height: 100%; /* Задаем высоту контейнера */
+          height: calc(100vh - 20px); /* Вычитаем немного места для погрешности */
       }
 
       input {
@@ -62,10 +62,6 @@
     <input type="text" placeholder="Поле 7" required>
     <input type="text" placeholder="Поле 8" required>
     <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
     <input type="text" placeholder="Поле 10" required>
     <button type="submit">Отправить</button>
   </form>
@@ -81,17 +77,25 @@
   webApp.ready();
   webApp.expand();
 
+  let initialHeight = window.innerHeight;
+
   // Функция для установки высоты контейнера
   function adjustContentHeight() {
     const container = document.getElementById('contentContainer');
-    const windowHeight = window.innerHeight; // Текущая высота окна браузера
+    const currentHeight = window.innerHeight;
 
-    // Устанавливаем высоту контейнера равной высоте окна
-    container.style.height = `${windowHeight}px`;
+    // Корректируем высоту контейнера в зависимости от наличия клавиатуры
+    if (currentHeight < initialHeight) {
+      // Клавиатура открыта
+      container.style.height = `${currentHeight}px`;
+    } else {
+      // Клавиатура закрыта
+      container.style.height = `calc(100vh - 20px)`;
+    }
 
-    // Устанавливаем высоту iframe равной высоте окна или содержимого
+    // Обновляем высоту iframe
     const contentHeight = document.documentElement.scrollHeight;
-    webApp.setHeight(Math.max(windowHeight, contentHeight));
+    webApp.setHeight(Math.max(currentHeight, contentHeight));
   }
 
   // Вызываем функцию при загрузке страницы
@@ -127,7 +131,6 @@
 </script>
 </body>
 </html>
-
 
 <!--<!DOCTYPE html>-->
 <!--<html lang="en">-->
