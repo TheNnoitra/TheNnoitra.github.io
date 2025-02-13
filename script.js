@@ -53,16 +53,16 @@ const TelegramIntegration = (() => {
     tg.expand(); // Расширяем Web App на всю доступную высоту
 
     // Обработка изменения высоты окна при появлении клавиатуры
-    tg.onEvent('keyboard_open', (data) => {
-      tg.showAlert('keyboard_open');
-      const currentHeight = data.height; // Новая высота окна
-      document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
-    });
+    // tg.onEvent('keyboard_open', (data) => {
+    //   tg.showAlert('keyboard_open');
+    //   const currentHeight = data.height; // Новая высота окна
+    //   document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
+    // });
 
-    tg.onEvent('keyboard_close', (data) => {
-      tg.showAlert('keyboard_close');
-      const currentHeight = data.height; // Новая высота окна
+    tg.setResizeHandler(() => {
+      const currentHeight = Telegram.WebApp.height;
       document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
+      tg.showAlert('setResizeHandler');
     });
 
     // Управление клавиатурой при фокусировке на input
