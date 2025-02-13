@@ -53,8 +53,14 @@ const TelegramIntegration = (() => {
     tg.expand(); // Расширяем Web App на всю доступную высоту
 
     // Обработка изменения высоты окна при появлении клавиатуры
-    tg.onEvent('viewport_height_change', (data) => {
-      tg.showAlert('viewport_height_change');
+    tg.onEvent('keyboard_open', (data) => {
+      tg.showAlert('keyboard_open');
+      const currentHeight = data.height; // Новая высота окна
+      document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
+    });
+
+    tg.onEvent('keyboard_close', (data) => {
+      tg.showAlert('keyboard_close');
       const currentHeight = data.height; // Новая высота окна
       document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
     });
@@ -63,9 +69,6 @@ const TelegramIntegration = (() => {
     const inputFields = document.querySelectorAll('.crm-system__input');
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
-        tg.MainButton.hide(); // Скрываем кнопку Telegram при фокусировке
-        tg.showAlert('viewport_height_change');
-        tg.expand();
         // Настройка контекстных кнопок клавиатуры
         if (input.type === 'number') {
           tg.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
