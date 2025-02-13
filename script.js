@@ -66,19 +66,19 @@ const TelegramIntegration = (() => {
       // tg.showAlert('setResizeHandler');
     // });
 
-    WebView.onEvent('viewport_changed', () => {
+    tg.onEvent('viewport_changed', () => {
       tg.showAlert('viewport_changed');
     });
-    WebView.onEvent('safe_area_changed', () => {
+    tg.onEvent('safe_area_changed', () => {
       tg.showAlert('safe_area_changed');
     });
-    WebView.onEvent('viewportChanged', () => {
+    tg.onEvent('viewportChanged', () => {
       tg.showAlert('viewportChanged');
     });
-    WebView.onEvent('safeAreaChanged', () => {
+    tg.onEvent('safeAreaChanged', () => {
       tg.showAlert('safeAreaChanged');
     });
-    WebView.onEvent('contentSafeAreaChanged', () => {
+    tg.onEvent('contentSafeAreaChanged', () => {
       tg.showAlert('contentSafeAreaChanged');
     });
 
