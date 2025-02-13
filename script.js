@@ -47,56 +47,56 @@ const TelegramIntegration = (() => {
   // Инициализация Telegram Web App
   const tg = Telegram.WebApp;
 
-  if (tg) {
-    // Устанавливаем начальную высоту iframe
-    tg.ready();
-    tg.expand();
-
-    // Функция для установки высоты контейнера
-    function adjustContentHeight() {
-      const container = document.getElementById('contentContainer');
-      const windowHeight = window.innerHeight; // Текущая высота окна браузера
-
-      // Устанавливаем высоту контейнера равной высоте окна
-      container.style.height = `${windowHeight}px`;
-
-      // Устанавливаем высоту iframe равной высоте окна или содержимого
-      const contentHeight = document.documentElement.scrollHeight;
-      tg.setHeight(Math.max(windowHeight, contentHeight));
-    }
-
-    // Вызываем функцию при загрузке страницы
-    adjustContentHeight();
-
-    // Отслеживаем изменение размеров окна
-    window.addEventListener('resize', () => {
-      adjustContentHeight();
-    });
-
-    // Отслеживаем изменение высоты iframe через Telegram API
-    tg.setResizeHandler(() => {
-      adjustContentHeight();
-    });
-
-    // Управление клавиатурой при фокусировке на input
-    const inputFields = document.querySelectorAll('.crm-system__input');
-    inputFields.forEach(input => {
-      input.addEventListener('focus', () => {
-        // Настройка контекстных кнопок клавиатуры
-        if (input.type === 'number') {
-          tg.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
-        } else if (input.id === 'owner-phone') {
-          tg.showKeyboard({ one_time: false, type: 'phone' }); // Телефонная клавиатура
-        } else {
-          tg.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
-        }
-      });
-
-      input.addEventListener('blur', () => {
-        tg.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
-      });
-    });
-  }
+  // if (tg) {
+  //   // Устанавливаем начальную высоту iframe
+  //   tg.ready();
+  //   tg.expand();
+  //
+  //   // Функция для установки высоты контейнера
+  //   function adjustContentHeight() {
+  //     const container = document.getElementById('contentContainer');
+  //     const windowHeight = window.innerHeight; // Текущая высота окна браузера
+  //
+  //     // Устанавливаем высоту контейнера равной высоте окна
+  //     container.style.height = `${windowHeight}px`;
+  //
+  //     // Устанавливаем высоту iframe равной высоте окна или содержимого
+  //     const contentHeight = document.documentElement.scrollHeight;
+  //     tg.setHeight(Math.max(windowHeight, contentHeight));
+  //   }
+  //
+  //   // Вызываем функцию при загрузке страницы
+  //   adjustContentHeight();
+  //
+  //   // Отслеживаем изменение размеров окна
+  //   window.addEventListener('resize', () => {
+  //     adjustContentHeight();
+  //   });
+  //
+  //   // Отслеживаем изменение высоты iframe через Telegram API
+  //   tg.setResizeHandler(() => {
+  //     adjustContentHeight();
+  //   });
+  //
+  //   // Управление клавиатурой при фокусировке на input
+  //   const inputFields = document.querySelectorAll('.crm-system__input');
+  //   inputFields.forEach(input => {
+  //     input.addEventListener('focus', () => {
+  //       // Настройка контекстных кнопок клавиатуры
+  //       if (input.type === 'number') {
+  //         tg.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
+  //       } else if (input.id === 'owner-phone') {
+  //         tg.showKeyboard({ one_time: false, type: 'phone' }); // Телефонная клавиатура
+  //       } else {
+  //         tg.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
+  //       }
+  //     });
+  //
+  //     input.addEventListener('blur', () => {
+  //       tg.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
+  //     });
+  //   });
+  // }
 
   return {
     isTgWebApp: () => !!tg,

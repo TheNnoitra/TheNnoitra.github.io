@@ -152,6 +152,40 @@
 </div>
 
 <!-- Подключение скриптов -->
-<script src="script.js?rnd=<?= rand(0, 999) ?>"></script>
+<script src="script.js"></script>
+<script>
+  // Инициализация Telegram Web App
+  const webApp = Telegram.WebApp;
+
+  // Устанавливаем начальную высоту iframe
+  webApp.ready();
+  webApp.expand();
+
+  // Функция для установки высоты контейнера
+  function adjustContentHeight() {
+    const container = document.getElementById('contentContainer');
+    const windowHeight = window.innerHeight; // Текущая высота окна браузера
+
+    // Устанавливаем высоту контейнера равной высоте окна
+    container.style.height = `${windowHeight}px`;
+
+    // Устанавливаем высоту iframe равной высоте окна или содержимого
+    const contentHeight = document.documentElement.scrollHeight;
+    webApp.setHeight(Math.max(windowHeight, contentHeight));
+  }
+
+  // Вызываем функцию при загрузке страницы
+  adjustContentHeight();
+
+  // Отслеживаем изменение размеров окна
+  window.addEventListener('resize', () => {
+    adjustContentHeight();
+  });
+
+  // Отслеживаем изменение высоты iframe через Telegram API
+  webApp.setResizeHandler(() => {
+    adjustContentHeight();
+  });
+</script>
 </body>
 </html>
