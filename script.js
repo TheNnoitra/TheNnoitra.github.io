@@ -92,7 +92,7 @@ const TelegramIntegration = (() => {
 
     // Настройка кнопки Telegram
     tg.MainButton.setText('Готово'); // Устанавливаем текст кнопки
-    tg.MainButton.setColor('#6200ea'); // Устанавливаем цвет кнопки
+    // tg.MainButton.setColor('#6200ea'); // Устанавливаем цвет кнопки
     tg.MainButton.setParams({
       is_visible: true,
       is_enabled: true,
