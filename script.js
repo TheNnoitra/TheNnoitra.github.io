@@ -67,10 +67,9 @@ const TelegramIntegration = (() => {
     // });
 
     tg.onEvent('viewportChanged', () => {
-        tg.showAlert(`body: ${document.body.style.height}`, );
         const currentHeight = tg.height; // Новая высота окна
-        document.body.style.height = `${tg.height}px`; // Адаптируем высоту страницы
-        tg.showAlert(`viewport: ${tg.height}px === body: ${document.body.style.height}`, );
+        window.document.body.style.height = `${tg.height}px`; // Адаптируем высоту страницы
+        tg.showAlert(`viewport: ${tg.height}px === body: ${window.document.body.style.height}`, );
     });
 
     // Управление клавиатурой при фокусировке на input
