@@ -41,14 +41,14 @@ const DataStore = (() => {
     loadState: loadFromLocalStorage,
   };
 })();
-
+let initialHeight = 0;
 // Блок Telegram Web App интеграции
 const TelegramIntegration = (() => {
   const tg = window.Telegram.WebApp;
 
   if (tg) {
     tg.ready();
-
+    initialHeight =  tg.height;
     // Адаптация под Telegram Web App
     tg.expand(); // Расширяем Web App на всю доступную высоту
 
@@ -549,14 +549,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('resize', () => {
-  const webApp = window.Telegram.WebApp;
-  console.log('Новая высота:', webApp.height); // Получаем текущую высоту iframe
+  const tg = window.Telegram.WebApp;
 
-  if (webApp.height < initialHeight) {
-    webApp.showAlert('open');
-  } else {
-    console.log('Клавиатура, вероятно, закрыта');
+  if (tg) {
+    tg.ready();
+    if (tg.height < initialHeight) {
+      tg.showAlert('open');
+    } else {
+      tg.showAlert('Клавиатура, вероятно, закрыта');
+    }
   }
+
 });
 
 // Фильтрация автомобилей
