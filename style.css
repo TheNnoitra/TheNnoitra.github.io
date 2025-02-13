@@ -1,203 +1,190 @@
-/*:root {*/
-/*    --tg-content-safe-area-inset-left: 0;*/
-/*    --tg-content-safe-area-inset-top: 0;*/
-/*    --tg-content-safe-area-inset-right: 0;*/
-/*    --tg-content-safe-area-inset-bottom: 0;*/
-/*}*/
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Отключаем скролл для body */
+    height: 100vh; /* Фиксируем высоту body */
+}
 
-/*body {*/
-/*    width: calc(100vw - var(--tg-content-safe-area-inset-left) - var(--tg-content-safe-area-inset-right));*/
-/*    height: calc(100vh - var(--tg-content-safe-area-inset-top) - var(--tg-content-safe-area-inset-bottom));*/
-/*    position: fixed;*/
-/*    top: var(--tg-content-safe-area-inset-top);*/
-/*    bottom: var(--tg-content-safe-area-inset-bottom);*/
-/*    left: var(--tg-content-safe-area-inset-left);*/
-/*    right: var(--tg-content-safe-area-inset-right);*/
-/*    overflow: hidden;*/
-/*}*/
+.crm-system {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-y: auto; /* Добавляем скролл для контейнера */
+    height: 100%; /* Задаем высоту контейнера */
+}
 
-/*.crm-system {*/
-/*    max-width: 1200px;*/
-/*    margin: 0 auto;*/
-/*    overflow: auto;*/
-/*    height: 100%;*/
-/*    width: 100%;*/
-/*    margin-top: 0 !important;*/
-/*}*/
+.crm-system__title {
+    font-size: 24px;
+}
 
-/*.crm-system__title {*/
-/*    font-size: 24px;*/
-/*}*/
+.crm-system__label {
+    font-size: 16px;
+}
 
-/*.crm-system__label {*/
-/*    font-size: 16px;*/
-/*}*/
+.crm-system__input,
+.crm-system__remove-btn {
+    height: 40px;
+    font-size: 16px;
+}
 
-/*.crm-system__input,*/
-/*.crm-system__remove-btn {*/
-/*    height: 40px;*/
-/*    font-size: 16px;*/
-/*}*/
+.crm-system__btn {
+    background-color: #6200ea;
+    border-color: #6200ea;
+    color: white;
+    font-size: 14px;
+    padding: 8px 16px;
+}
 
-/*.crm-system__btn {*/
-/*    background-color: #6200ea;*/
-/*    border-color: #6200ea;*/
-/*    color: white;*/
-/*    font-size: 14px;*/
-/*    padding: 8px 16px;*/
-/*}*/
+/* Адаптация под маленькие экраны */
+@media (max-width: 768px) {
+    .crm-system__input {
+        height: 35px;
+        font-size: 14px;
+    }
 
-/*!* Адаптация под маленькие экраны *!*/
-/*@media (max-width: 768px) {*/
-/*    .crm-system__input {*/
-/*        height: 35px;*/
-/*        font-size: 14px;*/
-/*    }*/
+    .crm-system__btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
 
-/*    .crm-system__btn {*/
-/*        font-size: 12px;*/
-/*        padding: 6px 12px;*/
-/*    }*/
-/*}*/
+.crm-system__btn:hover {
+    background-color: #3700b3;
+    border-color: #3700b3;
+}
 
-/*.crm-system__btn:hover {*/
-/*    background-color: #3700b3;*/
-/*    border-color: #3700b3;*/
-/*}*/
+.crm-system__card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    transition: transform 0.2s ease-in-out;
+}
 
-/*.crm-system__card {*/
-/*    background-color: white;*/
-/*    border-radius: 8px;*/
-/*    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
-/*    padding: 16px;*/
-/*    transition: transform 0.2s ease-in-out;*/
-/*}*/
+.crm-system__card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
 
-/*.crm-system__card:hover {*/
-/*    transform: translateY(-5px);*/
-/*    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);*/
-/*}*/
+.crm-system__card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-/*.crm-system__card-title {*/
-/*    font-size: 18px;*/
-/*    font-weight: bold;*/
-/*    margin-bottom: 8px;*/
-/*}*/
+.crm-system__card-subtitle {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 16px;
+}
 
-/*.crm-system__card-subtitle {*/
-/*    font-size: 14px;*/
-/*    color: #555;*/
-/*    margin-bottom: 16px;*/
-/*}*/
+.crm-system__card-btn {
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
 
-/*.crm-system__card-btn {*/
-/*    background-color: #6200ea;*/
-/*    color: white;*/
-/*    border: none;*/
-/*    padding: 8px 16px;*/
-/*    border-radius: 4px;*/
-/*    cursor: pointer;*/
-/*    transition: background-color 0.2s ease-in-out;*/
-/*}*/
+.crm-system__card-btn:hover {
+    background-color: #3700b3;
+}
 
-/*.crm-system__card-btn:hover {*/
-/*    background-color: #3700b3;*/
-/*}*/
+.crm-system__card-date,
+.crm-system__card-status-updated {
+    font-size: 12px;
+    color: #666;
+    position: absolute;
+    bottom: 8px;
+}
 
-/*.crm-system__card-date,*/
-/*.crm-system__card-status-updated {*/
-/*    font-size: 12px;*/
-/*    color: #666;*/
-/*    position: absolute;*/
-/*    bottom: 8px;*/
-/*}*/
+.crm-system__card-date {
+    right: 8px;
+}
 
-/*.crm-system__card-date {*/
-/*    right: 8px;*/
-/*}*/
+.crm-system__card-status-updated {
+    left: 8px;
+}
 
-/*.crm-system__card-status-updated {*/
-/*    left: 8px;*/
-/*}*/
+.crm-system__current-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
 
-/*.crm-system__current-info-container {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: flex-start;*/
-/*    gap: 8px;*/
+    /*@media (min-width: 768px) {*/
+    /*    flex-direction: row;*/
+    /*    justify-content: space-between;*/
+    /*    align-items: center;*/
+    /*}*/
+}
 
-/*    !*@media (min-width: 768px) {*!*/
-/*    !*    flex-direction: row;*!*/
-/*    !*    justify-content: space-between;*!*/
-/*    !*    align-items: center;*!*/
-/*    !*}*!*/
-/*}*/
+.crm-system__current-info {
+    margin: 0;
+}
 
-/*.crm-system__current-info {*/
-/*    margin: 0;*/
-/*}*/
+.crm-system__current-details p {
+    margin-bottom: 8px;
+}
 
-/*.crm-system__current-details p {*/
-/*    margin-bottom: 8px;*/
-/*}*/
+.crm-system__edit-form {
+    max-width: 100%;
+}
 
-/*.crm-system__edit-form {*/
-/*    max-width: 100%;*/
-/*}*/
+@media (max-width: 768px) {
+    .crm-system__card {
+        padding: 12px;
+    }
 
-/*@media (max-width: 768px) {*/
-/*    .crm-system__card {*/
-/*        padding: 12px;*/
-/*    }*/
+    .crm-system__card-title {
+        font-size: 16px;
+    }
 
-/*    .crm-system__card-title {*/
-/*        font-size: 16px;*/
-/*    }*/
+    .crm-system__card-subtitle {
+        font-size: 12px;
+    }
 
-/*    .crm-system__card-subtitle {*/
-/*        font-size: 12px;*/
-/*    }*/
+    .crm-system__card-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
 
-/*    .crm-system__card-btn {*/
-/*        font-size: 12px;*/
-/*        padding: 6px 12px;*/
-/*    }*/
+    .crm-system__btn {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}
 
-/*    .crm-system__btn {*/
-/*        font-size: 14px;*/
-/*        padding: 6px 12px;*/
-/*    }*/
-/*}*/
+/* Стили для статусов */
+.crm-system__status-work {
+    color: #ffab00;
+}
 
-/*!* Стили для статусов *!*/
-/*.crm-system__status-work {*/
-/*    color: #ffab00;*/
-/*}*/
+.crm-system__status-done {
+    color: #4caf50;
+}
 
-/*.crm-system__status-done {*/
-/*    color: #4caf50;*/
-/*}*/
+.crm-system__status-new {
+    color: #6200ea;
+}
 
-/*.crm-system__status-new {*/
-/*    color: #6200ea;*/
-/*}*/
+.crm-system__status-in-progress {
+    color: #ffab00;
+}
 
-/*.crm-system__status-in-progress {*/
-/*    color: #ffab00;*/
-/*}*/
+.crm-system__status-completed {
+    color: #4caf50;
+}
 
-/*.crm-system__status-completed {*/
-/*    color: #4caf50;*/
-/*}*/
+/* Стили для списка видов работ */
+.crm-system__work-item {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+}
 
-/*!* Стили для списка видов работ *!*/
-/*.crm-system__work-item {*/
-/*    cursor: pointer;*/
-/*    padding: 8px;*/
-/*    border-radius: 4px;*/
-/*    transition: background-color 0.2s ease-in-out;*/
-/*}*/
-
-/*.crm-system__work-item:hover {*/
-/*    background-color: #f0f0f0;*/
-/*}*/
+.crm-system__work-item:hover {
+    background-color: #f0f0f0;
+}
