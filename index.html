@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="color-scheme" content="light dark">
   <title>Telegram Web App Example</title>
   <style>
@@ -65,9 +65,9 @@
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 11" required>
+    <input type="text" placeholder="Поле 11" required>
+    <input type="text" placeholder="Поле 11" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -86,16 +86,18 @@
 
   // Функция для установки высоты контейнера с учетом contentSafeAreaInsets
   function adjustContentHeight() {
-    const container = document.getElementById('contentContainer');
-    const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
+    setTimeout(() => {
+      const container = document.getElementById('contentContainer');
+      const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
 
-    // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
-    const availableHeight = window.innerHeight - safeAreaInsets.bottom;
-    container.style.height = `${availableHeight}px`;
+      // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
+      const availableHeight = window.innerHeight - safeAreaInsets.bottom;
+      container.style.height = `${availableHeight}px`;
 
-    // Обновляем высоту iframe
-    const contentHeight = document.documentElement.scrollHeight;
-    webApp.setHeight(Math.max(availableHeight, contentHeight));
+      // Обновляем высоту iframe
+      const contentHeight = document.documentElement.scrollHeight;
+      webApp.setHeight(Math.max(availableHeight, contentHeight));
+    });
   }
 
   // Вызываем функцию при загрузке страницы
