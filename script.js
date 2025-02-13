@@ -54,6 +54,7 @@ const TelegramIntegration = (() => {
 
     // Обработка изменения высоты окна при появлении клавиатуры
     tg.onEvent('viewport_height_change', (data) => {
+      tg.showAlert('viewport_height_change');
       const currentHeight = data.height; // Новая высота окна
       document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
     });
@@ -63,7 +64,8 @@ const TelegramIntegration = (() => {
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
         tg.MainButton.hide(); // Скрываем кнопку Telegram при фокусировке
-
+        tg.showAlert('viewport_height_change');
+        tg.expand();
         // Настройка контекстных кнопок клавиатуры
         if (input.type === 'number') {
           tg.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
@@ -76,7 +78,6 @@ const TelegramIntegration = (() => {
 
       input.addEventListener('blur', () => {
         tg.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
-        tg.MainButton.show(); // Показываем кнопку Telegram
       });
     });
 
@@ -88,14 +89,6 @@ const TelegramIntegration = (() => {
       } else if (currentTab === 'edit') {
         EventHandler.saveEditedCar(); // Сохраняем изменения при редактировании
       }
-    });
-
-    // Настройка кнопки Telegram
-    tg.MainButton.setText('Готово'); // Устанавливаем текст кнопки
-    // tg.MainButton.setColor('#6200ea'); // Устанавливаем цвет кнопки
-    tg.MainButton.setParams({
-      is_visible: true,
-      is_enabled: true,
     });
   }
 
