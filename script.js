@@ -77,6 +77,7 @@ const TelegramIntegration = (() => {
     const inputFields = document.querySelectorAll('.crm-system__input');
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
+        tg.expand();
         // Настройка контекстных кнопок клавиатуры
         if (input.type === 'number') {
           tg.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
