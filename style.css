@@ -1,4 +1,6 @@
 body {
+    height: 100%;
+    width: 100%;
     position: fixed;
     top: var(--tg-content-safe-area-inset-top);
     bottom: var(--tg-content-safe-area-inset-bottom);
@@ -9,6 +11,9 @@ body {
 .crm-system {
     max-width: 1200px;
     margin: 0 auto;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
 }
 
 .crm-system__title {
