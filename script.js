@@ -67,16 +67,16 @@ const TelegramIntegration = (() => {
     // });
 
     tg.onEvent('viewportChanged', () => {
+        tg.showAlert(`body: ${document.body.style.height}`, );
         const currentHeight = tg.height; // Новая высота окна
         document.body.style.height = `${tg.height}px`; // Адаптируем высоту страницы
-      tg.showAlert('viewportChanged: ', tg.height);
+        tg.showAlert(`viewport: ${tg.height}px === body: ${document.body.style.height}`, );
     });
 
     // Управление клавиатурой при фокусировке на input
     const inputFields = document.querySelectorAll('.crm-system__input');
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
-        tg.expand();
         // Настройка контекстных кнопок клавиатуры
         if (input.type === 'number') {
           tg.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
