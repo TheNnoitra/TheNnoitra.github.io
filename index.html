@@ -1,157 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="MobileOptimized" content="176" />
-  <meta name="HandheldFriendly" content="True" />
-  <title>CRM Автосервис</title>
-  <!-- Подключение Bootstrap и Material Design -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Telegram Web App Example</title>
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          background-color: var(--tg-theme-bg-color, #ffffff);
+          color: var(--tg-theme-text-color, #000000);
+      }
+
+      .container {
+          padding: 16px;
+          max-width: 400px;
+          margin: 0 auto;
+      }
+
+      input {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 12px;
+          box-sizing: border-box;
+          border: 1px solid var(--tg-theme-border-color, #cccccc);
+          border-radius: 4px;
+      }
+
+      button {
+          width: 100%;
+          padding: 10px;
+          background-color: var(--tg-theme-button-color, #0088cc);
+          color: var(--tg-theme-button-text-color, #ffffff);
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+
+      button:hover {
+          opacity: 0.9;
+      }
+  </style>
 </head>
 <body>
-<div class="container mt-5 crm-system">
-  <h1 class="crm-system__title text-center mb-4">CRM-система для автосервиса</h1>
-
-  <!-- Вкладки -->
-  <ul class="nav nav-tabs nav-fill crm-system__tabs mb-4" id="crm-system-tabs" role="tablist">
-    <li class="nav-item crm-system__tab-item" role="presentation">
-      <button class="nav-link crm-system__tab-btn active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="true">Добавить автомобиль/работу</button>
-    </li>
-    <li class="nav-item crm-system__tab-item" role="presentation">
-      <button class="nav-link crm-system__tab-btn" id="list-tab" data-bs-toggle="tab" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="false">Список автомобилей</button>
-    </li>
-    <li class="nav-item crm-system__tab-item" role="presentation">
-      <button class="nav-link crm-system__tab-btn" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab" aria-controls="current" aria-selected="false">Текущий автомобиль</button>
-    </li>
-    <li class="nav-item crm-system__tab-item" role="presentation">
-      <button class="nav-link crm-system__tab-btn" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">Редактирование</button>
-    </li>
-  </ul>
-
-  <!-- Содержимое вкладок -->
-  <div class="tab-content crm-system__content" id="crm-system-content">
-    <!-- Вкладка "Добавить автомобиль/работу" -->
-    <div class="tab-pane fade show active crm-system__add-panel" id="add" role="tabpanel" aria-labelledby="add-tab">
-      <h3 class="crm-system__add-title mb-3">Добавить автомобиль или работу</h3>
-      <form class="crm-system__add-form" id="add-form">
-        <div class="mb-3">
-          <label for="car-model" class="form-label crm-system__label">Модель автомобиля</label>
-          <input type="text" class="form-control crm-system__input" id="car-model" placeholder="Введите модель автомобиля">
-        </div>
-        <div class="mb-3">
-          <label for="car-year" class="form-label crm-system__label">Год выпуска</label>
-          <input type="number" class="form-control crm-system__input" id="car-year" placeholder="Год выпуска">
-        </div>
-        <div class="mb-3">
-          <label for="car-vin" class="form-label crm-system__label">VIN-номер</label>
-          <input type="text" class="form-control crm-system__input" id="car-vin" placeholder="VIN-номер">
-        </div>
-        <div class="mb-3">
-          <label for="car-mileage" class="form-label crm-system__label">Пробег</label>
-          <input type="number" class="form-control crm-system__input" id="car-mileage" placeholder="Пробег">
-        </div>
-        <div class="mb-3">
-          <label for="owner-name" class="form-label crm-system__label">ФИО владельца</label>
-          <input type="text" class="form-control crm-system__input" id="owner-name" placeholder="ФИО владельца">
-        </div>
-        <div class="mb-3">
-          <label for="owner-phone" class="form-label crm-system__label">Телефон владельца</label>
-          <input type="tel" class="form-control crm-system__input" id="owner-phone" placeholder="Телефон владельца">
-        </div>
-        <div class="mb-3">
-          <label for="work-fields" class="form-label crm-system__label">Виды работ</label>
-          <div class="crm-system__work-fields" id="work-fields"></div>
-          <button type="button" class="btn btn-primary crm-system__btn" onclick="EventHandler.addWorkField()">Добавить вид работы</button>
-        </div>
-        <button type="submit" class="btn btn-primary crm-system__btn">Добавить</button>
-      </form>
-    </div>
-
-    <!-- Вкладка "Список автомобилей" -->
-    <div class="tab-pane fade crm-system__list-panel" id="list" role="tabpanel" aria-labelledby="list-tab">
-      <h3 class="crm-system__list-title mb-3">Список автомобилей</h3>
-      <div class="input-group mb-3 crm-system__search-bar">
-        <input type="text" class="form-control crm-system__search-input" id="search-input" placeholder="Поиск по модели автомобиля">
-        <button class="btn btn-primary crm-system__search-btn" onclick="filterCars()">Поиск</button>
-      </div>
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 crm-system__card-list" id="car-cards">
-        <!-- Карточки автомобилей будут добавляться динамически -->
-      </div>
-    </div>
-
-    <!-- Вкладка "Текущий автомобиль" -->
-    <div class="tab-pane fade crm-system__current-panel" id="current" role="tabpanel" aria-labelledby="current-tab">
-      <h3 class="crm-system__current-title mb-3">Текущий автомобиль</h3>
-      <div class="crm-system__current-info-container d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <p class="crm-system__current-info" id="current-car-model">Модель: </p>
-        <p class="crm-system__current-info" id="current-car-created-at">Дата создания:</p>
-      </div>
-      <p class="crm-system__current-info d-flex justify-content-between align-items-center" id="current-car-status-container">
-        <span id="current-car-status">Статус: Выберите автомобиль из списка.</span>
-        <span id="current-car-status-updated-at">Дата обновления статуса:</span>
-      </p>
-      <div class="crm-system__current-details">
-        <p class="crm-system__current-info"><strong>Год выпуска:</strong> <span id="current-car-year"></span></p>
-        <p class="crm-system__current-info"><strong>VIN-номер:</strong> <span id="current-car-vin"></span></p>
-        <p class="crm-system__current-info"><strong>Пробег:</strong> <span id="current-car-mileage"></span></p>
-        <p class="crm-system__current-info"><strong>Владелец:</strong> <span id="current-owner-name"></span></p>
-        <p class="crm-system__current-info"><strong>Телефон:</strong> <span id="current-owner-phone"></span></p>
-      </div>
-      <button class="btn btn-warning crm-system__btn" id="edit-car-btn" onclick="EventHandler.editCar()" style="display: none;">Редактировать</button>
-      <button class="btn btn-primary crm-system__btn" id="start-work-btn" onclick="EventHandler.startWork()" style="display: none;">В работу</button>
-      <ul class="list-group crm-system__work-list" id="current-car-works">
-        <!-- Виды работ будут добавляться динамически -->
-      </ul>
-    </div>
-
-    <!-- Вкладка "Редактирование автомобиля" -->
-    <div class="tab-pane fade crm-system__edit-panel" id="edit" role="tabpanel" aria-labelledby="edit-tab">
-      <h3 class="crm-system__edit-title mb-3">Редактирование автомобиля</h3>
-      <form class="crm-system__edit-form" id="edit-form">
-        <div class="mb-3">
-          <label for="edit-car-model" class="form-label crm-system__label">Модель автомобиля</label>
-          <input type="text" class="form-control crm-system__input" id="edit-car-model" placeholder="Введите модель автомобиля">
-        </div>
-        <div class="mb-3">
-          <label for="edit-car-year" class="form-label crm-system__label">Год выпуска</label>
-          <input type="number" class="form-control crm-system__input" id="edit-car-year" placeholder="Год выпуска">
-        </div>
-        <div class="mb-3">
-          <label for="edit-car-vin" class="form-label crm-system__label">VIN-номер</label>
-          <input type="text" class="form-control crm-system__input" id="edit-car-vin" placeholder="VIN-номер">
-        </div>
-        <div class="mb-3">
-          <label for="edit-car-mileage" class="form-label crm-system__label">Пробег</label>
-          <input type="number" class="form-control crm-system__input" id="edit-car-mileage" placeholder="Пробег">
-        </div>
-        <div class="mb-3">
-          <label for="edit-owner-name" class="form-label crm-system__label">ФИО владельца</label>
-          <input type="text" class="form-control crm-system__input" id="edit-owner-name" placeholder="ФИО владельца">
-        </div>
-        <div class="mb-3">
-          <label for="edit-owner-phone" class="form-label crm-system__label">Телефон владельца</label>
-          <input type="tel" class="form-control crm-system__input" id="edit-owner-phone" placeholder="Телефон владельца">
-        </div>
-        <div class="mb-3">
-          <label for="edit-work-fields" class="form-label crm-system__label">Виды работ</label>
-          <div class="crm-system__work-fields" id="edit-work-fields"></div>
-          <button type="button" class="btn btn-primary crm-system__btn" onclick="EventHandler.addEditWorkField()">Добавить вид работы</button>
-        </div>
-        <button type="button" class="btn btn-success crm-system__btn" onclick="EventHandler.saveEditedCar()">Сохранить</button>
-        <button type="button" class="btn btn-danger crm-system__btn" onclick="EventHandler.cancelEdit()">Отменить</button>
-      </form>
-    </div>
-  </div>
+<div class="container">
+  <h1>Введите данные</h1>
+  <form id="inputForm">
+    <!-- Добавляем 10 инпутов -->
+    <input type="text" placeholder="Поле 1" required>
+    <input type="text" placeholder="Поле 2" required>
+    <input type="text" placeholder="Поле 3" required>
+    <input type="text" placeholder="Поле 4" required>
+    <input type="text" placeholder="Поле 5" required>
+    <input type="text" placeholder="Поле 6" required>
+    <input type="text" placeholder="Поле 7" required>
+    <input type="text" placeholder="Поле 8" required>
+    <input type="text" placeholder="Поле 9" required>
+    <input type="text" placeholder="Поле 10" required>
+    <button type="submit">Отправить</button>
+  </form>
 </div>
 
-<!-- Подключение скриптов -->
-<script src="script.js?rnd=<?= rand(0, 999) ?>"></script>
+<!-- Подключаем telegram-web-app.js -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  // Инициализация Telegram Web App
+  const webApp = Telegram.WebApp;
+
+  // Устанавливаем начальную высоту iframe
+  webApp.ready();
+  webApp.expand();
+
+  // Функция для установки высоты iframe
+  function setIframeHeight() {
+    const height = document.documentElement.scrollHeight;
+    webApp.setHeight(height);
+  }
+
+  // Вызываем функцию при загрузке страницы
+  setIframeHeight();
+
+  // Обновляем высоту при изменении размеров окна
+  window.addEventListener('resize', setIframeHeight);
+
+  // Обработка отправки формы
+  document.getElementById('inputForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Собираем данные из всех инпутов
+    const formData = new FormData(e.target);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    // Отправляем данные боту через Telegram.WebApp.sendData
+    webApp.sendData(JSON.stringify(data));
+
+    // Закрываем Web App
+    webApp.close();
+  });
+</script>
 </body>
 </html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="utf-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />-->
+<!--  <meta name="format-detection" content="telephone=no" />-->
+<!--  <meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
+<!--  <meta name="MobileOptimized" content="176" />-->
+<!--  <meta name="HandheldFriendly" content="True" />-->
+<!--  <title>CRM Автосервис</title>-->
+<!--  &lt;!&ndash; Подключение Bootstrap и Material Design &ndash;&gt;-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">-->
+<!--  <link rel="stylesheet" href="style.css">-->
+<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--  <script src="https://telegram.org/js/telegram-web-app.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container mt-5 crm-system">-->
+<!--  <h1 class="crm-system__title text-center mb-4">CRM-система для автосервиса</h1>-->
+
+<!--  &lt;!&ndash; Вкладки &ndash;&gt;-->
+<!--  <ul class="nav nav-tabs nav-fill crm-system__tabs mb-4" id="crm-system-tabs" role="tablist">-->
+<!--    <li class="nav-item crm-system__tab-item" role="presentation">-->
+<!--      <button class="nav-link crm-system__tab-btn active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab" aria-controls="add" aria-selected="true">Добавить автомобиль/работу</button>-->
+<!--    </li>-->
+<!--    <li class="nav-item crm-system__tab-item" role="presentation">-->
+<!--      <button class="nav-link crm-system__tab-btn" id="list-tab" data-bs-toggle="tab" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="false">Список автомобилей</button>-->
+<!--    </li>-->
+<!--    <li class="nav-item crm-system__tab-item" role="presentation">-->
+<!--      <button class="nav-link crm-system__tab-btn" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab" aria-controls="current" aria-selected="false">Текущий автомобиль</button>-->
+<!--    </li>-->
+<!--    <li class="nav-item crm-system__tab-item" role="presentation">-->
+<!--      <button class="nav-link crm-system__tab-btn" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">Редактирование</button>-->
+<!--    </li>-->
+<!--  </ul>-->
+
+<!--  &lt;!&ndash; Содержимое вкладок &ndash;&gt;-->
+<!--  <div class="tab-content crm-system__content" id="crm-system-content">-->
+<!--    &lt;!&ndash; Вкладка "Добавить автомобиль/работу" &ndash;&gt;-->
+<!--    <div class="tab-pane fade show active crm-system__add-panel" id="add" role="tabpanel" aria-labelledby="add-tab">-->
+<!--      <h3 class="crm-system__add-title mb-3">Добавить автомобиль или работу</h3>-->
+<!--      <form class="crm-system__add-form" id="add-form">-->
+<!--        <div class="mb-3">-->
+<!--          <label for="car-model" class="form-label crm-system__label">Модель автомобиля</label>-->
+<!--          <input type="text" class="form-control crm-system__input" id="car-model" placeholder="Введите модель автомобиля">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="car-year" class="form-label crm-system__label">Год выпуска</label>-->
+<!--          <input type="number" class="form-control crm-system__input" id="car-year" placeholder="Год выпуска">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="car-vin" class="form-label crm-system__label">VIN-номер</label>-->
+<!--          <input type="text" class="form-control crm-system__input" id="car-vin" placeholder="VIN-номер">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="car-mileage" class="form-label crm-system__label">Пробег</label>-->
+<!--          <input type="number" class="form-control crm-system__input" id="car-mileage" placeholder="Пробег">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="owner-name" class="form-label crm-system__label">ФИО владельца</label>-->
+<!--          <input type="text" class="form-control crm-system__input" id="owner-name" placeholder="ФИО владельца">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="owner-phone" class="form-label crm-system__label">Телефон владельца</label>-->
+<!--          <input type="tel" class="form-control crm-system__input" id="owner-phone" placeholder="Телефон владельца">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="work-fields" class="form-label crm-system__label">Виды работ</label>-->
+<!--          <div class="crm-system__work-fields" id="work-fields"></div>-->
+<!--          <button type="button" class="btn btn-primary crm-system__btn" onclick="EventHandler.addWorkField()">Добавить вид работы</button>-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary crm-system__btn">Добавить</button>-->
+<!--      </form>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Вкладка "Список автомобилей" &ndash;&gt;-->
+<!--    <div class="tab-pane fade crm-system__list-panel" id="list" role="tabpanel" aria-labelledby="list-tab">-->
+<!--      <h3 class="crm-system__list-title mb-3">Список автомобилей</h3>-->
+<!--      <div class="input-group mb-3 crm-system__search-bar">-->
+<!--        <input type="text" class="form-control crm-system__search-input" id="search-input" placeholder="Поиск по модели автомобиля">-->
+<!--        <button class="btn btn-primary crm-system__search-btn" onclick="filterCars()">Поиск</button>-->
+<!--      </div>-->
+<!--      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 crm-system__card-list" id="car-cards">-->
+<!--        &lt;!&ndash; Карточки автомобилей будут добавляться динамически &ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Вкладка "Текущий автомобиль" &ndash;&gt;-->
+<!--    <div class="tab-pane fade crm-system__current-panel" id="current" role="tabpanel" aria-labelledby="current-tab">-->
+<!--      <h3 class="crm-system__current-title mb-3">Текущий автомобиль</h3>-->
+<!--      <div class="crm-system__current-info-container d-flex flex-column flex-md-row justify-content-between align-items-center">-->
+<!--        <p class="crm-system__current-info" id="current-car-model">Модель: </p>-->
+<!--        <p class="crm-system__current-info" id="current-car-created-at">Дата создания:</p>-->
+<!--      </div>-->
+<!--      <p class="crm-system__current-info d-flex justify-content-between align-items-center" id="current-car-status-container">-->
+<!--        <span id="current-car-status">Статус: Выберите автомобиль из списка.</span>-->
+<!--        <span id="current-car-status-updated-at">Дата обновления статуса:</span>-->
+<!--      </p>-->
+<!--      <div class="crm-system__current-details">-->
+<!--        <p class="crm-system__current-info"><strong>Год выпуска:</strong> <span id="current-car-year"></span></p>-->
+<!--        <p class="crm-system__current-info"><strong>VIN-номер:</strong> <span id="current-car-vin"></span></p>-->
+<!--        <p class="crm-system__current-info"><strong>Пробег:</strong> <span id="current-car-mileage"></span></p>-->
+<!--        <p class="crm-system__current-info"><strong>Владелец:</strong> <span id="current-owner-name"></span></p>-->
+<!--        <p class="crm-system__current-info"><strong>Телефон:</strong> <span id="current-owner-phone"></span></p>-->
+<!--      </div>-->
+<!--      <button class="btn btn-warning crm-system__btn" id="edit-car-btn" onclick="EventHandler.editCar()" style="display: none;">Редактировать</button>-->
+<!--      <button class="btn btn-primary crm-system__btn" id="start-work-btn" onclick="EventHandler.startWork()" style="display: none;">В работу</button>-->
+<!--      <ul class="list-group crm-system__work-list" id="current-car-works">-->
+<!--        &lt;!&ndash; Виды работ будут добавляться динамически &ndash;&gt;-->
+<!--      </ul>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Вкладка "Редактирование автомобиля" &ndash;&gt;-->
+<!--    <div class="tab-pane fade crm-system__edit-panel" id="edit" role="tabpanel" aria-labelledby="edit-tab">-->
+<!--      <h3 class="crm-system__edit-title mb-3">Редактирование автомобиля</h3>-->
+<!--      <form class="crm-system__edit-form" id="edit-form">-->
+<!--        <div class="mb-3">-->
+<!--          <label for="edit-car-model" class="form-label crm-system__label">Модель автомобиля</label>-->
+<!--          <input type="text" class="form-control crm-system__input" id="edit-car-model" placeholder="Введите модель автомобиля">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="edit-car-year" class="form-label crm-system__label">Год выпуска</label>-->
+<!--          <input type="number" class="form-control crm-system__input" id="edit-car-year" placeholder="Год выпуска">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="edit-car-vin" class="form-label crm-system__label">VIN-номер</label>-->
+<!--          <input type="text" class="form-control crm-system__input" id="edit-car-vin" placeholder="VIN-номер">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="edit-car-mileage" class="form-label crm-system__label">Пробег</label>-->
+<!--          <input type="number" class="form-control crm-system__input" id="edit-car-mileage" placeholder="Пробег">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="edit-owner-name" class="form-label crm-system__label">ФИО владельца</label>-->
+<!--          <input type="text" class="form-control crm-system__input" id="edit-owner-name" placeholder="ФИО владельца">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="edit-owner-phone" class="form-label crm-system__label">Телефон владельца</label>-->
+<!--          <input type="tel" class="form-control crm-system__input" id="edit-owner-phone" placeholder="Телефон владельца">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="edit-work-fields" class="form-label crm-system__label">Виды работ</label>-->
+<!--          <div class="crm-system__work-fields" id="edit-work-fields"></div>-->
+<!--          <button type="button" class="btn btn-primary crm-system__btn" onclick="EventHandler.addEditWorkField()">Добавить вид работы</button>-->
+<!--        </div>-->
+<!--        <button type="button" class="btn btn-success crm-system__btn" onclick="EventHandler.saveEditedCar()">Сохранить</button>-->
+<!--        <button type="button" class="btn btn-danger crm-system__btn" onclick="EventHandler.cancelEdit()">Отменить</button>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Подключение скриптов &ndash;&gt;-->
+<!--<script src="script.js?rnd=<?= rand(0, 999) ?>"></script>-->
+<!--</body>-->
+<!--</html>-->
