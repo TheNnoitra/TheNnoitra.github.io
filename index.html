@@ -62,11 +62,11 @@
     <input type="text" placeholder="Поле 7" required>
     <input type="text" placeholder="Поле 8" required>
     <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 9" required>
+    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 10" required>
     <button type="submit">Отправить</button>
   </form>
@@ -84,23 +84,18 @@
 
   let initialHeight = window.innerHeight;
 
-  // Функция для установки высоты контейнера
+  // Функция для установки высоты контейнера с учетом contentSafeAreaInsets
   function adjustContentHeight() {
     const container = document.getElementById('contentContainer');
-    const currentHeight = window.innerHeight;
+    const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
 
-    // Корректируем высоту контейнера в зависимости от наличия клавиатуры
-    if (currentHeight < initialHeight) {
-      // Клавиатура открыта
-      container.style.height = `${currentHeight}px`;
-    } else {
-      // Клавиатура закрыта
-      container.style.height = `calc(100vh - 20px)`;
-    }
+    // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
+    const availableHeight = window.innerHeight - safeAreaInsets.bottom;
+    container.style.height = `${availableHeight}px`;
 
     // Обновляем высоту iframe
     const contentHeight = document.documentElement.scrollHeight;
-    webApp.setHeight(Math.max(currentHeight, contentHeight));
+    webApp.setHeight(Math.max(availableHeight, contentHeight));
   }
 
   // Вызываем функцию при загрузке страницы
