@@ -1,5 +1,3 @@
-let tg = window.Telegram.WebApp;
-
 // Блок управления данными
 const DataStore = (() => {
   let cars = [];
@@ -46,49 +44,58 @@ const DataStore = (() => {
 
 // Блок Telegram Web App интеграции
 const TelegramIntegration = (() => {
-  // Адаптация под Telegram Web App
+  const tg = window.Telegram.WebApp;
+
   if (tg) {
     tg.ready();
-    // Скрыть кнопку Telegram при фокусировке на input
-    // const inputFields = document.querySelectorAll('.crm-system__input');
-    // inputFields.forEach(input => {
-    //   input.addEventListener('focus', () => {
-    //     tg.MainButton.hide(); // Скрываем кнопку Telegram
-    //   });
-    //
-    //   input.addEventListener('blur', () => {
-    //     if (!tg.MainButton.isVisible) {
-    //       tg.MainButton.show(); // Показываем кнопку Telegram после завершения ввода
-    //     }
-    //   });
-    // });
 
-    // Обработка нажатия на кнопку Telegram
-    // tg.onEvent('main_button_click', () => {
-    //   const currentTab = DataStore.getActiveTab();
-    //   if (currentTab === 'add') {
-    //     document.getElementById('add-form').requestSubmit(); // Отправляем форму добавления автомобиля
-    //   } else if (currentTab === 'edit') {
-    //     EventHandler.saveEditedCar(); // Сохраняем изменения при редактировании
-    //   }
-    // });
+    // Адаптация под Telegram Web App
+    tg.expand(); // Расширяем Web App на всю доступную высоту
 
-    // Адаптация высоты страницы
-    // tg.expand(); // Расширяем Web App на всю доступную высоту
-    // tg.MainButton.setText('Готово'); // Устанавливаем текст кнопки Telegram
-    // tg.MainButton.setColor('#6200ea'); // Устанавливаем цвет кнопки Telegram
-
-    // tg.expand();
-
-    // При появлении клавиатуры Telegram
-    tg.onEvent('keyboard_close', () => {
-      // tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
-      tg.expand();
+    // Обработка изменения высоты окна при появлении клавиатуры
+    tg.onEvent('viewport_height_change', (data) => {
+      const currentHeight = data.height; // Новая высота окна
+      document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
     });
 
-    tg.onEvent('keyboard_open', () => {
-      tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
-      tg.expand();
+    // Управление клавиатурой при фокусировке на input
+    const inputFields = document.querySelectorAll('.crm-system__input');
+    inputFields.forEach(input => {
+      input.addEventListener('focus', () => {
+        tg.MainButton.hide(); // Скрываем кнопку Telegram при фокусировке
+
+        // Настройка контекстных кнопок клавиатуры
+        if (input.type === 'number') {
+          tg.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
+        } else if (input.id === 'owner-phone') {
+          tg.showKeyboard({ one_time: false, type: 'phone' }); // Телефонная клавиатура
+        } else {
+          tg.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
+        }
+      });
+
+      input.addEventListener('blur', () => {
+        tg.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
+        tg.MainButton.show(); // Показываем кнопку Telegram
+      });
+    });
+
+    // Обработка нажатия на кнопку Telegram
+    tg.onEvent('main_button_click', () => {
+      const currentTab = DataStore.getActiveTab();
+      if (currentTab === 'add') {
+        document.getElementById('add-form').requestSubmit(); // Отправляем форму добавления автомобиля
+      } else if (currentTab === 'edit') {
+        EventHandler.saveEditedCar(); // Сохраняем изменения при редактировании
+      }
+    });
+
+    // Настройка кнопки Telegram
+    tg.MainButton.setText('Готово'); // Устанавливаем текст кнопки
+    tg.MainButton.setColor('#6200ea'); // Устанавливаем цвет кнопки
+    tg.MainButton.setParams({
+      is_visible: true,
+      is_enabled: true,
     });
   }
 
@@ -243,10 +250,11 @@ const EventHandler = (() => {
       TabManager.activateTab('list');
 
       // Если используется Telegram Web App, отправляем данные
-      // if (TelegramIntegration.isTgWebApp()) {
+      if (TelegramIntegration.isTgWebApp()) {
+        window.alert('isTgWebApp');
         // tg.sendData(JSON.stringify(newCar)); // Отправляем новый автомобиль в бот
         // tg.close(); // Закрываем Web App
-      // }
+      }
     } else {
       alert('Заполните все обязательные поля!');
     }
@@ -530,7 +538,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Улучшение работы с фокусом на мобильных устройствах
 document.addEventListener('DOMContentLoaded', () => {
-  TelegramIntegration.isTgWebApp();
   const inputFields = document.querySelectorAll('.crm-system__input');
 
   inputFields.forEach(input => {
@@ -543,7 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-
 
 // Фильтрация автомобилей
 function filterCars() {
