@@ -87,7 +87,7 @@ const TelegramIntegration = (() => {
     });
 
     tg.onEvent('keyboard_open', () => {
-      // tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
+      tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
       tg.expand();
     });
   }
