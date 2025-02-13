@@ -66,20 +66,10 @@ const TelegramIntegration = (() => {
       // tg.showAlert('setResizeHandler');
     // });
 
-    tg.onEvent('viewport_changed', () => {
-      tg.showAlert('viewport_changed');
-    });
-    tg.onEvent('safe_area_changed', () => {
-      tg.showAlert('safe_area_changed');
-    });
     tg.onEvent('viewportChanged', () => {
-      tg.showAlert('viewportChanged');
-    });
-    tg.onEvent('safeAreaChanged', () => {
-      tg.showAlert('safeAreaChanged');
-    });
-    tg.onEvent('contentSafeAreaChanged', () => {
-      tg.showAlert('contentSafeAreaChanged');
+        const currentHeight = tg.height; // Новая высота окна
+        document.body.style.height = `${tg.height}px`; // Адаптируем высоту страницы
+      tg.showAlert('viewportChanged: ', tg.height);
     });
 
     // Управление клавиатурой при фокусировке на input
