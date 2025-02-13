@@ -12,13 +12,16 @@
           font-family: Arial, sans-serif;
           background-color: var(--tg-theme-bg-color, #ffffff);
           color: var(--tg-theme-text-color, #000000);
-          overflow-y: auto; /* Включаем скролл для body */
+          overflow: hidden; /* Отключаем скролл для body */
+          height: 100vh; /* Фиксируем высоту body */
       }
 
       .container {
           padding: 16px;
           max-width: 400px;
           margin: 0 auto;
+          overflow-y: auto; /* Добавляем скролл для контейнера */
+          height: 100%; /* Задаем высоту контейнера */
       }
 
       input {
@@ -46,7 +49,7 @@
   </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="contentContainer">
   <h1>Введите данные</h1>
   <form id="inputForm">
     <!-- Добавляем 10 инпутов -->
@@ -58,14 +61,6 @@
     <input type="text" placeholder="Поле 6" required>
     <input type="text" placeholder="Поле 7" required>
     <input type="text" placeholder="Поле 8" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 9" required>
-    <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 9" required>
     <input type="text" placeholder="Поле 10" required>
     <button type="submit">Отправить</button>
@@ -82,33 +77,30 @@
   webApp.ready();
   webApp.expand();
 
-  // Функция для установки высоты iframe и контента
-  function adjustHeight() {
-    const contentHeight = document.documentElement.scrollHeight; // Высота всего содержимого
+  // Функция для установки высоты контейнера
+  function adjustContentHeight() {
+    const container = document.getElementById('contentContainer');
     const windowHeight = window.innerHeight; // Текущая высота окна браузера
 
-    // Если высота содержимого больше высоты окна, устанавливаем высоту iframe равной высоте содержимого
-    if (contentHeight > windowHeight) {
-      webApp.setHeight(contentHeight);
-    } else {
-      webApp.setHeight(windowHeight);
-    }
+    // Устанавливаем высоту контейнера равной высоте окна
+    container.style.height = `${windowHeight}px`;
 
-    // Дополнительно устанавливаем высоту body для корректного скролла
-    document.body.style.height = `${contentHeight}px`;
+    // Устанавливаем высоту iframe равной высоте окна или содержимого
+    const contentHeight = document.documentElement.scrollHeight;
+    webApp.setHeight(Math.max(windowHeight, contentHeight));
   }
 
   // Вызываем функцию при загрузке страницы
-  adjustHeight();
+  adjustContentHeight();
 
-  // Отслеживаем изменение размеров окна и iframe
+  // Отслеживаем изменение размеров окна
   window.addEventListener('resize', () => {
-    adjustHeight();
+    adjustContentHeight();
   });
 
-  // Отслеживаем событие изменения высоты iframe через Telegram API
+  // Отслеживаем изменение высоты iframe через Telegram API
   webApp.setResizeHandler(() => {
-    adjustHeight();
+    adjustContentHeight();
   });
 
   // Обработка отправки формы
@@ -131,7 +123,6 @@
 </script>
 </body>
 </html>
-
 
 <!--<!DOCTYPE html>-->
 <!--<html lang="en">-->
