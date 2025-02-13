@@ -78,22 +78,22 @@ const TelegramIntegration = (() => {
     // tg.MainButton.setText('Готово'); // Устанавливаем текст кнопки Telegram
     // tg.MainButton.setColor('#6200ea'); // Устанавливаем цвет кнопки Telegram
 
-    tg.expand();
+    // tg.expand();
 
     // При появлении клавиатуры Telegram
-    // tg.onEvent('keyboard_close', () => {
-    //   // tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
-    //   tg.expand();
-    // });
-    //
-    // tg.onEvent('keyboard_open', () => {
-    //   // tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
-    //   tg.expand();
-    // });
+    tg.onEvent('keyboard_close', () => {
+      // tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
+      tg.expand();
+    });
+
+    tg.onEvent('keyboard_open', () => {
+      // tg.MainButton.show(); // Показываем кнопку Telegram после закрытия клавиатуры
+      tg.expand();
+    });
   }
 
   return {
-    isTgWebApp: () => tg.expand(),
+    isTgWebApp: () => !!tg,
   };
 })();
 
@@ -530,17 +530,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Улучшение работы с фокусом на мобильных устройствах
 document.addEventListener('DOMContentLoaded', () => {
+  TelegramIntegration.isTgWebApp();
   const inputFields = document.querySelectorAll('.crm-system__input');
 
   inputFields.forEach(input => {
     input.addEventListener('focus', () => {
       input.classList.add('focused');
-      TelegramIntegration.isTgWebApp();
     });
 
     input.addEventListener('blur', () => {
       input.classList.remove('focused');
-      TelegramIntegration.isTgWebApp();
     });
   });
 });
