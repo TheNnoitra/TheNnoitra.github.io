@@ -41,14 +41,13 @@ const DataStore = (() => {
     loadState: loadFromLocalStorage,
   };
 })();
-let initialHeight = 0;
+
 // Блок Telegram Web App интеграции
 const TelegramIntegration = (() => {
-  const tg = window.Telegram.WebApp;
+  const tg = Telegram.WebApp;
 
   if (tg) {
     tg.ready();
-    initialHeight =  tg.height;
     // Адаптация под Telegram Web App
     tg.expand(); // Расширяем Web App на всю доступную высоту
 
@@ -59,12 +58,12 @@ const TelegramIntegration = (() => {
     //   document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
     // });
 
-    // tg.setResizeHandler(() => {
+    tg.setResizeHandler(() => {
       // const currentHeight = Telegram.WebApp.height;
       // document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
       // tg.expand();
-      // tg.showAlert('setResizeHandler');
-    // });
+      tg.showAlert('setResizeHandler');
+    });
 
     // Управление клавиатурой при фокусировке на input
     const inputFields = document.querySelectorAll('.crm-system__input');
@@ -546,20 +545,6 @@ document.addEventListener('DOMContentLoaded', () => {
       input.classList.remove('focused');
     });
   });
-});
-
-window.addEventListener('resize', () => {
-  const tg = window.Telegram.WebApp;
-
-  if (tg) {
-    tg.ready();
-    if (tg.height < initialHeight) {
-      tg.showAlert('open');
-    } else {
-      tg.showAlert('Клавиатура, вероятно, закрыта');
-    }
-  }
-
 });
 
 // Фильтрация автомобилей
