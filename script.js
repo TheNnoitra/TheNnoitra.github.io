@@ -59,18 +59,27 @@ const TelegramIntegration = (() => {
     //   document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
     // });
 
-    tg.setResizeHandler(() => {
+    // tg.setResizeHandler(() => {
       // const currentHeight = Telegram.WebApp.height;
       // document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
       // tg.expand();
-      tg.showAlert('setResizeHandler');
-    });
+      // tg.showAlert('setResizeHandler');
+    // });
 
     WebView.onEvent('viewport_changed', () => {
       tg.showAlert('viewport_changed');
     });
     WebView.onEvent('safe_area_changed', () => {
       tg.showAlert('safe_area_changed');
+    });
+    WebView.onEvent('viewportChanged', () => {
+      tg.showAlert('viewportChanged');
+    });
+    WebView.onEvent('safeAreaChanged', () => {
+      tg.showAlert('safeAreaChanged');
+    });
+    WebView.onEvent('contentSafeAreaChanged', () => {
+      tg.showAlert('contentSafeAreaChanged');
     });
 
     // Управление клавиатурой при фокусировке на input
