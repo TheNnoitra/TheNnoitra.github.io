@@ -45,6 +45,7 @@ const DataStore = (() => {
 // Блок Telegram Web App интеграции
 const TelegramIntegration = (() => {
   const tg = Telegram.WebApp;
+  const tgV = Telegram.WebView;
 
   if (tg) {
     tg.ready();
@@ -63,6 +64,13 @@ const TelegramIntegration = (() => {
       // document.body.style.height = `${currentHeight}px`; // Адаптируем высоту страницы
       // tg.expand();
       tg.showAlert('setResizeHandler');
+    });
+
+    WebView.onEvent('viewport_changed', () => {
+      tg.showAlert('viewport_changed');
+    });
+    WebView.onEvent('safe_area_changed', () => {
+      tg.showAlert('safe_area_changed');
     });
 
     // Управление клавиатурой при фокусировке на input
