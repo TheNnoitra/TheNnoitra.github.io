@@ -1,3 +1,11 @@
+body {
+    position: fixed;
+    top: var(--tg-content-safe-area-inset-top);
+    bottom: var(--tg-content-safe-area-inset-bottom);
+    left: var(--tg-content-safe-area-inset-left);
+    right: var(--tg-content-safe-area-inset-right);
+}
+
 .crm-system {
     max-width: 1200px;
     margin: 0 auto;

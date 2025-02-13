@@ -66,11 +66,11 @@ const TelegramIntegration = (() => {
       // tg.showAlert('setResizeHandler');
     // });
 
-    tg.onEvent('viewportChanged', () => {
-        const currentHeight = tg.height; // Новая высота окна
-        window.document.body.style.height = `${tg.height}px`; // Адаптируем высоту страницы
-        tg.showAlert(`viewport: ${tg.height}px === body: ${window.document.body.style.height}`, );
-    });
+    // tg.onEvent('viewportChanged', () => {
+    //     const currentHeight = tg.height; // Новая высота окна
+    //     window.document.body.style.height = `${tg.height}px`; // Адаптируем высоту страницы
+    //     tg.showAlert(`viewport: ${tg.height}px === body: ${window.document.body.style.height}`, );
+    // });
 
     // Управление клавиатурой при фокусировке на input
     const inputFields = document.querySelectorAll('.crm-system__input');
