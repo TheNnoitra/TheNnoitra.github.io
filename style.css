@@ -6,9 +6,10 @@
 }
 
 body {
-    width: calc(100vw - var(--tg-content-safe-area-inset-left) - var(--tg-content-safe-area-inset-right));
-    height: calc(100vh - var(--tg-content-safe-area-inset-top) - var(--tg-content-safe-area-inset-bottom));
-    position: fixed;
+    /*height: 100%;*/
+    /*width: calc(100vw + var(--tg-content-safe-area-inset-left) + var(--tg-content-safe-area-inset-right));*/
+    /*height: calc(100vh + var(--tg-content-safe-area-inset-top) + var(--tg-content-safe-area-inset-bottom));*/
+    /*position: fixed;*/
     top: var(--tg-content-safe-area-inset-top);
     bottom: var(--tg-content-safe-area-inset-bottom);
     left: var(--tg-content-safe-area-inset-left);
@@ -18,9 +19,9 @@ body {
 .crm-system {
     max-width: 1200px;
     margin: 0 auto;
-    overflow: auto;
-    height: 100%;
-    width: 100%;
+    /*overflow: auto;*/
+    /*height: 100%;*/
+    /*width: 100%;*/
 }
 
 .crm-system__title {
