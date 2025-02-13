@@ -12,6 +12,7 @@
           font-family: Arial, sans-serif;
           background-color: var(--tg-theme-bg-color, #ffffff);
           color: var(--tg-theme-text-color, #000000);
+          overflow-y: auto; /* Включаем скролл для body */
       }
 
       .container {
@@ -59,6 +60,14 @@
     <input type="text" placeholder="Поле 8" required>
     <input type="text" placeholder="Поле 9" required>
     <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 9" required>
+    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 9" required>
+    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 9" required>
+    <input type="text" placeholder="Поле 10" required>
+    <input type="text" placeholder="Поле 9" required>
+    <input type="text" placeholder="Поле 10" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -73,17 +82,34 @@
   webApp.ready();
   webApp.expand();
 
-  // Функция для установки высоты iframe
-  function setIframeHeight() {
-    const height = document.documentElement.scrollHeight;
-    webApp.setHeight(height);
+  // Функция для установки высоты iframe и контента
+  function adjustHeight() {
+    const contentHeight = document.documentElement.scrollHeight; // Высота всего содержимого
+    const windowHeight = window.innerHeight; // Текущая высота окна браузера
+
+    // Если высота содержимого больше высоты окна, устанавливаем высоту iframe равной высоте содержимого
+    if (contentHeight > windowHeight) {
+      webApp.setHeight(contentHeight);
+    } else {
+      webApp.setHeight(windowHeight);
+    }
+
+    // Дополнительно устанавливаем высоту body для корректного скролла
+    document.body.style.height = `${contentHeight}px`;
   }
 
   // Вызываем функцию при загрузке страницы
-  setIframeHeight();
+  adjustHeight();
 
-  // Обновляем высоту при изменении размеров окна
-  window.addEventListener('resize', setIframeHeight);
+  // Отслеживаем изменение размеров окна и iframe
+  window.addEventListener('resize', () => {
+    adjustHeight();
+  });
+
+  // Отслеживаем событие изменения высоты iframe через Telegram API
+  webApp.setResizeHandler(() => {
+    adjustHeight();
+  });
 
   // Обработка отправки формы
   document.getElementById('inputForm').addEventListener('submit', (e) => {
@@ -105,7 +131,6 @@
 </script>
 </body>
 </html>
-
 
 
 <!--<!DOCTYPE html>-->
