@@ -22,7 +22,7 @@
           max-width: 400px;
           margin: 0 auto;
           overflow-y: auto; /* Добавляем скролл для контейнера */
-          height: calc(100vh - var(--tg-content-safe-area-inset-bottom, 0px)); /* Используем CSS-переменную */
+          /*height: calc(100vh - var(--tg-content-safe-area-inset-bottom, 0px)); !* Используем CSS-переменную *!*/
       }
 
       input {
@@ -66,10 +66,10 @@
     <input class="inpu" type="text" placeholder="Поле 10" required>
     <input class="inpu" type="text" placeholder="Поле 1" required>
     <input class="inpu" type="text" placeholder="Поле 1" required>
-    <input class="inpu" type="text" placeholder="Поле 1" required>
-    <input class="inpu" type="text" placeholder="Поле 1" required>
-    <input class="inpu" type="text" placeholder="Поле 1" required>
-    <input class="inpu" type="text" placeholder="Поле 1" required>
+    <input class="inpu" type="text" placeholder="Поле 12" required>
+    <input class="inpu" type="text" placeholder="Поле 12" required>
+    <input class="inpu" type="text" placeholder="Поле 21" required>
+    <input class="inpu" type="text" placeholder="Поле 12" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -151,24 +151,24 @@
   // Вызываем функцию при загрузке страницы
   adjustIframeHeight();
 
-  // Отслеживаем изменение размеров окна
-  window.addEventListener('resize', () => {
-    adjustIframeHeight();
-  });
-
-  // Отслеживаем изменение viewport через Telegram API
-  webApp.onEvent('viewportChanged', () => {
-    webApp.showAlert('viewportChanged');
-    adjustIframeHeight();
-  });
-
-  WebView.onEvent('viewport_changed', (eventType, eventData) => {
-    if (eventData.height) {
-      // window.removeEventListener('resize', onWindowResize);
-      webApp.showAlert('viewport_changed');
-      adjustIframeHeight();
-    }
-  });
+  // // Отслеживаем изменение размеров окна
+  // window.addEventListener('resize', () => {
+  //   adjustIframeHeight();
+  // });
+  //
+  // // Отслеживаем изменение viewport через Telegram API
+  // webApp.onEvent('viewportChanged', () => {
+  //   webApp.showAlert('viewportChanged');
+  //   adjustIframeHeight();
+  // });
+  //
+  // WebView.onEvent('viewport_changed', (eventType, eventData) => {
+  //   if (eventData.height) {
+  //     // window.removeEventListener('resize', onWindowResize);
+  //     webApp.showAlert('viewport_changed');
+  //     adjustIframeHeight();
+  //   }
+  // });
 
   // Управление клавиатурой при фокусировке на input
   const inputFields = document.querySelectorAll('.inpu');
