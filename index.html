@@ -128,18 +128,13 @@
   // Инициализация приложения
   if (!!tg) {
     tg.ready();
-    // tg.setVerticalSwipeEnabled(false);
+    tg.requestFullscreen();
 
     const inputFields = document.querySelectorAll('.crm-system__input');
     tg.showAlert(inputFields.length.toLocaleString());
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
         tg.showAlert('focus22');
-        tg.expand();
-      });
-
-      input.addEventListener('blur', () => {
-        tg.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
       });
     });
     // Обработка изменения viewport
