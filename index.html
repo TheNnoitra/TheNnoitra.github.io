@@ -110,19 +110,24 @@
     adjustContentHeight();
   });
 
-  // Отслеживаем изменение высоты iframe через Telegram API
-  webApp.setResizeHandler(() => {
-    webApp.showAlert("Событие setResizeHandler");
+  // // Отслеживаем изменение высоты iframe через Telegram API
+  // webApp.setResizeHandler(() => {
+  //   webApp.showAlert("Событие setResizeHandler");
+  //   adjustContentHeight();
+  // });
+
+  webApp.onEvent('viewportChanged', () => {
+    webApp.showAlert("Событие viewportChanged");
     adjustContentHeight();
   });
 
-  // Отслеживаем фокус на инпутах (работает на iOS)
-  document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('focus', () => {
-      webApp.showAlert("Фокус на инпуте");
-      adjustContentHeight();
-    });
-  });
+  // // Отслеживаем фокус на инпутах (работает на iOS)
+  // document.querySelectorAll('input').forEach(input => {
+  //   input.addEventListener('focus', () => {
+  //     webApp.showAlert("Фокус на инпуте");
+  //     adjustContentHeight();
+  //   });
+  // });
 </script>
 </body>
 </html>
