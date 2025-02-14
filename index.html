@@ -78,10 +78,10 @@
     <input type="text" placeholder="Input 11">
     <input type="text" placeholder="Input 12">
     <input type="text" placeholder="Input 13">
-    <input type="text" placeholder="Input 224">
+    <input type="text" placeholder="Input 24">
     <input type="text" placeholder="Input 15">
     <input type="text" placeholder="Input 26">
-    <input type="text" placeholder="Input 127">
+    <input type="text" placeholder="Input 17">
     <input type="text" placeholder="Input 28">
     <input type="text" placeholder="Input 19">
     <input type="text" placeholder="Input 20">
@@ -95,6 +95,7 @@
   // Инициализация приложения
   if (Telegram) {
     Telegram.ready();
+    Telegram.expand();
 
     // Обработка изменения viewport
     // Telegram.onEvent('viewportChanged', () => {
