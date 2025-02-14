@@ -18,21 +18,25 @@
           background-color: #f5f5f5;
           color: #333;
           line-height: 1.6;
-          height: 100vh;
+          position: fixed;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: var(--tg-viewport-height, 100vh);
           overflow: hidden;
       }
 
       .viewport-stable-border {
           position: relative;
+          height: 100%;
           width: 100%;
           max-width: 500px;
           margin: 0 auto;
           background-color: #fff;
           border-radius: 20px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          overflow-y: auto;
+          overflow: auto;
           padding-bottom: env(safe-area-inset-bottom);
-          height: calc(var(--tg-vh, 1vh) * 100 - var(--tg-safe-area-inset-top, 0px) - var(--tg-safe-area-inset-bottom, 0px));
       }
 
       .content {
@@ -76,9 +80,9 @@
     <input type="text" placeholder="Input 15">
     <input type="text" placeholder="Input 16">
     <input type="text" placeholder="Input 17">
-    <input type="text" placeholder="Input 18">
-    <input type="text" placeholder="Input 19">
-    <input type="text" placeholder="Input 20">
+    <input type="text" placeholder="Input 128">
+    <input type="text" placeholder="Input 119">
+    <input type="text" placeholder="Input 210">
   </div>
 </div>
 
@@ -86,31 +90,31 @@
 <script>
   const Telegram = window.Telegram.WebApp;
 
-  const viewportStableBorder = document.querySelector('.viewport-stable-border');
-
-  function setViewportData() {
-    // Устанавливаем высоту блока с учетом изменений в viewport
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--tg-vh', `${vh}px`);
-
-    const safeAreaTop = Telegram?.safeArea?.top || 0;
-    const safeAreaBottom = Telegram?.safeArea?.bottom || 0;
-    document.documentElement.style.setProperty('--tg-safe-area-inset-top', `${safeAreaTop}px`);
-    document.documentElement.style.setProperty('--tg-safe-area-inset-bottom', `${safeAreaBottom}px`);
-
-    viewportStableBorder.style.height = `calc(${vh} * 100 - ${safeAreaTop}px - ${safeAreaBottom}px)`;
-  }
-
-  // Инициализация приложения
-  if (Telegram) {
-    Telegram.ready();
-    setViewportData();
-
-    // Обработка изменения viewport
-    Telegram.onEvent('viewportChanged', setViewportData);
-  } else {
-    console.warn('Telegram Web App API is not available.');
-  }
+  // const viewportStableBorder = document.querySelector('body');
+  //
+  // function setViewportData() {
+  //   // Устанавливаем высоту блока с учетом изменений в viewport
+  //   const vh = window.innerHeight * 0.01;
+  //   document.documentElement.style.setProperty('--tg-vh', `${vh}px`);
+  //
+  //   const safeAreaTop = Telegram?.safeArea?.top || 0;
+  //   const safeAreaBottom = Telegram?.safeArea?.bottom || 0;
+  //   document.documentElement.style.setProperty('--tg-safe-area-inset-top', `${safeAreaTop}px`);
+  //   document.documentElement.style.setProperty('--tg-safe-area-inset-bottom', `${safeAreaBottom}px`);
+  //
+  //   viewportStableBorder.style.height = `calc(${vh} * 100 - ${safeAreaTop}px - ${safeAreaBottom}px)`;
+  // }
+  //
+  // // Инициализация приложения
+  // if (Telegram) {
+  //   Telegram.ready();
+  //   setViewportData();
+  //
+  //   // Обработка изменения viewport
+  //   Telegram.onEvent('viewportChanged', setViewportData);
+  // } else {
+  //   console.warn('Telegram Web App API is not available.');
+  // }
 </script>
 
 </body>
