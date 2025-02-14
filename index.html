@@ -66,9 +66,9 @@
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 13" required>
-    <input type="text" placeholder="Поле 13" required>
-    <input type="text" placeholder="Поле 15" required>
-    <input type="text" placeholder="Поле 15" required>
+    <input type="text" placeholder="Поле 63" required>
+    <input type="text" placeholder="Поле 55" required>
+    <input type="text" placeholder="Поле 25" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -105,11 +105,11 @@
   // Вызываем функцию при загрузке страницы
   adjustContentHeight();
 
-  // Отслеживаем изменение размеров окна
-  window.addEventListener('resize', () => {
-    webApp.showAlert("Событие resize");
-    adjustContentHeight();
-  });
+  // // Отслеживаем изменение размеров окна
+  // window.addEventListener('resize', () => {
+  //   webApp.showAlert("Событие resize");
+  //   adjustContentHeight();
+  // });
 
   // // Отслеживаем изменение высоты iframe через Telegram API
   // webApp.setResizeHandler(() => {
@@ -117,7 +117,8 @@
   //   adjustContentHeight();
   // });
 
-  webView.onEvent('viewportChanged', () => {
+  // Отслеживаем изменение viewport через Telegram API
+  webApp.onEvent('viewportChanged', () => {
     webApp.showAlert("Событие viewportChanged");
     adjustContentHeight();
   });
