@@ -134,9 +134,9 @@
     tg.showAlert(inputFields.length.toLocaleString());
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
+        tg.showAlert('focus');
         tg.showKeyboard({ one_time: false, type: 'number' }); // Текстовая клавиатура
         tg.close();
-        tg.showAlert('focus');
       });
 
       input.addEventListener('blur', () => {
