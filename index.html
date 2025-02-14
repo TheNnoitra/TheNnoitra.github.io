@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="viewport" content="height=device-height">
+  <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Telegram Web App</title>
   <style>
       body {
@@ -56,22 +55,13 @@
   tg.ready();
   tg.expand();
 
-  tg.MainButton.setText('Submit');
-  tg.MainButton.show();
-  tg.MainButton.onClick(() => {
-    const inputs = document.querySelectorAll('input');
-    const values = Array.from(inputs).map(input => input.value);
-    console.log(values); // Process the data as needed
-    alert('Data submitted!');
-  });
-
   // Create inputs dynamically
   const container = document.createElement('div');
   container.className = 'container';
   for (let i = 1; i <= 20; i++) {
     const input = document.createElement('input');
     input.type = 'text';
-    input.placeholder = `Field ${i}`;
+    input.placeholder = `Fielddd ${i}`;
     container.appendChild(input);
   }
 
@@ -90,10 +80,6 @@
     document.documentElement.style.setProperty('--vh', `${vh}px`);
     container.style.maxHeight = `${vh - 20}px`; // Adjust for padding and button
   }
-
-  tg.onEvent('main_button_click', () => {
-    adjustHeight();
-  });
 
   tg.onEvent('viewport_changed', () => {
     adjustHeight();
