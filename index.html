@@ -12,16 +12,16 @@
           font-family: Arial, sans-serif;
           background-color: var(--tg-theme-bg-color, #ffffff);
           color: var(--tg-theme-text-color, #000000);
-          /*overflow: hidden; !* Отключаем скролл для body *!*/
-          /*height: 100vh; !* Фиксируем высоту body *!*/
+          overflow: hidden; /* Отключаем скролл для body */
+          height: 100vh; /* Фиксируем высоту body */
       }
 
       .container {
           padding: 16px;
           max-width: 400px;
           margin: 0 auto;
-          /*overflow-y: auto; !* Добавляем скролл для контейнера *!*/
-          /*height: calc(100vh - 20px); !* Вычитаем немного места для погрешности *!*/
+          overflow-y: auto; /* Добавляем скролл для контейнера */
+          height: calc(100vh - var(--tg-content-safe-area-inset-bottom, 0px)); /* Используем CSS-переменную */
       }
 
       input {
@@ -64,11 +64,11 @@
     <input type="text" placeholder="Поле 9" required>
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 10" required>
-    <input type="text" placeholder="Поле 13" required>
+    <input type="text" placeholder="Поле 130" required>
+    <input type="text" placeholder="Поле 113" required>
     <input type="text" placeholder="Поле 55" required>
-    <input type="text" placeholder="Поле 33" required>
-    <input type="text" placeholder="Поле 35" required>
+    <input type="text" placeholder="Поле 333" required>
+    <input type="text" placeholder="Поле 325" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -86,24 +86,24 @@
 
   let initialHeight = window.innerHeight;
 
-  // Функция для установки высоты контейнера с учетом contentSafeAreaInsets
-  function adjustContentHeight() {
-    webApp.showAlert("Вызов adjustContentHeight");
-
-    const container = document.getElementById('contentContainer');
-    const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
-
-    // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
-    const availableHeight = window.innerHeight - safeAreaInsets.bottom;
-    container.style.height = `${availableHeight}px`;
-
-    // Обновляем высоту iframe
-    const contentHeight = document.documentElement.scrollHeight;
-    webApp.setHeight(Math.max(availableHeight, contentHeight));
-  }
-
-  // Вызываем функцию при загрузке страницы
-  adjustContentHeight();
+  // // Функция для установки высоты контейнера с учетом contentSafeAreaInsets
+  // function adjustContentHeight() {
+  //   webApp.showAlert("Вызов adjustContentHeight");
+  //
+  //   const container = document.getElementById('contentContainer');
+  //   const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
+  //
+  //   // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
+  //   const availableHeight = window.innerHeight - safeAreaInsets.bottom;
+  //   container.style.height = `${availableHeight}px`;
+  //
+  //   // Обновляем высоту iframe
+  //   const contentHeight = document.documentElement.scrollHeight;
+  //   webApp.setHeight(Math.max(availableHeight, contentHeight));
+  // }
+  //
+  // // Вызываем функцию при загрузке страницы
+  // adjustContentHeight();
 
   // // Отслеживаем изменение размеров окна
   // window.addEventListener('resize', () => {
@@ -117,11 +117,11 @@
   //   adjustContentHeight();
   // });
 
-  // Отслеживаем изменение viewport через Telegram API
-  webApp.onEvent('viewportChanged', () => {
-    webApp.showAlert("Событие viewportChanged");
-    adjustContentHeight();
-  });
+  // // Отслеживаем изменение viewport через Telegram API
+  // webApp.onEvent('viewportChanged', () => {
+  //   webApp.showAlert("Событие viewportChanged");
+  //   adjustContentHeight();
+  // });
 
   // // Отслеживаем фокус на инпутах (работает на iOS)
   // document.querySelectorAll('input').forEach(input => {
@@ -130,6 +130,26 @@
   //     adjustContentHeight();
   //   });
   // });
+
+  // Функция для установки высоты iframe
+  function adjustIframeHeight() {
+    const contentHeight = document.documentElement.scrollHeight;
+    webApp.setHeight(contentHeight);
+  }
+
+  // Вызываем функцию при загрузке страницы
+  adjustIframeHeight();
+
+  // Отслеживаем изменение размеров окна
+  window.addEventListener('resize', () => {
+    adjustIframeHeight();
+  });
+
+  // Отслеживаем изменение viewport через Telegram API
+  webApp.onEvent('viewportChanged', () => {
+    adjustIframeHeight();
+  });
+
 </script>
 </body>
 </html>
