@@ -21,10 +21,10 @@
           color: #333;
           line-height: 1.6;
           position: fixed;
-          left: var(--tg-content-safe-area-inset-left, 0);
-          right: var(--tg-content-safe-area-inset-right, 0);
-          top: var(--tg-content-safe-area-inset-top, 0);
-          bottom: var(--tg-content-safe-area-inset-bottom, 0);
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
           height: var(--tg-viewport-stable-height, 100vh);
           transition: height .2s ease;
           display: flex;
@@ -38,6 +38,10 @@
           position: relative;
           height: 100%;
           width: 100%;
+          left: var(--tg-content-safe-area-inset-left, 0);
+          right: var(--tg-content-safe-area-inset-right, 0);
+          top: var(--tg-content-safe-area-inset-top, 0);
+          bottom: var(--tg-content-safe-area-inset-bottom, 0);
           max-width: 500px;
           margin: 0 auto;
           background-color: #fff;
