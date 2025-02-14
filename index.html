@@ -10,28 +10,67 @@
           margin: 0;
           padding: 0;
           font-family: Arial, sans-serif;
+          background-color: var(--tg-theme-bg-color, #ffffff);
+          color: var(--tg-theme-text-color, #000000);
           overflow-y: hidden; /* Prevents scrolling issues */
       }
       .container {
           display: flex;
           flex-direction: column;
           max-height: 100vh;
+          margin: 0 auto;
           overflow-y: auto;
           padding: 10px;
           box-sizing: border-box;
       }
       input {
-          margin-bottom: 10px;
-          padding: 5px;
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 12px;
+          box-sizing: border-box;
+          border: 1px solid var(--tg-theme-border-color, #cccccc);
+          border-radius: 4px;
       }
+
       button {
-          align-self: flex-end;
+          width: 100%;
+          padding: 10px;
+          background-color: var(--tg-theme-button-color, #0088cc);
+          color: var(--tg-theme-button-text-color, #ffffff);
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+
+      button:hover {
+          opacity: 0.9;
       }
   </style>
 </head>
 <body>
-<div id="root"></div>
-
+<div class="container" id="contentContainer">
+  <h1>Введите данные</h1>
+  <form id="inputForm">
+    <!-- Добавляем 10 инпутов -->
+    <input class="inpu" type="number" placeholder="Поле 1" required>
+    <input class="inpu" type="phone" placeholder="Поле 2" required>
+    <input class="inpu" type="text" placeholder="Поле 3" required>
+    <input class="inpu" type="number" placeholder="Поле 4" required>
+    <input class="inpu" type="text" placeholder="Поле 5" required>
+    <input class="inpu" type="text" placeholder="Поле 6" required>
+    <input class="inpu" type="text" placeholder="Поле 7" required>
+    <input class="inpu" type="text" placeholder="Поле 8" required>
+    <input class="inpu" type="text" placeholder="Поле 9" required>
+    <input class="inpu" type="text" placeholder="Поле 10" required>
+    <input class="inpu" type="text" placeholder="Поле 10" required>
+    <input class="inpu" type="text" placeholder="Поле 130" required>
+    <input class="inpu" type="text" placeholder="Поле 113" required>
+    <input class="inpu" type="text" placeholder="Поле 55" required>
+    <input class="inpu" type="text" placeholder="Поле 333" required>
+    <input class="inpu" type="text" placeholder="Поле 325" required>
+    <button type="submit">Отправить</button>
+  </form>
+</div>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
   // Initialize Telegram Web App
@@ -41,44 +80,14 @@
   tg.ready();
   tg.expand();
 
-  tg.MainButton.setText('Submit');
-  tg.MainButton.show();
-  tg.MainButton.onClick(() => {
-    const inputs = document.querySelectorAll('input');
-    const values = Array.from(inputs).map(input => input.value);
-    console.log(values); // Process the data as needed
-    alert('Data submitted!');
-  });
-
-  // Create inputs dynamically
-  const container = document.createElement('div');
-  container.className = 'container';
-  for (let i = 1; i <= 20; i++) {
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = `Field ${i}`;
-    container.appendChild(input);
-  }
-
-  const submitButton = document.createElement('button');
-  submitButton.textContent = 'Submit';
-  submitButton.addEventListener('click', () => {
-    tg.MainButton.click();
-  });
-  container.appendChild(submitButton);
-
-  document.getElementById('root').appendChild(container);
+  const container = document.getElementById('contentContainer');
 
   // Handle keyboard visibility changes
   function adjustHeight() {
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    container.style.maxHeight = `${vh - 20}px`; // Adjust for padding and button
+    container.style.maxHeight = `${vh}px`; // Adjust for padding and button
   }
-
-  tg.onEvent('main_button_click', () => {
-    adjustHeight();
-  });
 
   tg.onEvent('viewport_changed', () => {
     adjustHeight();
