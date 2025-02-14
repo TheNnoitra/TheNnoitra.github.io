@@ -67,8 +67,8 @@
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 13" required>
     <input type="text" placeholder="Поле 13" required>
-    <input type="text" placeholder="Поле 12" required>
-    <input type="text" placeholder="Поле 12" required>
+    <input type="text" placeholder="Поле 15" required>
+    <input type="text" placeholder="Поле 15" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -78,6 +78,7 @@
 <script>
   // Инициализация Telegram Web App
   const webApp = Telegram.WebApp;
+  const webView = Telegram.WebView;
 
   // Устанавливаем начальную высоту iframe
   webApp.ready();
@@ -116,7 +117,7 @@
   //   adjustContentHeight();
   // });
 
-  webApp.onEvent('viewportChanged', () => {
+  webView.onEvent('viewportChanged', () => {
     webApp.showAlert("Событие viewportChanged");
     adjustContentHeight();
   });
