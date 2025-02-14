@@ -80,9 +80,9 @@
     <input type="text" placeholder="Input 15">
     <input type="text" placeholder="Input 26">
     <input type="text" placeholder="Input 17">
-    <input type="text" placeholder="Input 28">
-    <input type="text" placeholder="Input 19">
-    <input type="text" placeholder="Input 20">
+    <input type="text" placeholder="Input 228">
+    <input type="text" placeholder="Input 129">
+    <input type="text" placeholder="Input 220">
   </div>
 </div>
 
@@ -90,31 +90,17 @@
 <script>
   const Telegram = window.Telegram.WebApp;
 
-  // const viewportStableBorder = document.querySelector('body');
-  //
-  // function setViewportData() {
-  //   // Устанавливаем высоту блока с учетом изменений в viewport
-  //   const vh = window.innerHeight * 0.01;
-  //   document.documentElement.style.setProperty('--tg-vh', `${vh}px`);
-  //
-  //   const safeAreaTop = Telegram?.safeArea?.top || 0;
-  //   const safeAreaBottom = Telegram?.safeArea?.bottom || 0;
-  //   document.documentElement.style.setProperty('--tg-safe-area-inset-top', `${safeAreaTop}px`);
-  //   document.documentElement.style.setProperty('--tg-safe-area-inset-bottom', `${safeAreaBottom}px`);
-  //
-  //   viewportStableBorder.style.height = `calc(${vh} * 100 - ${safeAreaTop}px - ${safeAreaBottom}px)`;
-  // }
-  //
-  // // Инициализация приложения
-  // if (Telegram) {
-  //   Telegram.ready();
-  //   setViewportData();
-  //
-  //   // Обработка изменения viewport
-  //   Telegram.onEvent('viewportChanged', setViewportData);
-  // } else {
-  //   console.warn('Telegram Web App API is not available.');
-  // }
+  // Инициализация приложения
+  if (Telegram) {
+    Telegram.ready();
+
+    // Обработка изменения viewport
+    Telegram.onEvent('viewportChanged', () => {
+      Telegram.expand();
+    });
+  } else {
+    console.warn('Telegram Web App API is not available.');
+  }
 </script>
 
 </body>
