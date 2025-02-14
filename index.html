@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <!--  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">-->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="format-detection" content="telephone=no">
   <title>Telegram Web App Example</title>
   <style>
@@ -97,26 +98,26 @@
 <div class="viewport-stable-border">
   <div class="content">
     <!-- 20 инпутов -->
-    <input type="text" placeholder="Input 1">
-    <input type="text" placeholder="Input 2">
-    <input type="text" placeholder="Input 3">
-    <input type="text" placeholder="Input 4">
-    <input type="text" placeholder="Input 5">
-    <input type="text" placeholder="Input 6">
-    <input type="text" placeholder="Input 7">
-    <input type="text" placeholder="Input 8">
-    <input type="text" placeholder="Input 9">
-    <input type="text" placeholder="Input 10">
-    <input type="text" placeholder="Input 11">
-    <input type="text" placeholder="Input 12">
-    <input type="text" placeholder="Input 13">
-    <input type="text" placeholder="Input 24">
-    <input type="text" placeholder="Input 15">
-    <input type="text" placeholder="Input 26">
-    <input type="text" placeholder="Input 17">
-    <input type="text" placeholder="Input 28">
-    <input type="text" placeholder="Input 19">
-    <input type="text" placeholder="Input 22">
+    <input class="crm-system__input" type="text" placeholder="Input 1">
+    <input class="crm-system__input" type="text" placeholder="Input 2">
+    <input class="crm-system__input" type="text" placeholder="Input 3">
+    <input class="crm-system__input" type="text" placeholder="Input 4">
+    <input class="crm-system__input" type="text" placeholder="Input 5">
+    <input class="crm-system__input" type="text" placeholder="Input 6">
+    <input class="crm-system__input" type="text" placeholder="Input 7">
+    <input class="crm-system__input" type="text" placeholder="Input 8">
+    <input class="crm-system__input" type="text" placeholder="Input 9">
+    <input class="crm-system__input" type="text" placeholder="Input 10">
+    <input class="crm-system__input" type="text" placeholder="Input 11">
+    <input class="crm-system__input" type="text" placeholder="Input 12">
+    <input class="crm-system__input" type="text" placeholder="Input 13">
+    <input class="crm-system__input" type="text" placeholder="Input 24">
+    <input class="crm-system__input" type="text" placeholder="Input 15">
+    <input class="crm-system__input" type="text" placeholder="Input 26">
+    <input class="crm-system__input" type="text" placeholder="Input 17">
+    <input class="crm-system__input" type="text" placeholder="Input 28">
+    <input class="crm-system__input" type="text" placeholder="Input 19">
+    <input class="crm-system__input" type="text" placeholder="Input 22">
     <button class="ios-button" onclick="tg.close()">close</button>
     <button class="ios-button" onclick="tg.expand()">expand</button>
   </div>
@@ -129,13 +130,19 @@
   // Инициализация приложения
   if (!!tg) {
     tg.ready();
-    tg.setVerticalSwipeEnabled(false)
+    tg.setVerticalSwipeEnabled(false);
 
-    document.addEventListener('focusin', (event) => {
-      if (event.target.tagName === 'INPUT') {
-        tg.showAlert('focusin');
-        tg.close(); // Расширяем приложение без поднятия над клавиатурой
-      }
+    const inputFields = document.querySelectorAll('.crm-system__input');
+    inputFields.forEach(input => {
+      input.addEventListener('focus', () => {
+        tg.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
+        tg.close();
+        tg.showAlert('focus');
+      });
+
+      input.addEventListener('blur', () => {
+        tg.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
+      });
     });
     // Обработка изменения viewport
     // Telegram.onEvent('viewportChanged', () => {
