@@ -118,8 +118,6 @@
     <input class="crm-system__input" type="text" placeholder="Input 228">
     <input class="crm-system__input" type="text" placeholder="Input 129">
     <input class="crm-system__input" type="text" placeholder="Input 222">
-    <button class="ios-button" onclick="tg.close()">close</button>
-    <button class="ios-button" onclick="tg.expand()">expand</button>
   </div>
 </div>
 
@@ -133,6 +131,7 @@
     tg.setVerticalSwipeEnabled(false);
 
     const inputFields = document.querySelectorAll('.crm-system__input');
+    tg.showAlert(inputFields.length);
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
         tg.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
