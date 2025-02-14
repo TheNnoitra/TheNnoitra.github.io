@@ -134,8 +134,18 @@
 
   // Функция для установки высоты iframe
   function adjustIframeHeight() {
+    webApp.showAlert("Вызов adjustContentHeight");
+
+    const container = document.getElementById('contentContainer');
+    const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
+
+    // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
+    const availableHeight = window.innerHeight - safeAreaInsets.bottom;
+    container.style.height = `${availableHeight}px`;
+
+    // Обновляем высоту iframe
     const contentHeight = document.documentElement.scrollHeight;
-    webApp.setHeight(contentHeight);
+    webApp.setHeight(Math.max(availableHeight, contentHeight));
   }
 
   // Вызываем функцию при загрузке страницы
