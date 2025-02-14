@@ -19,33 +19,33 @@
           color: #333;
           line-height: 1.6;
           position: fixed;
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
+          left: var(--tg-content-safe-area-inset-left, 0);
+          right: var(--tg-content-safe-area-inset-right, 0);
+          top: var(--tg-content-safe-area-inset-top, 0);
+          bottom: var(--tg-content-safe-area-inset-bottom, 0);
           height: var(--tg-viewport-stable-height, 100vh);
-          transition: height 1s ease;
+          transition: height .2s ease;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           overflow: hidden;
+          width: auto;
       }
 
       .viewport-stable-border {
-          position: absolute;
+          position: relative;
           height: 100%;
           width: 100%;
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
+          max-width: 500px;
+          margin: 0 auto;
           background-color: #fff;
           border-radius: 20px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           overflow: auto;
-          padding-bottom: env(safe-area-inset-bottom);
+          /*padding-bottom: env(safe-area-inset-bottom);*/
       }
 
       .content {
-          margin: auto;
-          max-width: 500px;
           padding: 20px;
       }
 
@@ -77,17 +77,17 @@
     <input type="text" placeholder="Input 6">
     <input type="text" placeholder="Input 7">
     <input type="text" placeholder="Input 8">
-    <input type="text" placeholder="Input 92">
+    <input type="text" placeholder="Input 9">
     <input type="text" placeholder="Input 10">
     <input type="text" placeholder="Input 11">
     <input type="text" placeholder="Input 12">
-    <input type="text" placeholder="Input 123">
+    <input type="text" placeholder="Input 13">
     <input type="text" placeholder="Input 24">
     <input type="text" placeholder="Input 15">
     <input type="text" placeholder="Input 26">
-    <input type="text" placeholder="Input 127">
+    <input type="text" placeholder="Input 17">
     <input type="text" placeholder="Input 28">
-    <input type="text" placeholder="Input 129">
+    <input type="text" placeholder="Input 19">
     <input type="text" placeholder="Input 20">
   </div>
 </div>
@@ -99,12 +99,12 @@
   // Инициализация приложения
   if (Telegram) {
     Telegram.ready();
-    Telegram.expand();
+    Telegram.dis
 
     // Обработка изменения viewport
-    // Telegram.onEvent('viewportChanged', () => {
-    //   Telegram.expand();
-    // });
+    Telegram.onEvent('viewportChanged', () => {
+      Telegram.expand();
+    });
   } else {
     console.warn('Telegram Web App API is not available.');
   }
