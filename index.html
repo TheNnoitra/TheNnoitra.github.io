@@ -85,11 +85,11 @@
     <input type="text" placeholder="Input 13">
     <input type="text" placeholder="Input 24">
     <input type="text" placeholder="Input 15">
-    <input type="text" placeholder="Input 26">
+    <input type="text" placeholder="Input 226">
     <input type="text" placeholder="Input 17">
-    <input type="text" placeholder="Input 28">
-    <input type="text" placeholder="Input 19">
-    <input type="text" placeholder="Input 22">
+    <input type="text" placeholder="Input 228">
+    <input type="text" placeholder="Input 129">
+    <input type="text" placeholder="Input 222">
   </div>
 </div>
 
@@ -102,6 +102,11 @@
     tg.ready();
     tg.setVerticalSwipeEnabled(false)
 
+    document.addEventListener('focusin', (event) => {
+      if (event.target.tagName === 'INPUT') {
+        tg.expand(); // Расширяем приложение без поднятия над клавиатурой
+      }
+    });
     // Обработка изменения viewport
     // Telegram.onEvent('viewportChanged', () => {
     //   Telegram.expand();
