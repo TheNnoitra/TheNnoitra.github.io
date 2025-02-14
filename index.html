@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="color-scheme" content="light dark">
   <title>Telegram Web App Example</title>
   <style>
@@ -55,20 +56,20 @@
     <!-- Добавляем 10 инпутов -->
     <input class="inpu" type="number" placeholder="Поле 1" required>
     <input class="inpu" type="phone" placeholder="Поле 2" required>
-    <input class="inpu" type="text" placeholder="Пол234е 3" required>
+    <input class="inpu" type="text" placeholder="Поле 3" required>
     <input class="inpu" type="number" placeholder="Поле 4" required>
     <input class="inpu" type="text" placeholder="Поле 5" required>
     <input class="inpu" type="text" placeholder="Поле 6" required>
     <input class="inpu" type="text" placeholder="Поле 7" required>
-    <input class="inpu" type="text" placeholder="Поле234 8" required>
+    <input class="inpu" type="text" placeholder="Поле 8" required>
     <input class="inpu" type="text" placeholder="Поле 9" required>
-    <input class="inpu" type="text" placeholder="Пол2е 10" required>
-    <input class="inpu" type="text" placeholder="Поле4 10" required>
-    <input class="inpu" type="text" placeholder="По234ле 130" required>
-    <input class="inpu" type="text" placeholder="Поле3 113" required>
+    <input class="inpu" type="text" placeholder="Поле 10" required>
+    <input class="inpu" type="text" placeholder="Поле 10" required>
+    <input class="inpu" type="text" placeholder="Поле 130" required>
+    <input class="inpu" type="text" placeholder="Поле 113" required>
     <input class="inpu" type="text" placeholder="Поле 55" required>
     <input class="inpu" type="text" placeholder="Поле 333" required>
-    <input class="inpu" type="text" placeholder="П234оле 325" required>
+    <input class="inpu" type="text" placeholder="Поле 325" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
@@ -150,25 +151,33 @@
     adjustIframeHeight();
   });
 
-  // Управление клавиатурой при фокусировке на input
-  const inputFields = document.querySelectorAll('.inpu');
-  inputFields.forEach(input => {
-    input.addEventListener('focus', () => {
-      // Настройка контекстных кнопок клавиатуры
-      if (input.type === 'number') {
-        webApp.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
-      } else if (input.id === 'owner-phone') {
-        webApp.showKeyboard({ one_time: false, type: 'phone' }); // Телефонная клавиатура
-      } else {
-        webApp.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
-      }
-      webApp.expand();
-    });
-
-    input.addEventListener('blur', () => {
-      webApp.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
-    });
+  WebView.onEvent('viewport_changed', (eventType, eventData) => {
+    if (eventData.height) {
+      // window.removeEventListener('resize', onWindowResize);
+      webApp.showAlert('viewport_changed');
+      adjustIframeHeight();
+    }
   });
+
+  // // Управление клавиатурой при фокусировке на input
+  // const inputFields = document.querySelectorAll('.inpu');
+  // inputFields.forEach(input => {
+  //   input.addEventListener('focus', () => {
+  //     // Настройка контекстных кнопок клавиатуры
+  //     if (input.type === 'number') {
+  //       webApp.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
+  //     } else if (input.id === 'owner-phone') {
+  //       webApp.showKeyboard({ one_time: false, type: 'phone' }); // Телефонная клавиатура
+  //     } else {
+  //       webApp.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
+  //     }
+  //     webApp.expand();
+  //   });
+  //
+  //   input.addEventListener('blur', () => {
+  //     webApp.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
+  //   });
+  // });
 
 </script>
 </body>
