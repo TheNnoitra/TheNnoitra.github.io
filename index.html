@@ -86,25 +86,25 @@
     <input type="text" placeholder="Input 15">
     <input type="text" placeholder="Input 26">
     <input type="text" placeholder="Input 17">
-    <input type="text" placeholder="Input 28">
+    <input type="text" placeholder="Input 228">
     <input type="text" placeholder="Input 19">
-    <input type="text" placeholder="Input 20">
+    <input type="text" placeholder="Input 202">
   </div>
 </div>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-  const Telegram = window.Telegram.WebApp;
+  const tg = window.Telegram.WebApp;
 
   // Инициализация приложения
-  if (Telegram) {
-    Telegram.ready();
-    Telegram.dis
+  if (!!tg) {
+    tg.ready();
+    tg.setVerticalSwipeEnabled(false)
 
     // Обработка изменения viewport
-    Telegram.onEvent('viewportChanged', () => {
-      Telegram.expand();
-    });
+    // Telegram.onEvent('viewportChanged', () => {
+    //   Telegram.expand();
+    // });
   } else {
     console.warn('Telegram Web App API is not available.');
   }
