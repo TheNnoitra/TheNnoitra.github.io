@@ -2,194 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="color-scheme" content="light dark">
-  <title>Telegram Web App Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="height=device-height, width=device-width">
+  <title>Telegram Web App</title>
   <style>
       body {
           margin: 0;
           padding: 0;
           font-family: Arial, sans-serif;
-          background-color: var(--tg-theme-bg-color, #ffffff);
-          color: var(--tg-theme-text-color, #000000);
-          overflow: hidden; /* Отключаем скролл для body */
-          height: 100vh; /* Фиксируем высоту body */
+          overflow-y: hidden; /* Prevents scrolling issues */
       }
-
       .container {
-          padding: 16px;
-          max-width: 400px;
-          margin: 0 auto;
-          overflow-y: auto; /* Добавляем скролл для контейнера */
-          /*height: calc(100vh - var(--tg-content-safe-area-inset-bottom, 0px)); !* Используем CSS-переменную *!*/
-      }
-
-      input {
-          width: 100%;
-          padding: 8px;
-          margin-bottom: 12px;
-          box-sizing: border-box;
-          border: 1px solid var(--tg-theme-border-color, #cccccc);
-          border-radius: 4px;
-      }
-
-      button {
-          width: 100%;
+          display: flex;
+          flex-direction: column;
+          max-height: 100vh;
+          overflow-y: auto;
           padding: 10px;
-          background-color: var(--tg-theme-button-color, #0088cc);
-          color: var(--tg-theme-button-text-color, #ffffff);
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
+          box-sizing: border-box;
       }
-
-      button:hover {
-          opacity: 0.9;
+      input {
+          margin-bottom: 10px;
+          padding: 5px;
+      }
+      button {
+          align-self: flex-end;
       }
   </style>
 </head>
 <body>
-<div class="container" id="contentContainer">
-  <h1>Введите данные</h1>
-  <form id="inputForm">
-    <!-- Добавляем 10 инпутов -->
-    <input class="inpu" type="number" placeholder="Поле 1" required>
-    <input class="inpu" type="phone" placeholder="Поле 2" required>
-    <input class="inpu" type="text" placeholder="Поле 3" required>
-    <input class="inpu" type="number" placeholder="Поле 4" required>
-    <input class="inpu" type="text" placeholder="Поле 5" required>
-    <input class="inpu" type="text" placeholder="Поле 6" required>
-    <input class="inpu" type="text" placeholder="Поле 7" required>
-    <input class="inpu" type="text" placeholder="Поле 8" required>
-    <input class="inpu" type="text" placeholder="Поле 9" required>
-    <input class="inpu" type="text" placeholder="Поле 10" required>
-    <input class="inpu" type="text" placeholder="Поле 1" required>
-    <input class="inpu" type="text" placeholder="Поле 1" required>
-    <input class="inpu" type="text" placeholder="Поле 12" required>
-    <input class="inpu" type="text" placeholder="Поле 12" required>
-    <input class="inpu" type="text" placeholder="Поле 21" required>
-    <input class="inpu" type="text" placeholder="Поле 12" required>
-    <button type="submit">Отправить</button>
-  </form>
-</div>
+<div id="root"></div>
 
-<!-- Подключаем telegram-web-app.js -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-  // Инициализация Telegram Web App
-  const webApp = Telegram.WebApp;
-  const webView = Telegram.WebView;
+  // Initialize Telegram Web App
+  const tg = window.Telegram.WebApp;
 
-  // Устанавливаем начальную высоту iframe
-  webApp.ready();
-  webApp.expand();
+  // Adjust viewport height when keyboard is shown/hidden
+  tg.ready();
+  tg.expand();
 
-  let initialHeight = window.innerHeight;
-
-  // // Функция для установки высоты контейнера с учетом contentSafeAreaInsets
-  // function adjustContentHeight() {
-  //   webApp.showAlert("Вызов adjustContentHeight");
-  //
-  //   const container = document.getElementById('contentContainer');
-  //   const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
-  //
-  //   // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
-  //   const availableHeight = window.innerHeight - safeAreaInsets.bottom;
-  //   container.style.height = `${availableHeight}px`;
-  //
-  //   // Обновляем высоту iframe
-  //   const contentHeight = document.documentElement.scrollHeight;
-  //   webApp.setHeight(Math.max(availableHeight, contentHeight));
-  // }
-  //
-  // // Вызываем функцию при загрузке страницы
-  // adjustContentHeight();
-
-  // // Отслеживаем изменение размеров окна
-  // window.addEventListener('resize', () => {
-  //   webApp.showAlert("Событие resize");
-  //   adjustContentHeight();
-  // });
-
-  // // Отслеживаем изменение высоты iframe через Telegram API
-  // webApp.setResizeHandler(() => {
-  //   webApp.showAlert("Событие setResizeHandler");
-  //   adjustContentHeight();
-  // });
-
-  // // Отслеживаем изменение viewport через Telegram API
-  // webApp.onEvent('viewportChanged', () => {
-  //   webApp.showAlert("Событие viewportChanged");
-  //   adjustContentHeight();
-  // });
-
-  // // Отслеживаем фокус на инпутах (работает на iOS)
-  // document.querySelectorAll('input').forEach(input => {
-  //   input.addEventListener('focus', () => {
-  //     webApp.showAlert("Фокус на инпуте");
-  //     adjustContentHeight();
-  //   });
-  // });
-
-  // Функция для установки высоты iframe
-  function adjustIframeHeight() {
-    webApp.showAlert("Вызов adjustContentHeight");
-
-    const container = document.getElementById('contentContainer');
-    const safeAreaInsets = webApp.contentSafeAreaInsets || { bottom: 0 };
-
-    // Корректируем высоту контейнера с учетом нижнего отступа (клавиатура)
-    const availableHeight = window.innerHeight - safeAreaInsets.bottom;
-    container.style.height = `${availableHeight}px`;
-
-    // Обновляем высоту iframe
-    const contentHeight = document.documentElement.scrollHeight;
-    webApp.setHeight(Math.max(availableHeight, contentHeight));
-  }
-
-  // Вызываем функцию при загрузке страницы
-  adjustIframeHeight();
-
-  // // Отслеживаем изменение размеров окна
-  // window.addEventListener('resize', () => {
-  //   adjustIframeHeight();
-  // });
-  //
-  // // Отслеживаем изменение viewport через Telegram API
-  // webApp.onEvent('viewportChanged', () => {
-  //   webApp.showAlert('viewportChanged');
-  //   adjustIframeHeight();
-  // });
-  //
-  // WebView.onEvent('viewport_changed', (eventType, eventData) => {
-  //   if (eventData.height) {
-  //     // window.removeEventListener('resize', onWindowResize);
-  //     webApp.showAlert('viewport_changed');
-  //     adjustIframeHeight();
-  //   }
-  // });
-
-  // Управление клавиатурой при фокусировке на input
-  const inputFields = document.querySelectorAll('.inpu');
-  inputFields.forEach(input => {
-    input.addEventListener('focus', () => {
-      // Настройка контекстных кнопок клавиатуры
-      if (input.type === 'number') {
-        webApp.showKeyboard({ one_time: false, type: 'number' }); // Числовая клавиатура
-      } else if (input.id === 'owner-phone') {
-        webApp.showKeyboard({ one_time: false, type: 'phone' }); // Телефонная клавиатура
-      } else {
-        webApp.showKeyboard({ one_time: false, type: 'text' }); // Текстовая клавиатура
-      }
-      adjustIframeHeight();
-    });
-
-    input.addEventListener('blur', () => {
-      webApp.hideKeyboard(); // Скрываем клавиатуру после завершения ввода
-    });
+  tg.MainButton.setText('Submit');
+  tg.MainButton.show();
+  tg.MainButton.onClick(() => {
+    const inputs = document.querySelectorAll('input');
+    const values = Array.from(inputs).map(input => input.value);
+    console.log(values); // Process the data as needed
+    alert('Data submitted!');
   });
 
+  // Create inputs dynamically
+  const container = document.createElement('div');
+  container.className = 'container';
+  for (let i = 1; i <= 20; i++) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = `Field ${i}`;
+    container.appendChild(input);
+  }
+
+  const submitButton = document.createElement('button');
+  submitButton.textContent = 'Submit';
+  submitButton.addEventListener('click', () => {
+    tg.MainButton.click();
+  });
+  container.appendChild(submitButton);
+
+  document.getElementById('root').appendChild(container);
+
+  // Handle keyboard visibility changes
+  function adjustHeight() {
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    container.style.maxHeight = `${vh - 20}px`; // Adjust for padding and button
+  }
+
+  tg.onEvent('main_button_click', () => {
+    adjustHeight();
+  });
+
+  tg.onEvent('viewport_changed', () => {
+    adjustHeight();
+  });
+
+  window.addEventListener('resize', adjustHeight);
+  adjustHeight(); // Initial adjustment
 </script>
 </body>
 </html>
