@@ -139,6 +139,7 @@
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
         tg.showAlert('focus22');
+        Telegram.WebApp.layoutChanged();
       });
     });
     // Обработка изменения viewport
