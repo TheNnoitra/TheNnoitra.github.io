@@ -148,6 +148,7 @@
 
   // Отслеживаем изменение viewport через Telegram API
   webApp.onEvent('viewportChanged', () => {
+    webApp.showAlert('viewportChanged');
     adjustIframeHeight();
   });
 
