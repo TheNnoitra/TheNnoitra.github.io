@@ -18,30 +18,36 @@
           background-color: #f5f5f5;
           color: #333;
           line-height: 1.6;
-          position: fixed;
+          position: absolute;
           left: 0;
           right: 0;
           top: 0;
-          height: var(--tg-viewport-stable-height, 100vh);
-          transition: height 1s ease;
+          height: 100vh;
           overflow: hidden;
       }
 
       .viewport-stable-border {
-          position: relative;
-          height: 100%;
           width: 100%;
-          max-width: 500px;
-          margin: 0 auto;
           background-color: #fff;
           border-radius: 20px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          overflow: auto;
-          /*padding-bottom: env(safe-area-inset-bottom);*/
+          padding-bottom: env(safe-area-inset-bottom);
+          position: relative;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          height: var(--tg-viewport-height, 100vh);
+          transition: height 1s ease;
       }
 
       .content {
+          margin: 0 auto;
+          height: 100%;
+          width: 100%;
+          max-width: 500px;
           padding: 20px;
+          overflow: auto;
       }
 
       input {
@@ -81,7 +87,7 @@
     <input type="text" placeholder="Input 15">
     <input type="text" placeholder="Input 26">
     <input type="text" placeholder="Input 17">
-    <input type="text" placeholder="Input 28">
+    <input type="text" placeholder="Input 238">
     <input type="text" placeholder="Input 19">
     <input type="text" placeholder="Input 20">
   </div>
