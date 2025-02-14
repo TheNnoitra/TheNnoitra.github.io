@@ -12,16 +12,16 @@
           font-family: Arial, sans-serif;
           background-color: var(--tg-theme-bg-color, #ffffff);
           color: var(--tg-theme-text-color, #000000);
-          overflow: hidden; /* Отключаем скролл для body */
-          height: 100vh; /* Фиксируем высоту body */
+          /*overflow: hidden; !* Отключаем скролл для body *!*/
+          /*height: 100vh; !* Фиксируем высоту body *!*/
       }
 
       .container {
           padding: 16px;
           max-width: 400px;
           margin: 0 auto;
-          overflow-y: auto; /* Добавляем скролл для контейнера */
-          height: calc(100vh - 20px); /* Вычитаем немного места для погрешности */
+          /*overflow-y: auto; !* Добавляем скролл для контейнера *!*/
+          /*height: calc(100vh - 20px); !* Вычитаем немного места для погрешности *!*/
       }
 
       input {
@@ -66,9 +66,9 @@
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 10" required>
     <input type="text" placeholder="Поле 13" required>
-    <input type="text" placeholder="Поле 63" required>
     <input type="text" placeholder="Поле 55" required>
-    <input type="text" placeholder="Поле 25" required>
+    <input type="text" placeholder="Поле 33" required>
+    <input type="text" placeholder="Поле 35" required>
     <button type="submit">Отправить</button>
   </form>
 </div>
