@@ -2,124 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="format-detection" content="telephone=no">
   <title>Telegram Web App Example</title>
   <style>
+      /* Стили для адаптивности и корректного отображения */
       * {
+          box-sizing: border-box;
           margin: 0;
           padding: 0;
       }
 
       body {
-          font-family: Arial, sans-serif;
-          background-color: #f4f4f4;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+          background-color: #f5f5f5;
           color: #333;
-          height: var(--tg-viewport-stable-height, 100vh); /* Используем переменную --tg-viewport-stable-height */
+          line-height: 1.6;
+          height: 100vh;
           overflow: hidden;
-          width: 100%;
       }
 
-      .container {
-          /*padding: 16px;*/
-          max-width: 600px;
-          margin: 0 auto;
-          box-sizing: border-box;
-          height: 100%;
+      .viewport-stable-border {
+          position: relative;
           width: 100%;
-          overflow: auto;
+          max-width: 500px;
+          margin: 0 auto;
+          background-color: #fff;
+          border-radius: 20px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          overflow-y: auto;
+          padding-bottom: env(safe-area-inset-bottom);
+          height: calc(var(--tg-vh, 1vh) * 100 - var(--tg-safe-area-inset-top, 0px) - var(--tg-safe-area-inset-bottom, 0px));
+      }
+
+      .content {
+          padding: 20px;
       }
 
       input {
+          display: block;
           width: 100%;
+          margin-bottom: 15px;
           padding: 10px;
-          margin-bottom: 10px;
           border: 1px solid #ccc;
           border-radius: 5px;
           font-size: 16px;
       }
 
-      .submit-button {
-          width: 100%;
-          padding: 12px;
-          background-color: #0084ff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          font-size: 18px;
-          cursor: pointer;
+      input:last-child {
+          margin-bottom: 0;
       }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>Telegram Web App Form</h1>
-  <form id="webAppForm">
-    <!-- Инпуты -->
-    <input type="text" placeholder="Input 1" required>
-    <input type="text" placeholder="Input 2" required>
-    <input type="text" placeholder="Input 3" required>
-    <input type="text" placeholder="Input 4" required>
-    <input type="text" placeholder="Input 5" required>
-    <input type="text" placeholder="Input 6" required>
-    <input type="text" placeholder="Input 7" required>
-    <input type="text" placeholder="Input 8" required>
-    <input type="text" placeholder="Input 9" required>
-    <input type="text" placeholder="Input 10" required>
-    <input type="text" placeholder="Input 11" required>
-    <input type="text" placeholder="Input 12" required>
-    <input type="text" placeholder="Input 13" required>
-    <input type="text" placeholder="Input 14" required>
-    <input type="text" placeholder="Input 15" required>
-    <input type="text" placeholder="Input 16" required>
-    <input type="text" placeholder="Input 17" required>
-    <input type="text" placeholder="Input 18" required>
-    <input type="text" placeholder="Input 19" required>
-    <input type="text" placeholder="Input 20" required>
 
-    <!-- Кнопка отправки -->
-    <button type="submit" class="submit-button">Отправить</button>
-  </form>
+<div class="viewport-stable-border">
+  <div class="content">
+    <!-- 20 инпутов -->
+    <input type="text" placeholder="Input 1">
+    <input type="text" placeholder="Input 2">
+    <input type="text" placeholder="Input 3">
+    <input type="text" placeholder="Input 4">
+    <input type="text" placeholder="Input 5">
+    <input type="text" placeholder="Input 6">
+    <input type="text" placeholder="Input 7">
+    <input type="text" placeholder="Input 8">
+    <input type="text" placeholder="Input 9">
+    <input type="text" placeholder="Input 10">
+    <input type="text" placeholder="Input 11">
+    <input type="text" placeholder="Input 12">
+    <input type="text" placeholder="Input 13">
+    <input type="text" placeholder="Input 14">
+    <input type="text" placeholder="Input 15">
+    <input type="text" placeholder="Input 16">
+    <input type="text" placeholder="Input 17">
+    <input type="text" placeholder="Input 18">
+    <input type="text" placeholder="Input 19">
+    <input type="text" placeholder="Input 20">
+  </div>
 </div>
 
-<!-- Подключение Telegram Web App JavaScript -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-  // Проверяем, запущено ли приложение в Telegram
-  if (Telegram.WebApp) {
-    Telegram.WebApp.ready();
+  const Telegram = window.Telegram.WebApp;
 
-    // Установка начальной высоты
-    function updateHeight() {
-      document.body.style.height = `${Telegram.WebApp.viewportStableHeight}px`;
-    }
+  const viewportStableBorder = document.querySelector('.viewport-stable-border');
 
-    // Вызываем функцию обновления высоты при загрузке страницы
-    updateHeight();
+  function setViewportData() {
+    // Устанавливаем высоту блока с учетом изменений в viewport
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--tg-vh', `${vh}px`);
 
-    // Обработчик изменения viewport
-    Telegram.WebApp.onEvent('viewportChanged', updateHeight);
+    const safeAreaTop = Telegram?.safeArea?.top || 0;
+    const safeAreaBottom = Telegram?.safeArea?.bottom || 0;
+    document.documentElement.style.setProperty('--tg-safe-area-inset-top', `${safeAreaTop}px`);
+    document.documentElement.style.setProperty('--tg-safe-area-inset-bottom', `${safeAreaBottom}px`);
 
-    // Обработка отправки формы
-    // document.getElementById('webAppForm').addEventListener('submit', function (event) {
-    //   event.preventDefault();
-    //
-    //   // Собираем данные из инпутов
-    //   const formData = {};
-    //   const inputs = document.querySelectorAll('input');
-    //   inputs.forEach(input => {
-    //     formData[input.placeholder] = input.value;
-    //   });
-    //
-    //   // Отправляем данные обратно в бота
-    //   Telegram.WebApp.sendData(JSON.stringify(formData));
-    //
-    //   // Закрываем Web App
-    //   Telegram.WebApp.close();
-    // });
+    viewportStableBorder.style.height = `calc(${vh} * 100 - ${safeAreaTop}px - ${safeAreaBottom}px)`;
+  }
+
+  // Инициализация приложения
+  if (Telegram) {
+    Telegram.ready();
+    setViewportData();
+
+    // Обработка изменения viewport
+    Telegram.onEvent('viewportChanged', setViewportData);
   } else {
-    alert('This web app is intended to be used inside the Telegram app.');
+    console.warn('Telegram Web App API is not available.');
   }
 </script>
+
 </body>
 </html>
