@@ -112,11 +112,11 @@
     <input type="text" placeholder="Input 13">
     <input type="text" placeholder="Input 24">
     <input type="text" placeholder="Input 15">
-    <input type="text" placeholder="Input 226">
+    <input type="text" placeholder="Input 26">
     <input type="text" placeholder="Input 17">
-    <input type="text" placeholder="Input 228">
-    <input type="text" placeholder="Input 129">
-    <input type="text" placeholder="Input 222">
+    <input type="text" placeholder="Input 28">
+    <input type="text" placeholder="Input 19">
+    <input type="text" placeholder="Input 22">
     <button class="ios-button" onclick="tg.close()">close</button>
     <button class="ios-button" onclick="tg.expand()">expand</button>
   </div>
@@ -133,7 +133,8 @@
 
     document.addEventListener('focusin', (event) => {
       if (event.target.tagName === 'INPUT') {
-        tg.expand(); // Расширяем приложение без поднятия над клавиатурой
+        tg.showAlert('focusin');
+        tg.close(); // Расширяем приложение без поднятия над клавиатурой
       }
     });
     // Обработка изменения viewport
