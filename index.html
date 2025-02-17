@@ -141,15 +141,7 @@
     tg.showAlert(inputFields.length.toLocaleString());
     inputFields.forEach(input => {
       input.addEventListener('focus', () => {
-        const documentHeight = Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.offsetHeight,
-          document.body.clientHeight,
-          document.documentElement.clientHeight
-        );
-        tg.setHeight(documentHeight); // Устанавливаем высоту
+        tg.expand();
         tg.showAlert('focusPokus');
       });
     });
