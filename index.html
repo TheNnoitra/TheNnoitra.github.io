@@ -12,6 +12,7 @@
       :root {
           --tg-viewport-stable-height: env(tg-viewport-stable-height);
           --tg-safe-area-bottom: env(tg-content-safe-area-inset);
+          --mdc-theme-surface: #ffffff; /* Фон инпута */
       }
 
       body {
@@ -44,15 +45,34 @@
           width: 100%;
       }
 
+      /* Исправление цветов */
       .mdc-floating-label {
-          color: #757575;
+          color: #212121; /* Цвет метки */
       }
 
-      .mdc-text-field__ripple {
-          background-color: #e0e0e0;
+      .mdc-text-field__input {
+          color: #212121; /* Цвет введенного текста */
       }
 
-      /* Фикс позиционирования при скролле */
+      ::placeholder {
+          color: #616161 !important; /* Цвет плейсхолдера */
+          opacity: 1;
+      }
+
+      .mdc-text-field--filled .mdc-floating-label {
+          color: #616161; /* Цвет метки при фокусе */
+      }
+
+      /* Стили для фокуса */
+      .mdc-text-field--focused .mdc-floating-label {
+          color: #007bff !important; /* Цвет метки при фокусе */
+      }
+
+      .mdc-text-field--focused .mdc-text-field__ripple {
+          background-color: rgba(0, 123, 255, 0.2);
+      }
+
+      /* Фикс позиционирования */
       .input-wrapper {
           position: relative;
           z-index: 1;
@@ -63,17 +83,6 @@
               grid-template-columns: 1fr;
           }
       }
-
-      /* Кастомные стили для плейсхолдера */
-      ::placeholder {
-          color: #9e9e9e;
-          opacity: 1; /* Для Safari */
-      }
-
-      /* Важные стили для корректного отображения полей */
-      .mdc-text-field__input {
-          color: #212121;
-      }
   </style>
 </head>
 <body>
@@ -82,69 +91,77 @@
 </div>
 
 <script>
-  // Инициализация Telegram Web App
   const tg = Telegram.WebApp;
   tg.ready();
 
-  // Создаем 20 инпутов
   const formContainer = document.getElementById('formContainer');
 
   for (let i = 1; i <= 20; i++) {
-    // Создаем контейнер для поля ввода
     const field = document.createElement('div');
     field.className = 'mdc-text-field mdc-text-field--filled input-wrapper';
 
-    // Создаем label
     const label = document.createElement('label');
     label.className = 'mdc-floating-label';
     label.htmlFor = `text-field-${i}`;
     label.textContent = `Поле ${i}`;
 
-    // Создаем сам input
     const input = document.createElement('input');
     input.className = 'mdc-text-field__input';
     input.type = 'text';
     input.id = `text-field-${i}`;
-    input.placeholder = `Поле ${i}`; // Русский плейсхолдер
+    input.placeholder = `Поле ${i}`;
 
-    // Добавляем ripple-эффект
-    const bottomLine = document.createElement('div');
-    bottomLine.className = 'mdc-text-field__ripple';
+    const ripple = document.createElement('div');
+    ripple.className = 'mdc-text-field__ripple';
 
-    // Собираем элементы
     field.appendChild(label);
     field.appendChild(input);
-    field.appendChild(bottomLine);
+    field.appendChild(ripple);
 
-    // Добавляем в DOM и инициализируем
     formContainer.appendChild(field);
-    new mdc.textField.MDCTextField(field); // Инициализация здесь
+    new mdc.textField.MDCTextField(field);
   }
 
-  // Фикс позиционирования при фокусе
+  // Фикс перекрытия клавиатуры
+  let lastScrollPosition = 0;
+
   document.querySelectorAll('input').forEach(input => {
     input.addEventListener('focus', () => {
-      setTimeout(() => {
-        const rect = input.getBoundingClientRect();
-        const viewportHeight = getComputedStyle(document.body).getPropertyValue('--tg-viewport-stable-height');
-        const windowHeight = parseFloat(viewportHeight) || window.innerHeight;
-        const bottom = rect.bottom;
+      lastScrollPosition = window.scrollY;
+      window.scrollTo(0, 0); // Сбрасываем скролл перед фокусом
+    });
 
-        if (bottom > windowHeight) {
-          window.scrollTo({
-            top: window.scrollY + rect.top - (windowHeight / 2) + (rect.height / 2),
-            behavior: 'smooth'
-          });
-        }
-      }, 100);
+    input.addEventListener('blur', () => {
+      setTimeout(() => {
+        window.scrollTo(0, lastScrollPosition); // Возвращаем скролл
+      }, 200);
+    });
+
+    input.addEventListener('focus', () => {
+      const rect = input.getBoundingClientRect();
+      const viewportHeight = getComputedStyle(document.body).getPropertyValue('--tg-viewport-stable-height');
+      const windowHeight = parseFloat(viewportHeight) || window.innerHeight;
+      const bottom = rect.bottom;
+
+      if (bottom > windowHeight) {
+        window.scrollTo({
+          top: window.scrollY + rect.top - (windowHeight / 2) + (rect.height / 2),
+          behavior: 'smooth'
+        });
+      }
     });
   });
 
-  // Автоподстройка padding при появлении клавиатуры
+  // Улучшенный обработчик resize
   window.addEventListener('resize', () => {
     const content = document.querySelector('.tg-content');
     const safeAreaBottom = getComputedStyle(document.documentElement).getPropertyValue('--tg-safe-area-bottom');
-    content.style.paddingBottom = `${parseFloat(safeAreaBottom) + 24}px`;
+    content.style.paddingBottom = `${parseFloat(safeArea-bottom) + 24}px`;
+
+    // Коррекция скролла после закрытия клавиатуры
+    if (document.activeElement.tagName !== 'INPUT') {
+      window.scrollTo(0, lastScrollPosition);
+    }
   });
 </script>
 </body>
