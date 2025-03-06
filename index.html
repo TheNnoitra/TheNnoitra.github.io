@@ -2,158 +2,121 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Telegram Web App Example</title>
   <style>
-      /* Стили для адаптивности и корректного отображения */
-      * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-      }
-
+      /* Основные стили Material Design */
       body {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+          margin: 0;
+          font-family: 'Roboto', sans-serif;
           background-color: #f5f5f5;
-          color: #333;
-          line-height: 1.6;
-          /*position: fixed;*/
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          height: var(--tg-viewport-stable-height, 100vh);
-          transition: height .2s ease;
-          /*display: flex;*/
-          /*justify-content: center;*/
-          /*align-items: center;*/
-          overflow: hidden;
-          width: 100%;
-      }
-
-      .viewport-stable-border {
-          position: relative;
-          height: 100%;
-          width: 100%;
-          left: var(--tg-content-safe-area-inset-left, 0);
-          right: var(--tg-content-safe-area-inset-right, 0);
-          top: var(--tg-content-safe-area-inset-top, 0);
-          bottom: var(--tg-content-safe-area-inset-bottom, 0);
-          max-width: 500px;
-          margin: 0 auto;
-          background-color: #fff;
-          border-radius: 20px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          overflow: auto;
+          min-height: 100vh;
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
+          padding: 24px;
       }
 
-      .content {
-          padding: 20px;
+      .container {
           width: 100%;
-          height: 100%;
+          max-width: 600px;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 24px;
+          padding: 24px;
+          background-color: white;
+          border-radius: 16px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       }
 
-      input {
-          display: block;
-          width: 100%;
-          margin-bottom: 15px;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
+      .input-section {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+      }
+
+      .material-input {
+          padding: 16px;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
           font-size: 16px;
+          transition: all 0.2s ease;
       }
 
-      input:last-child {
-          margin-bottom: 0;
+      .material-input:focus {
+          outline: none;
+          border-color: #2196F3;
+          box-shadow: 0 0 0 2px rgba(33,150,243,0.2);
       }
 
-      /* Стиль кнопки в стиле iOS */
-      .ios-button {
-          display: inline-block;
-          width: 100%;
-          padding: 15px;
-          font-size: 18px;
-          font-weight: bold;
-          text-align: center;
-          color: #fff;
-          background: linear-gradient(145deg, #4facfe, #00f2fe);
-          border: none;
-          border-radius: 15px;
-          box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.8);
-          cursor: pointer;
-          transition: all 0.3s ease;
-          margin-bottom: 16px;
+      /* Мобилка оптимизация */
+      @media (max-width: 600px) {
+          .material-input {
+              font-size: 18px;
+          }
       }
 
-      .ios-button:hover {
-          transform: scale(1.05);
+      /* Фикс позиционирования при фокусе */
+      body {
+          touch-action: pan-y;
       }
 
-      .ios-button:active {
-          transform: scale(0.95);
-          box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+      .container {
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
       }
   </style>
 </head>
 <body>
+<div class="container">
+  <!-- 20 инпутов в 5 секций -->
+  <div class="input-section">
+    <input class="material-input" placeholder="Field 1">
+    <input class="material-input" placeholder="Field 2">
+    <input class="material-input" placeholder="Field 3">
+    <input class="material-input" placeholder="Field 4">
+  </div>
 
-<div class="viewport-stable-border">
-  <div class="content">
-    <!-- 20 инпутов -->
-    <input class="crm-system__input" type="text" placeholder="Input 12">
-    <input class="crm-system__input" type="text" placeholder="Input 2">
-    <input class="crm-system__input" type="text" placeholder="Input 3">
-    <input class="crm-system__input" type="text" placeholder="Input 4">
-    <input class="crm-system__input" type="text" placeholder="Input 5">
-    <input class="crm-system__input" type="text" placeholder="Input 6">
-    <input class="crm-system__input" type="text" placeholder="Input 7">
-    <input class="crm-system__input" type="text" placeholder="Input 8">
-    <input class="crm-system__input" type="text" placeholder="Input 9">
-    <input class="crm-system__input" type="text" placeholder="Input 10">
-    <input class="crm-system__input" type="text" placeholder="Input 11">
-    <input class="crm-system__input" type="text" placeholder="Input 12">
-    <input class="crm-system__input" type="text" placeholder="Input 13">
-    <input class="crm-system__input" type="text" placeholder="Input 24">
-    <input class="crm-system__input" type="text" placeholder="Input 15">
-    <input class="crm-system__input" type="text" placeholder="Input 26">
-    <input class="crm-system__input" type="text" placeholder="Input 17">
-    <input class="crm-system__input" type="text" placeholder="Input 228">
-    <input class="crm-system__input" type="text" placeholder="Input 129">
-    <input class="crm-system__input" type="text" placeholder="Input 222">
+  <div class="input-section">
+    <input class="material-input" placeholder="Field 5">
+    <input class="material-input" placeholder="Field 6">
+    <input class="material-input" placeholder="Field 7">
+    <input class="material-input" placeholder="Field 8">
+  </div>
+
+  <div class="input-section">
+    <input class="material-input" placeholder="Field 9">
+    <input class="material-input" placeholder="Field 10">
+    <input class="material-input" placeholder="Field 11">
+    <input class="material-input" placeholder="Field 12">
+  </div>
+
+  <div class="input-section">
+    <input class="material-input" placeholder="Field 13">
+    <input class="material-input" placeholder="Field 14">
+    <input class="material-input" placeholder="Field 15">
+    <input class="material-input" placeholder="Field 16">
+  </div>
+
+  <div class="input-section">
+    <input class="material-input" placeholder="Field 17">
+    <input class="material-input" placeholder="Field 18">
+    <input class="material-input" placeholder="Field 19">
+    <input class="material-input" placeholder="Field 20">
   </div>
 </div>
 
-<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 <script>
-  const tg = window.Telegram.WebApp;
-
-  // Инициализация приложения
-  if (!!tg) {
-    tg.ready();
-    // tg.requestFullscreen();
-
-    const inputFields = document.querySelectorAll('.crm-system__input');
-    tg.showAlert(inputFields.length.toLocaleString());
-    inputFields.forEach(input => {
-      input.addEventListener('focus', () => {
-        tg.expand();
-        tg.showAlert('focusPokus');
+  // Автопрокрутка при фокусе
+  document.querySelectorAll('.material-input').forEach(input => {
+    input.addEventListener('focus', () => {
+      const rect = input.getBoundingClientRect();
+      window.scrollTo({
+        top: window.scrollY + rect.top - 50,
+        behavior: 'smooth'
       });
     });
-    // Обработка изменения viewport
-    // Telegram.onEvent('viewportChanged', () => {
-    //   Telegram.expand();
-    // });
-  } else {
-    alert('Telegram Web App API is not available');
-    console.warn('Telegram Web App API is not available.');
-  }
+  });
 </script>
-
 </body>
 </html>
