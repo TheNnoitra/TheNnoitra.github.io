@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Telegram Web App Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Form</title>
+  <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
   <style>
-      /* Основные стили Material Design */
       body {
           margin: 0;
           font-family: 'Roboto', sans-serif;
@@ -15,24 +15,25 @@
           flex-direction: column;
           align-items: center;
           padding: 24px;
+          overflow: hidden;
       }
 
       .container {
           width: 100%;
           max-width: 600px;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 24px;
           padding: 24px;
           background-color: white;
           border-radius: 16px;
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
       }
 
       .input-section {
           display: flex;
           flex-direction: column;
           gap: 16px;
+          padding: 0 16px 16px  16px;
       }
 
       .material-input {
@@ -41,6 +42,7 @@
           border-radius: 8px;
           font-size: 16px;
           transition: all 0.2s ease;
+          box-sizing: border-box;
       }
 
       .material-input:focus {
@@ -49,27 +51,15 @@
           box-shadow: 0 0 0 2px rgba(33,150,243,0.2);
       }
 
-      /* Мобилка оптимизация */
       @media (max-width: 600px) {
           .material-input {
               font-size: 18px;
           }
       }
-
-      /* Фикс позиционирования при фокусе */
-      body {
-          touch-action: pan-y;
-      }
-
-      .container {
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
-      }
   </style>
 </head>
 <body>
 <div class="container">
-  <!-- 20 инпутов в 5 секций -->
   <div class="input-section">
     <input class="material-input" placeholder="Field 1">
     <input class="material-input" placeholder="Field 2">
@@ -107,16 +97,36 @@
 </div>
 
 <script>
-  // Автопрокрутка при фокусе
+  telegram.WebApp.ready();
+
   document.querySelectorAll('.material-input').forEach(input => {
     input.addEventListener('focus', () => {
       const rect = input.getBoundingClientRect();
+      const keyboardHeight = telegram.WebApp.currentKeyboardHeight || 0;
+
+      // Расчет позиции с учетом клавиатуры
+      const targetY = rect.top - (keyboardHeight + 50);
+
       window.scrollTo({
-        top: window.scrollY + rect.top - 50,
+        top: window.scrollY + targetY,
         behavior: 'smooth'
+      });
+
+      // Уведомление Telegram о изменении высоты
+      telegram.WebApp.expand({
+        height: document.body.scrollHeight
       });
     });
   });
+
+  // Обработчик изменения размеров окна
+  window.addEventListener('resize', () => {
+    telegram.WebApp.expand();
+  });
+
+  // Инициализация при загрузке
+  telegram.WebApp.MainButton.color = '#2196F3';
+  telegram.WebApp.expand();
 </script>
 </body>
 </html>
