@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Telegram Form</title>
   <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
@@ -13,33 +12,41 @@
 
       body {
           margin: 0;
+          padding: 0;
           font-family: 'Roboto', sans-serif;
           background-color: #f5f5f5;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          padding: 24px;
+          align-items: stretch;
           min-height: 100vh;
           overflow: hidden;
       }
 
-      .container {
-          width: 100%;
-          max-width: 600px;
+      .content-wrapper {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
           padding: 24px;
+          box-sizing: border-box;
+      }
+
+      .container {
+          flex: 1;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: calc(var(--keyboard-height) + 60px); /* Место под панель */
+          max-width: 600px;
+          margin: 0 auto;
           background-color: white;
           border-radius: 16px;
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
-          height: calc(var(--tg-viewport-stable-height) - 100px); /* Оставляем место под панель управления */
       }
 
       .input-section {
+          padding: 24px 16px;
+          gap: 16px;
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          padding: 0 16px 16px 16px;
       }
 
       .material-input {
@@ -58,7 +65,6 @@
           box-shadow: 0 0 0 2px rgba(33,150,243,0.2);
       }
 
-      /* Панель управления */
       .keyboard-control {
           position: fixed;
           bottom: var(--safe-area-bottom);
@@ -74,7 +80,6 @@
           box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
       }
 
-      /* Стили кнопок */
       .keyboard-control button {
           padding: 8px 16px;
           background: #2196F3;
@@ -84,7 +89,6 @@
           font-size: 16px;
       }
 
-      /* Адаптивные настройки */
       @media (max-width: 600px) {
           .material-input {
               font-size: 18px;
@@ -93,34 +97,35 @@
   </style>
 </head>
 <body>
-<div class="container">
-  <!-- 20 инпутов -->
-  <div class="input-section">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <input class="material-input" placeholder="Field 1" type="text">
-    <!-- ... остальные инпуты -->
+<div class="content-wrapper">
+  <div class="container">
+    <div class="input-section">
+      <input class="material-input" placeholder="Field 2" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <input class="material-input" placeholder="Field 1" type="text">
+      <!-- ... остальные 19 инпутов -->
+    </div>
   </div>
 </div>
 
@@ -133,52 +138,77 @@
 <script>
   telegram.WebApp.ready();
 
-  // Получаем все инпуты
   const inputs = Array.from(document.querySelectorAll('.material-input'));
+  let currentScrollTop = 0;
 
-  // Функции навигации
-  function previousInput() { inputs[inputs.indexOf(document.activeElement)-1]?.focus() }
-  function nextInput() { inputs[inputs.indexOf(document.activeElement)+1]?.focus() }
+  // Динамическое обновление высоты
+  function updateLayout() {
+    const container = document.querySelector('.container');
+    const keyboardHeight = telegram.WebApp.currentKeyboardHeight || 0;
 
-  // Скрытие клавиатуры
-  function hideKeyboard() {
-    telegram.WebApp.hideKeyboard({ placeholder: "Нажмите для ввода" });
-    document.activeElement.blur();
+    // Обновляем padding-bottom для контейнера
+    container.style.paddingBottom = `${keyboardHeight + 60}px`;
+
+    // Перерасчет высоты окна
+    telegram.WebApp.expand({
+      height: document.body.scrollHeight + 60 // Доп. маржин
+    });
   }
 
-  // Обработчики фокуса
+  // Обработчики событий Telegram
+  telegram.WebApp.onEvent('keyboard', (e) => {
+    updateLayout();
+  });
+
+  // Фокус-логика
   inputs.forEach(input => {
     input.addEventListener('focus', () => {
       document.querySelector('.keyboard-control').style.display = 'flex';
 
-      // Адаптивный скролл
+      // Сохраняем текущий скролл
+      currentScrollTop = window.scrollY;
+
+      // Рассчитываем позицию
       const rect = input.getBoundingClientRect();
+      const targetY = window.scrollY + rect.top - (window.innerHeight - rect.bottom - 50);
+
+      // Плавный скролл
       window.scrollTo({
-        top: window.scrollY + (rect.top - (window.innerHeight - rect.bottom)),
+        top: Math.max(0, targetY),
         behavior: 'smooth'
       });
 
-      // Обновление высоты контейнера
-      telegram.WebApp.expand({
-        height: document.body.scrollHeight + 50 // Дополнительный маржин
-      });
+      updateLayout();
     });
 
     input.addEventListener('blur', () => {
       setTimeout(() => {
         document.querySelector('.keyboard-control').style.display = 'none';
+        window.scrollTo({ top: currentScrollTop });
       }, 300);
     });
   });
 
-  // Обновление размеров при изменениях
-  window.addEventListener('resize', () => {
-    telegram.WebApp.expand();
-  });
+  // Контрольные функции
+  function previousInput() {
+    const index = inputs.indexOf(document.activeElement);
+    inputs[Math.max(index - 1, 0)]?.focus();
+  }
+
+  function nextInput() {
+    const index = inputs.indexOf(document.activeElement);
+    inputs[Math.min(index + 1, inputs.length - 1)]?.focus();
+  }
+
+  function hideKeyboard() {
+    telegram.WebApp.hideKeyboard({ placeholder: "Нажмите для ввода" });
+    document.activeElement.blur();
+  }
 
   // Инициализация
   telegram.WebApp.MainButton.color = '#2196F3';
-  telegram.WebApp.expand();
+  updateLayout();
+  window.addEventListener('resize', updateLayout);
 </script>
 </body>
 </html>
