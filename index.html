@@ -2,136 +2,136 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>Telegram Web App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Telegram Form</title>
-
-  <!-- Подключение Material Components CSS -->
-  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-  <!-- Telegram Web App стили -->
   <style>
+      /* Основные стили */
       body {
           margin: 0;
-          font-family: Roboto, Arial, sans-serif;
-          overflow: hidden;
-          height: 100%;
+          padding: 0;
+          min-height: 100vh;
+          background-color: #f5f5f5;
+      }
+
+      /* Стили Telegram */
+      .tg-scope {
           display: flex;
           flex-direction: column;
+          height: 100%;
       }
 
-      .mdc-layout-grid {
-          padding: 24px;
+      /* Контейнер с контентом */
+      .content {
           flex: 1;
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
           overflow-y: auto;
-          transition: transform 0.3s ease-out;
       }
 
-      .keyboard-open {
-          transform: translateY(-25%);
+      /* Стили для полей ввода в Material Design */
+      .form-field {
+          position: relative;
+          background-color: white;
+          border-radius: 4px;
+          padding: 8px;
+          box-shadow: 0 2px 2px -2px rgba(0,0,0,0.14),
+          0 1px 5px 0 rgba(0,0,0,0.12),
+          0 1px 3px 0 rgba(0,0,0,0.2);
       }
 
-      .mdc-button--primary {
-          margin-top: 24px;
+      .form-field input {
+          width: 100%;
+          padding: 12px;
+          border: none;
+          border-radius: 4px;
+          font-size: 16px;
+          background-color: transparent;
+          outline: none;
+      }
+
+      .form-field input:focus {
+          box-shadow: 0 0 0 2px #2196F3;
+      }
+
+      .form-field input::placeholder {
+          color: #757575;
       }
   </style>
 </head>
 <body>
-<div class="mdc-layout-grid" id="contentContainer">
-  <!-- Заголовок -->
-  <div class="mdc-layout-grid__inner">
-    <h2 class="mdc-typography--headline6">Форма</h2>
-  </div>
-
-  <!-- Форма с 20 инпутами -->
-  <form id="myForm">
-    <div class="mdc-layout-grid__inner">
-      <!-- Генерация 20 инпутов -->
-      <template id="inputTemplate">
-        <div class="mdc-layout-grid__cell--span-12">
-          <div class="mdc-text-field mdc-text-field--outlined">
-            <input class="mdc-text-field__input" type="text" id="field{{id}}">
-            <div class="mdc-notched-outline">
-              <div class="mdc-notched-outline__leading"></div>
-              <div class="mdc-notched-outline__notch">
-                <label class="mdc-floating-label">Поле {{id}}</label>
-              </div>
-              <div class="mdc-notched-outline__trailing"></div>
-            </div>
-          </div>
-        </div>
-      </template>
+<div class="tg-scope">
+  <div class="content">
+    <!-- Генерация 20 полей ввода -->
+    <div class="form-field">
+      <input type="text" placeholder="Input 1">
     </div>
-  </form>
-
-  <!-- Кнопка отправки -->
-  <div class="mdc-layout-grid__inner" style="margin-top: auto">
-    <button class="mdc-button mdc-button--primary" id="submitButton">Отправить</button>
+    <div class="form-field">
+      <input type="text" placeholder="Input 2">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 3">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 4">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 5">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 6">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 7">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 8">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 9">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 10">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 11">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 12">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 13">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 14">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 15">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 16">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 17">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 18">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 19">
+    </div>
+    <div class="form-field">
+      <input type="text" placeholder="Input 20">
+    </div>
   </div>
 </div>
 
-<!-- Подключение JS зависимостей -->
-<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 <script>
-  // Инициализация Material Components
-  document.addEventListener('DOMContentLoaded', () => {
-    const textFields = document.querySelectorAll('.mdc-text-field');
-    textFields.forEach(textField => {
-      mdc.textfield.MDCTextField.attachTo(textField);
-    });
-  });
-
-  // Создание 20 инпутов
-  const form = document.getElementById('myForm');
-  const template = document.getElementById('inputTemplate');
-
-  for (let i = 1; i <= 20; i++) {
-    const clone = document.importNode(template.content, true);
-    clone.querySelector('input').id = `field${i}`;
-    clone.querySelector('label').textContent = `Поле ${i}`;
-    form.appendChild(clone);
-  }
-
-  // Адаптация под клавиатуру
-  let lastKnownHeight = window.innerHeight;
-  let isKeyboardOpen = false;
-
-  document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('focus', () => {
-      window.addEventListener('resize', onResize);
-      checkKeyboard();
-    });
-    input.addEventListener('blur', () => {
-      window.removeEventListener('resize', onResize);
-      checkKeyboard();
-    });
-  });
-
-  function checkKeyboard() {
-    const currentHeight = window.innerHeight;
-    if (currentHeight < lastKnownHeight && !isKeyboardOpen) {
-      document.getElementById('contentContainer').classList.add('keyboard-open');
-      isKeyboardOpen = true;
-    } else if (currentHeight === lastKnownHeight && isKeyboardOpen) {
-      document.getElementById('contentContainer').classList.remove('keyboard-open');
-      isKeyboardOpen = false;
-    }
-    lastKnownHeight = currentHeight;
-  }
-
-  // Отправка данных
-  document.getElementById('submitButton').addEventListener('click', () => {
-    const data = {};
-    Array.from(document.querySelectorAll('input')).forEach(input => {
-      data[input.id] = input.value;
-    });
-    Telegram.WebApp.sendData(JSON.stringify(data));
-  });
-
-  // Закрытие приложения после отправки
-  Telegram.WebApp.MainButton.onClick(() => {
-    Telegram.WebApp.close();
-  });
+  // Инициализация Telegram Web App
+  const tg = window.Telegram.WebApp;
+  tg.ready();
 </script>
 </body>
 </html>
