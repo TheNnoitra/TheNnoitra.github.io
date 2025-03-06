@@ -27,13 +27,14 @@
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
+          height: 100%;
       }
 
       .input-section {
           display: flex;
           flex-direction: column;
           gap: 16px;
-          padding: 0 16px 16px  16px;
+          padding: 0 16px 16px 16px;
       }
 
       .material-input {
@@ -43,6 +44,9 @@
           font-size: 16px;
           transition: all 0.2s ease;
           box-sizing: border-box;
+          /* Важные атрибуты для клавиатуры */
+          -webkit-user-modify: read-write-plaintext-only;
+          ime-mode: auto;
       }
 
       .material-input:focus {
@@ -56,37 +60,64 @@
               font-size: 18px;
           }
       }
+
+      /* Стили для кнопки скрытия клавиатуры */
+      .keyboard-control {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: white;
+          padding: 8px;
+          border-top: 1px solid #e0e0e0;
+          display: flex;
+          justify-content: flex-end;
+          z-index: 1000;
+      }
+
+      .keyboard-control button {
+          padding: 8px 16px;
+          background: #2196F3;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 16px;
+          cursor: pointer;
+      }
   </style>
 </head>
 <body>
 <div class="container">
   <div class="input-section">
-    <input class="material-input" placeholder="Field 1">
-    <input class="material-input" placeholder="Field 2">
-    <input class="material-input" placeholder="Field 3">
-    <input class="material-input" placeholder="Field 4">
+    <!-- Примеры разных типов инпутов -->
+    <input class="material-input" placeholder="Text field" type="text">
+    <input class="material-input" placeholder="Email" type="email">
+    <input class="material-input" placeholder="Phone" type="tel">
+    <input class="material-input" placeholder="Number" type="number">
+  </div>
+
+  <!-- Остальные инпуты как раньше -->
+  <div class="input-section">
+    <input class="material-input" placeholder="Field 17">
+    <input class="material-input" placeholder="Field 18">
+    <input class="material-input" placeholder="Field 19">
+    <input class="material-input" placeholder="Field 20">
   </div>
 
   <div class="input-section">
-    <input class="material-input" placeholder="Field 5">
-    <input class="material-input" placeholder="Field 6">
-    <input class="material-input" placeholder="Field 7">
-    <input class="material-input" placeholder="Field 8">
+    <input class="material-input" placeholder="Field 17">
+    <input class="material-input" placeholder="Field 18">
+    <input class="material-input" placeholder="Field 19">
+    <input class="material-input" placeholder="Field 20">
   </div>
 
   <div class="input-section">
-    <input class="material-input" placeholder="Field 9">
-    <input class="material-input" placeholder="Field 10">
-    <input class="material-input" placeholder="Field 11">
-    <input class="material-input" placeholder="Field 12">
+    <input class="material-input" placeholder="Field 17">
+    <input class="material-input" placeholder="Field 18">
+    <input class="material-input" placeholder="Field 19">
+    <input class="material-input" placeholder="Field 20">
   </div>
-
-  <div class="input-section">
-    <input class="material-input" placeholder="Field 13">
-    <input class="material-input" placeholder="Field 14">
-    <input class="material-input" placeholder="Field 15">
-    <input class="material-input" placeholder="Field 16">
-  </div>
+  <!-- ... -->
 
   <div class="input-section">
     <input class="material-input" placeholder="Field 17">
@@ -96,35 +127,60 @@
   </div>
 </div>
 
+<!-- Кнопка для скрытия клавиатуры -->
+<div class="keyboard-control" style="display: none;">
+  <button onclick="hideKeyboard()">Скрыть клавиатуру</button>
+</div>
+
 <script>
   telegram.WebApp.ready();
 
+  // Показать/скрыть кнопку управления клавиатурой
   document.querySelectorAll('.material-input').forEach(input => {
     input.addEventListener('focus', () => {
+      document.querySelector('.keyboard-control').style.display = 'flex';
+
+      // Дополнительный скролл для видимости
       const rect = input.getBoundingClientRect();
       const keyboardHeight = telegram.WebApp.currentKeyboardHeight || 0;
-
-      // Расчет позиции с учетом клавиатуры
-      const targetY = rect.top - (keyboardHeight + 50);
-
       window.scrollTo({
-        top: window.scrollY + targetY,
+        top: window.scrollY + rect.top - (keyboardHeight + 50),
         behavior: 'smooth'
       });
 
-      // Уведомление Telegram о изменении высоты
-      telegram.WebApp.expand({
-        height: document.body.scrollHeight
-      });
+      telegram.WebApp.expand({ height: document.body.scrollHeight });
+    });
+
+    input.addEventListener('blur', () => {
+      // Скрываем кнопку через 300мс после потери фокуса
+      setTimeout(() => {
+        document.querySelector('.keyboard-control').style.display = 'none';
+      }, 300);
     });
   });
 
-  // Обработчик изменения размеров окна
+  // Функция скрытия клавиатуры
+  function hideKeyboard() {
+    telegram.WebApp.hideKeyboard({
+      text: "Ввод завершён",
+      placeholder: "Нажмите для ввода"
+    });
+    document.activeElement.blur();
+  }
+
+  // Обработка кликов вне инпутов
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.material-input')) {
+      document.activeElement.blur();
+    }
+  });
+
+  // Обновление высоты окна
   window.addEventListener('resize', () => {
     telegram.WebApp.expand();
   });
 
-  // Инициализация при загрузке
+  // Настройки главной кнопки
   telegram.WebApp.MainButton.color = '#2196F3';
   telegram.WebApp.expand();
 </script>
