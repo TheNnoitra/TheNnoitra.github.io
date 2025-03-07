@@ -15,15 +15,16 @@
           padding: 0;
           background-color: #f0f0f0;
           font-family: 'Roboto', sans-serif;
-          height: var(--tg-viewport-stable-height);
-          overflow: hidden;
+          height: 100vh; /* Занимаем всю высоту экрана */
+          overflow: hidden; /* Предотвращаем прокрутку body */
       }
 
       .content-container {
-          min-height: var(--tg-viewport-stable-height);
-          overflow-y: auto;
-          padding-bottom: var(--tg-content-safe-area-inset);
+          height: var(--tg-viewport-stable-height); /* Используем стабильную высоту для адаптации под клавиатуру */
+          overflow-y: auto; /* Включаем прокрутку только для контента */
+          padding-bottom: calc(var(--tg-content-safe-area-inset) + 20px); /* Дополнительный отступ для предотвращения перекрытия */
           box-sizing: border-box;
+          -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
       }
 
       /* Стили для страниц */
@@ -76,7 +77,7 @@
         <form id="car-acceptance-form">
           <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" type="text" id="brand" name="brand" required>
-            <label class="mdl-textfield__label" for="brand">Марка</label>
+            <label class="mdl-textfield__label" for="brand">Марка2</label>
           </div>
           <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" type="text" id="model" name="model" required>
@@ -126,7 +127,7 @@
         <h2 class="mdl-card__title-text">Карточка автомобиля</h2>
       </div>
       <div class="mdl-card__supporting-text">
-        <p><strong>Марка_:</strong> <span id="card-brand"></span></p>
+        <p><strong>Марка:</strong> <span id="card-brand"></span></p>
         <p><strong>Модель:</strong> <span id="card-model"></span></p>
         <p><strong>Год выпуска:</strong> <span id="card-year"></span></p>
         <p><strong>VIN-номер:</strong> <span id="card-vin"></span></p>
