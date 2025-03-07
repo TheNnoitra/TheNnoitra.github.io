@@ -2,38 +2,14 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Telegram Web App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Автосервис CRM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-      /* Глобальные настройки */
-      * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-      }
-
-      html, body {
-          width: 100%;
-          max-width: 100vw;
-          overflow: hidden;
-      }
-
+      /* Стили из предыдущих версий */
       :root {
           --primary-bg: #f5f5f5;
-          --secondary-bg: white;
           --text-color: #212121;
-          --shadow-color: rgba(0,0,0,0.14);
-          --input-border: #cccccc;
           --accent-color: #2196F3;
-      }
-
-      [data-theme="dark"] {
-          --primary-bg: #121212;
-          --secondary-bg: #212121;
-          --text-color: white;
-          --shadow-color: rgba(255,255,255,0.1);
-          --input-border: #4d4d4d;
-          --accent-color: #1976D2;
       }
 
       body {
@@ -42,227 +18,70 @@
           padding-bottom: env(--tg-content-safe-area-inset-bottom);
       }
 
-      .tg-scope {
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          width: 100%;
-      }
-
-      .content {
-          flex: 1;
+      .container {
           padding: 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          overflow-y: auto;
-          max-height: calc(var(--tg-viewport-stable-height) - 32px);
-          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
       }
 
-      .form-field {
-          background-color: var(--secondary-bg);
-          border-radius: 4px;
-          padding: 8px;
-          box-shadow: 0 2px 2px -2px var(--shadow-color),
-          0 1px 5px 0 var(--shadow-color),
-          0 1px 3px 0 var(--shadow-color);
-          width: 100%;
-          position: relative;
+      .card {
+          background-color: white;
+          padding: 16px;
+          border-radius: 8px;
+          margin: 8px 0;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       }
 
-      .form-field.error {
-          border: 2px solid red;
-      }
-
-      .form-field input {
-          width: 100%;
-          padding: 12px;
-          border: 1px solid var(--input-border);
-          border-radius: 4px;
-          font-size: 16px;
-          background-color: transparent;
-          color: var(--text-color);
-          outline: none;
-          display: block;
-      }
-
-      .form-field input:focus {
-          box-shadow: 0 0 0 2px var(--accent-color);
-      }
-
-      .form-field input::placeholder {
-          color: rgba(var(--text-color), 0.5);
-      }
-
-      .tg-submit {
-          margin-top: 16px;
-          padding: 12px;
+      .button {
           background-color: var(--accent-color);
           color: white;
+          padding: 12px;
           border: none;
           border-radius: 4px;
+          margin: 8px 0;
           width: 100%;
-          transition: background-color 0.3s;
       }
 
-      .tg-submit:hover {
-          background-color: var(--accent-color);
-          opacity: 0.8;
-      }
-
-      .error-message {
-          color: red;
-          font-size: 12px;
-          margin-top: 4px;
+      [data-theme="dark"] {
+          --primary-bg: #121212;
+          --text-color: white;
+          --accent-color: #1976D2;
       }
   </style>
 </head>
 <body>
-<div class="tg-scope">
-  <div class="content">
-    <!-- 20 полей ввода -->
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 1 (required)"
-        class="tg-input required"
-      >
+<div class="container">
+  <!-- Меню администратора -->
+  <div id="admin-menu" class="hidden">
+    <button class="button" onclick="showAddCarForm()">Добавить автомобиль</button>
+    <button class="button" onclick="showCarsList()">Автомобили в работе</button>
+    <button class="button" onclick="showHistory()">История</button>
+  </div>
+
+  <!-- Форма добавления автомобиля -->
+  <div id="add-car-form" class="hidden">
+    <h3>Добавить автомобиль</h3>
+    <input type="text" placeholder="VIN" id="vin" required>
+    <input type="text" placeholder="Марка" id="brand" required>
+    <input type="text" placeholder="Модель" id="model" required>
+    <input type="number" placeholder="Пробег (км)" id="mileage">
+    <textarea placeholder="Список работ" id="tasks"></textarea>
+    <button class="button" onclick="saveCar()">Сохранить</button>
+  </div>
+
+  <!-- Список автомобилей -->
+  <div id="cars-list" class="hidden">
+    <div class="card" v-for="car in cars">
+      <h3>{{ car.brand }} {{ car.model }}</h3>
+      <p>VIN: {{ car.vin }}</p>
+      <button class="button" onclick="assignExecutor(car.id)">Назначить исполнителя</button>
     </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 2 (required)"
-        class="tg-input required"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 3 (required)"
-        class="tg-input required"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 4"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 5"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 6"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 7"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 8"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 9"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 10"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 11"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 12"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 13"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 14"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 15"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 16"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 17"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 18"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 19"
-        class="tg-input"
-      >
-    </div>
-    <div class="form-field">
-      <input
-        type="text"
-        placeholder="Input 20"
-        class="tg-input"
-      >
-    </div>
-    <button class="tg-submit">Отправить</button>
+  </div>
+
+  <!-- Модальное окно назначения исполнителя -->
+  <div id="assign-modal" class="hidden">
+    <input type="text" placeholder="Telegram ID исполнителя" id="executor-id">
+    <button onclick="confirmAssignment()">Назначить</button>
   </div>
 </div>
 
@@ -271,66 +90,31 @@
   const tg = window.Telegram.WebApp;
   tg.ready();
 
-  // Функция валидации формы
-  function validateForm() {
-    const requiredInputs = document.querySelectorAll('.tg-input.required');
-    let isValid = true;
-
-    requiredInputs.forEach(input => {
-      if (input.value.trim() === '') {
-        input.parentElement.classList.add('error');
-        isValid = false;
-      } else {
-        input.parentElement.classList.remove('error');
-      }
-    });
-
-    return isValid;
+  // Аутентификация
+  async function auth() {
+    const userId = tg.initData?.user?.id;
+    // Сохранение в localStorage или отправка на бэкенд
   }
 
-  // Обработчик Enter
-  document.querySelectorAll('.tg-input').forEach(input => {
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        if (validateForm()) {
-          tg.closeKeyboard();
-        }
-      }
-    });
-  });
-
-  // Автосохранение
-  function saveFormData() {
-    const inputs = document.querySelectorAll('.tg-input');
-    const data = Array.from(inputs).map(input => input.value);
-    localStorage.setItem('formData', JSON.stringify(data));
+  // Добавление автомобиля
+  async function saveCar() {
+    const data = {
+      vin: document.getElementById('vin').value,
+      brand: document.getElementById('brand').value,
+      model: document.getElementById('model').value,
+      mileage: document.getElementById('mileage').value,
+      tasks: document.getElementById('tasks').value.split('\n')
+    };
+    // Отправка на бэкенд
   }
 
-  function loadFormData() {
-    const savedData = JSON.parse(localStorage.getItem('formData')) || [];
-    const inputs = document.querySelectorAll('.tg-input');
-    inputs.forEach((input, index) => {
-      input.value = savedData[index] || '';
-    });
+  // Назначение исполнителя
+  function assignExecutor(carId) {
+    document.getElementById('assign-modal').classList.remove('hidden');
+    // Логика отправки данных
   }
 
-  document.querySelectorAll('.tg-input').forEach(input => {
-    input.addEventListener('input', saveFormData);
-  });
-  loadFormData();
-
-  // Отправка данных
-  document.querySelector('.tg-submit').addEventListener('click', () => {
-    if (validateForm()) {
-      const inputs = document.querySelectorAll('.tg-input');
-      const formData = Array.from(inputs).map(input => input.value).join('\n');
-      tg.sendMessage(formData);
-      // tg.close();
-    }
-  });
-
-  // Тема
+  // Смена темы
   function applyTheme() {
     document.body.setAttribute(
       'data-theme',
