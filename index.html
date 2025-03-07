@@ -68,7 +68,7 @@
   <div class="content">
     <!-- Генерация 20 полей ввода -->
     <div class="form-field">
-      <input type="text" placeholder="Input 2">
+      <input type="text" placeholder="Input 3">
     </div>
     <div class="form-field">
       <input type="text" placeholder="Input 2">
@@ -136,19 +136,8 @@
   const tg = window.Telegram.WebApp;
   tg.ready();
 
-  // Обработчик изменения состояния клавиатуры
-  function updateLayout() {
-    // Обновляем высоту контента через CSS-переменные
-    const content = document.querySelector('.content');
-    content.style.maxHeight = `calc(var(--tg-viewport-stable-height) - 32px)`;
-  }
-
-  // Подписываемся на события клавиатуры
-  tg.onEvent('keyboardOpen', updateLayout);
-  tg.onEvent('keyboardClose', updateLayout);
-
-  // Инициализация при старте
-  updateLayout();
+  // Динамическое обновление высоты через CSS-переменные
+  // Telegram автоматически обновляет --tg-viewport-stable-height при изменении клавиатуры
 </script>
 </body>
 </html>
