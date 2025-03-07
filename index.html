@@ -5,22 +5,41 @@
   <title>Telegram Web App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <style>
-      /* Основные стили */
-      body {
+      /* Глобальные настройки */
+      * {
+          box-sizing: border-box; /* Важно для корректного расчета размеров */
           margin: 0;
-          min-height: 100vh;
-          background-color: #f5f5f5;
+          padding: 0;
+      }
+
+      :root {
+          --primary-bg: #f5f5f5;
+          --secondary-bg: white;
+          --text-color: #212121;
+          --shadow-color: rgba(0,0,0,0.14);
+          --input-border: #cccccc;
+      }
+
+      [data-theme="dark"] {
+          --primary-bg: #121212;
+          --secondary-bg: #212121;
+          --text-color: white;
+          --shadow-color: rgba(255,255,255,0.1);
+          --input-border: #4d4d4d;
+      }
+
+      body {
+          background-color: var(--primary-bg);
+          color: var(--text-color);
           padding-bottom: env(--tg-content-safe-area-inset-bottom);
       }
 
-      /* Стили Telegram */
       .tg-scope {
           display: flex;
           flex-direction: column;
           height: 100%;
       }
 
-      /* Контейнер с контентом */
       .content {
           flex: 1;
           padding: 16px;
@@ -29,28 +48,27 @@
           gap: 16px;
           overflow-y: auto;
           max-height: calc(var(--tg-viewport-stable-height) - 32px);
-          transition: max-height 0.2s ease;
+          width: 100%; /* Ограничиваем контейнер */
       }
 
-      /* Стили для полей ввода в Material Design */
       .form-field {
-          position: relative;
-          background-color: white;
+          background-color: var(--secondary-bg);
           border-radius: 4px;
           padding: 8px;
-          box-shadow: 0 2px 2px -2px rgba(0,0,0,0.14),
-          0 1px 5px 0 rgba(0,0,0,0.12),
-          0 1px 3px 0 rgba(0,0,0,0.2);
-          transition: box-shadow 0.3s ease;
+          box-shadow: 0 2px 2px -2px var(--shadow-color),
+          0 1px 5px 0 var(--shadow-color),
+          0 1px 3px 0 var(--shadow-color);
+          width: 100%; /* Форма занимает всю доступную ширину контейнера */
       }
 
       .form-field input {
-          width: 100%;
+          width: 100%; /* Поле ввода заполняет родительский контейнер */
           padding: 12px;
-          border: none;
+          border: 1px solid var(--input-border);
           border-radius: 4px;
           font-size: 16px;
           background-color: transparent;
+          color: var(--text-color);
           outline: none;
       }
 
@@ -59,71 +77,72 @@
       }
 
       .form-field input::placeholder {
-          color: #757575;
+          color: rgba(var(--text-color), 0.5);
       }
   </style>
 </head>
 <body>
 <div class="tg-scope">
   <div class="content">
-    <!-- Генерация 20 полей ввода -->
+    <!-- 20 полей ввода -->
     <div class="form-field">
-      <input type="text" placeholder="Input 3">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 2">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 3">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 4">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 5">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 6">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 7">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 8">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 9">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 10">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 11">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 12">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 13">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 14">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 15">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 16">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 17">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 18">
+      <input type="text" placeholder="Input 1">
     </div>
     <div class="form-field">
-      <input type="text" placeholder="Input 19">
+      <input type="text" placeholder="Input 1">
     </div>
+    <!-- ... остальные поля ... -->
     <div class="form-field">
       <input type="text" placeholder="Input 20">
     </div>
@@ -132,12 +151,18 @@
 
 <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 <script>
-  // Инициализация Telegram Web App
   const tg = window.Telegram.WebApp;
   tg.ready();
 
-  // Динамическое обновление высоты через CSS-переменные
-  // Telegram автоматически обновляет --tg-viewport-stable-height при изменении клавиатуры
+  function applyTheme() {
+    document.body.setAttribute(
+      'data-theme',
+      tg.isDarkMode() ? 'dark' : 'light'
+    );
+  }
+
+  applyTheme();
+  tg.onUpdate(applyTheme);
 </script>
 </body>
 </html>
