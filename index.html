@@ -14,7 +14,7 @@
 
       html, body {
           width: 100%;
-          max-width: 100vw; /* Ограничиваем ширину по видимой области */
+          max-width: 100vw;
           overflow: hidden;
       }
 
@@ -24,6 +24,7 @@
           --text-color: #212121;
           --shadow-color: rgba(0,0,0,0.14);
           --input-border: #cccccc;
+          --accent-color: #2196F3;
       }
 
       [data-theme="dark"] {
@@ -32,20 +33,20 @@
           --text-color: white;
           --shadow-color: rgba(255,255,255,0.1);
           --input-border: #4d4d4d;
+          --accent-color: #1976D2;
       }
 
       body {
           background-color: var(--primary-bg);
           color: var(--text-color);
           padding-bottom: env(--tg-content-safe-area-inset-bottom);
-          max-width: 100%; /* Дополнительное ограничение */
       }
 
       .tg-scope {
           display: flex;
           flex-direction: column;
           height: 100%;
-          width: 100%; /* Занять всю доступную ширину */
+          width: 100%;
       }
 
       .content {
@@ -56,7 +57,7 @@
           gap: 16px;
           overflow-y: auto;
           max-height: calc(var(--tg-viewport-stable-height) - 32px);
-          width: 100%; /* Занять всю ширину родителя */
+          width: 100%;
       }
 
       .form-field {
@@ -66,8 +67,12 @@
           box-shadow: 0 2px 2px -2px var(--shadow-color),
           0 1px 5px 0 var(--shadow-color),
           0 1px 3px 0 var(--shadow-color);
-          width: 100%; /* Ширина поля ввода */
-          max-width: 100%; /* Запретить переполнение */
+          width: 100%;
+          position: relative;
+      }
+
+      .form-field.error {
+          border: 2px solid red;
       }
 
       .form-field input {
@@ -79,15 +84,37 @@
           background-color: transparent;
           color: var(--text-color);
           outline: none;
-          display: block; /* Убрать горизонтальные отступы */
+          display: block;
       }
 
       .form-field input:focus {
-          box-shadow: 0 0 0 2px #2196F3;
+          box-shadow: 0 0 0 2px var(--accent-color);
       }
 
       .form-field input::placeholder {
           color: rgba(var(--text-color), 0.5);
+      }
+
+      .tg-submit {
+          margin-top: 16px;
+          padding: 12px;
+          background-color: var(--accent-color);
+          color: white;
+          border: none;
+          border-radius: 4px;
+          width: 100%;
+          transition: background-color 0.3s;
+      }
+
+      .tg-submit:hover {
+          background-color: var(--accent-color);
+          opacity: 0.8;
+      }
+
+      .error-message {
+          color: red;
+          font-size: 12px;
+          margin-top: 4px;
       }
   </style>
 </head>
@@ -98,11 +125,136 @@
     <div class="form-field">
       <input
         type="text"
-        placeholder="Input 1"
+        placeholder="Input 1 (required)"
+        class="tg-input required"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 2 (required)"
+        class="tg-input required"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 3 (required)"
+        class="tg-input required"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 4"
         class="tg-input"
       >
     </div>
-    <!-- ... остальные поля ... -->
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 5"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 6"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 7"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 8"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 9"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 10"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 11"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 12"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 13"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 14"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 15"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 16"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 17"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 18"
+        class="tg-input"
+      >
+    </div>
+    <div class="form-field">
+      <input
+        type="text"
+        placeholder="Input 19"
+        class="tg-input"
+      >
+    </div>
     <div class="form-field">
       <input
         type="text"
@@ -110,6 +262,7 @@
         class="tg-input"
       >
     </div>
+    <button class="tg-submit">Отправить</button>
   </div>
 </div>
 
@@ -118,14 +271,63 @@
   const tg = window.Telegram.WebApp;
   tg.ready();
 
-  // Закрытие клавиатуры при Enter
+  // Функция валидации формы
+  function validateForm() {
+    const requiredInputs = document.querySelectorAll('.tg-input.required');
+    let isValid = true;
+
+    requiredInputs.forEach(input => {
+      if (input.value.trim() === '') {
+        input.parentElement.classList.add('error');
+        isValid = false;
+      } else {
+        input.parentElement.classList.remove('error');
+      }
+    });
+
+    return isValid;
+  }
+
+  // Обработчик Enter
   document.querySelectorAll('.tg-input').forEach(input => {
     input.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        tg.closeKeyboard();
+        if (validateForm()) {
+          tg.closeKeyboard();
+        }
       }
     });
+  });
+
+  // Автосохранение
+  function saveFormData() {
+    const inputs = document.querySelectorAll('.tg-input');
+    const data = Array.from(inputs).map(input => input.value);
+    localStorage.setItem('formData', JSON.stringify(data));
+  }
+
+  function loadFormData() {
+    const savedData = JSON.parse(localStorage.getItem('formData')) || [];
+    const inputs = document.querySelectorAll('.tg-input');
+    inputs.forEach((input, index) => {
+      input.value = savedData[index] || '';
+    });
+  }
+
+  document.querySelectorAll('.tg-input').forEach(input => {
+    input.addEventListener('input', saveFormData);
+  });
+  loadFormData();
+
+  // Отправка данных
+  document.querySelector('.tg-submit').addEventListener('click', () => {
+    if (validateForm()) {
+      const inputs = document.querySelectorAll('.tg-input');
+      const formData = Array.from(inputs).map(input => input.value).join('\n');
+      tg.sendMessage(formData);
+      // tg.close();
+    }
   });
 
   // Тема
