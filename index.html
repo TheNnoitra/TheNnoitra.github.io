@@ -15,23 +15,24 @@
           padding: 0;
           background-color: #f0f0f0;
           font-family: 'Roboto', sans-serif;
-          height: 100vh; /* Занимаем всю высоту экрана */
-          overflow: hidden; /* Предотвращаем прокрутку body */
+          height: 100vh;
+          overflow: hidden;
       }
 
       .content-container {
-          height: var(--tg-viewport-stable-height); /* Используем стабильную высоту для адаптации под клавиатуру */
-          overflow-y: auto; /* Включаем прокрутку только для контента */
-          padding-bottom: calc(var(--tg-content-safe-area-inset) + 20px); /* Дополнительный отступ для предотвращения перекрытия */
+          height: var(--tg-viewport-stable-height);
+          overflow-y: auto;
+          padding-bottom: calc(var(--tg-content-safe-area-inset) + 20px);
           box-sizing: border-box;
-          -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+          -webkit-overflow-scrolling: touch;
+          padding-top: 10px;
       }
 
       /* Стили для страниц */
       .page {
           display: none;
           opacity: 0;
-          transition: opacity 0.5s ease-in-out;
+          transition: opacity 0.3s ease-in-out;
       }
 
       .page.active {
@@ -39,29 +40,119 @@
           opacity: 1;
       }
 
-      /* Material Design стили */
+      /* Material Design стили с современными улучшениями */
       .mdl-card {
-          width: 100%;
+          width: 90%;
           max-width: 600px;
-          margin: 20px auto;
+          margin: 15px auto;
           padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+          background: #fff;
       }
 
       .mdl-card__title {
-          background-color: #3f51b5;
+          background: linear-gradient(135deg, #3f51b5, #7986cb);
           color: white;
+          border-radius: 12px 12px 0 0;
+          padding: 15px;
       }
 
       .mdl-textfield {
           width: 100%;
+          margin-bottom: 10px;
       }
 
       .mdl-button {
-          margin-top: 10px;
+          margin: 10px 0;
+          border-radius: 8px;
+          background: #3f51b5;
+          transition: transform 0.2s;
+      }
+
+      .mdl-button:hover {
+          transform: scale(1.05);
       }
 
       .mdl-list__item {
           cursor: pointer;
+          padding: 15px;
+          border-bottom: 1px solid #eee;
+          transition: background 0.2s;
+      }
+
+      .mdl-list__item:hover {
+          background: #f5f5f5;
+      }
+
+      /* Навигационная панель */
+      .bottom-nav {
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          background: linear-gradient(135deg, #3f51b5, #7986cb);
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+          display: flex;
+          justify-content: space-around;
+          padding: 10px 0;
+          z-index: 1000;
+      }
+
+      .nav-item {
+          text-align: center;
+          color: #fff;
+          text-decoration: none;
+          transition: transform 0.2s;
+          min-width: 60px;
+      }
+
+      .nav-item.active {
+          transform: scale(1.1);
+      }
+
+      .nav-item i {
+          display: block;
+          font-size: 24px;
+      }
+
+      .nav-item span {
+          font-size: 12px;
+          font-family: 'Roboto', sans-serif;
+      }
+
+      /* Стили для списка автомобилей */
+      .car-card {
+          background: #fff;
+          border-radius: 12px;
+          padding: 15px;
+          margin: 10px auto;
+          width: 90%;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          transition: transform 0.2s;
+      }
+
+      .car-card:hover {
+          transform: translateY(-2px);
+      }
+
+      /* Вкладки в карточке автомобиля */
+      .tab-container {
+          display: flex;
+          justify-content: space-around;
+          margin: 10px 0;
+      }
+
+      .tab {
+          padding: 10px 20px;
+          cursor: pointer;
+          background: #eee;
+          border-radius: 8px;
+          transition: background 0.2s;
+      }
+
+      .tab.active {
+          background: #3f51b5;
+          color: white;
       }
   </style>
 </head>
@@ -71,32 +162,32 @@
   <div id="acceptance-page" class="page">
     <div class="mdl-card">
       <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Принятие автомобиля</h2>
+        <h2 class="mdl-card__title-text">Добавить автомобиль</h2>
       </div>
       <div class="mdl-card__supporting-text">
         <form id="car-acceptance-form">
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="brand" name="brand" required>
-            <label class="mdl-textfield__label" for="brand">Марка2</label>
+            <label class="mdl-textfield__label" for="brand">Марка</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="model" name="model" required>
             <label class="mdl-textfield__label" for="model">Модель</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="number" id="year" name="year" required>
             <label class="mdl-textfield__label" for="year">Год выпуска</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="vin" name="vin" required>
             <label class="mdl-textfield__label" for="vin">VIN-номер</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <textarea class="mdl-textfield__input" id="description" name="description" required></textarea>
             <label class="mdl-textfield__label" for="description">Описание проблемы или работ</label>
           </div>
           <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit">
-            Добавить автомобиль
+            Добавить
           </button>
         </form>
       </div>
@@ -109,13 +200,8 @@
       <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Автомобили в работе</h2>
       </div>
-      <div class="mdl-card__supporting-text">
-        <ul id="cars-list" class="mdl-list">
-          <!-- Автомобили будут добавлены здесь -->
-        </ul>
-        <button id="back-to-acceptance" class="mdl-button mdl-js-button mdl-button--raised">
-          Добавить новый автомобиль
-        </button>
+      <div class="mdl-card__supporting-text" id="cars-list">
+        <!-- Карточки автомобилей будут добавлены здесь -->
       </div>
     </div>
   </div>
@@ -127,15 +213,22 @@
         <h2 class="mdl-card__title-text">Карточка автомобиля</h2>
       </div>
       <div class="mdl-card__supporting-text">
-        <p><strong>Марка:</strong> <span id="card-brand"></span></p>
-        <p><strong>Модель:</strong> <span id="card-model"></span></p>
-        <p><strong>Год выпуска:</strong> <span id="card-year"></span></p>
-        <p><strong>VIN-номер:</strong> <span id="card-vin"></span></p>
-        <p><strong>Описание проблемы или работ:</strong> <span id="card-description"></span></p>
-        <h3>Список работ</h3>
-        <ul id="works-list">
-          <!-- Работы будут добавлены здесь -->
-        </ul>
+        <div class="tab-container">
+          <div class="tab active" data-tab="main">Основное</div>
+          <div class="tab" data-tab="works">Работы</div>
+        </div>
+        <div id="main-tab" class="tab-content">
+          <p><strong>Марка:</strong> <span id="card-brand"></span></p>
+          <p><strong>Модель:</strong> <span id="card-model"></span></p>
+          <p><strong>Год выпуска:</strong> <span id="card-year"></span></p>
+          <p><strong>VIN-номер:</strong> <span id="card-vin"></span></p>
+          <p><strong>Описание:</strong> <span id="card-description"></span></p>
+        </div>
+        <div id="works-tab" class="tab-content" style="display: none;">
+          <ul id="works-list">
+            <!-- Работы будут добавлены здесь -->
+          </ul>
+        </div>
         <button id="back-to-list" class="mdl-button mdl-js-button mdl-button--raised">
           Назад к списку
         </button>
@@ -144,12 +237,28 @@
   </div>
 </div>
 
+<!-- Навигационная панель -->
+<nav class="bottom-nav">
+  <a href="#" class="nav-item active" data-page="acceptance-page">
+    <i class="material-icons">add_circle</i>
+    <span>Добавить</span>
+  </a>
+  <a href="#" class="nav-item" data-page="list-page">
+    <i class="material-icons">list</i>
+    <span>Список</span>
+  </a>
+  <a href="#" class="nav-item" data-page="settings-page">
+    <i class="material-icons">settings</i>
+    <span>Настройки</span>
+  </a>
+</nav>
+
 <script>
   // Инициализация Telegram Web App
   const tg = window.Telegram.WebApp;
   tg.ready();
 
-  // Пример данных (в реальном приложении данные можно хранить на сервере)
+  // Пример данных
   let cars = [
     { id: 1, brand: 'Toyota', model: 'Camry', year: 2015, vin: '1234567890', description: 'Замена масла и фильтров', status: 'в работе', works: [{ name: 'Замена масла', status: 'выполнено' }, { name: 'Замена фильтров', status: 'в работе' }] },
     { id: 2, brand: 'Honda', model: 'Accord', year: 2018, vin: '0987654321', description: 'Диагностика двигателя', status: 'готово', works: [{ name: 'Диагностика двигателя', status: 'выполнено' }] }
@@ -160,12 +269,12 @@
   // Функция для отображения страницы
   function showPage(pageId) {
     const pages = document.querySelectorAll('.page');
+    const navItems = document.querySelectorAll('.nav-item');
     pages.forEach(page => {
-      if (page.id === pageId) {
-        page.classList.add('active');
-      } else {
-        page.classList.remove('active');
-      }
+      page.classList.toggle('active', page.id === pageId);
+    });
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.dataset.page === pageId);
     });
   }
 
@@ -174,19 +283,18 @@
     const list = document.querySelector('#cars-list');
     list.innerHTML = '';
     cars.forEach(car => {
-      const listItem = document.createElement('li');
-      listItem.className = 'mdl-list__item';
-      listItem.innerHTML = `
-          <span class="mdl-list__item-primary-content">
-            ${car.brand} ${car.model} - ${car.status}
-          </span>
+      const carCard = document.createElement('div');
+      carCard.className = 'car-card';
+      carCard.innerHTML = `
+          <h3>${car.brand} ${car.model}</h3>
+          <p>Статус: ${car.status}</p>
         `;
-      listItem.addEventListener('click', () => {
+      carCard.addEventListener('click', () => {
         currentCarId = car.id;
         displayCarCard(car);
         showPage('card-page');
       });
-      list.appendChild(listItem);
+      list.appendChild(carCard);
     });
   }
 
@@ -232,13 +340,28 @@
     showPage('list-page');
   });
 
-  // Обработчики кнопок
-  document.querySelector('#back-to-acceptance').addEventListener('click', () => {
-    showPage('acceptance-page');
+  // Обработчики навигации
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const pageId = item.dataset.page;
+      showPage(pageId);
+    });
   });
 
+  // Обработчик кнопки "Назад"
   document.querySelector('#back-to-list').addEventListener('click', () => {
     showPage('list-page');
+  });
+
+  // Обработчик вкладок
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+      tab.classList.add('active');
+      document.querySelector(`#${tab.dataset.tab}-tab`).style.display = 'block';
+    });
   });
 
   // Инициализация
