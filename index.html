@@ -1,128 +1,247 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Автосервис CRM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM для автосервиса</title>
+  <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <style>
-      /* Стили из предыдущих версий */
-      :root {
-          --primary-bg: #f5f5f5;
-          --text-color: #212121;
-          --accent-color: #2196F3;
-      }
-
+      /* Основные стили для адаптации под Telegram */
       body {
-          background-color: var(--primary-bg);
-          color: var(--text-color);
-          padding-bottom: env(--tg-content-safe-area-inset-bottom);
+          margin: 0;
+          padding: 0;
+          background-color: #f0f0f0;
+          font-family: 'Roboto', sans-serif;
+          height: var(--tg-viewport-stable-height);
+          overflow: hidden;
       }
 
-      .container {
-          padding: 16px;
+      .content-container {
+          height: calc(var(--tg-viewport-stable-height) - var(--tg-content-safe-area-inset));
+          overflow-y: auto;
+          padding-bottom: var(--tg-content-safe-area-inset);
+      }
+
+      /* Стили для страниц */
+      .page {
+          display: none;
+          opacity: 0;
+          transition: opacity 0.5s ease-in-out;
+      }
+
+      .page.active {
+          display: block;
+          opacity: 1;
+      }
+
+      /* Material Design стили */
+      .mdl-card {
+          width: 100%;
           max-width: 600px;
-          margin: 0 auto;
+          margin: 20px auto;
+          padding: 20px;
       }
 
-      .card {
-          background-color: white;
-          padding: 16px;
-          border-radius: 8px;
-          margin: 8px 0;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      }
-
-      .button {
-          background-color: var(--accent-color);
+      .mdl-card__title {
+          background-color: #3f51b5;
           color: white;
-          padding: 12px;
-          border: none;
-          border-radius: 4px;
-          margin: 8px 0;
+      }
+
+      .mdl-textfield {
           width: 100%;
       }
 
-      [data-theme="dark"] {
-          --primary-bg: #121212;
-          --text-color: white;
-          --accent-color: #1976D2;
+      .mdl-button {
+          margin-top: 10px;
+      }
+
+      .mdl-list__item {
+          cursor: pointer;
       }
   </style>
 </head>
 <body>
-<div class="container">
-  <!-- Меню администратора -->
-  <div id="admin-menu" class="hidden">
-    <button class="button" onclick="showAddCarForm()">Добавить автомобиль</button>
-    <button class="button" onclick="showCarsList()">Автомобили в работе</button>
-    <button class="button" onclick="showHistory()">История</button>
-  </div>
-
-  <!-- Форма добавления автомобиля -->
-  <div id="add-car-form" class="hidden">
-    <h3>Добавить автомобиль</h3>
-    <input type="text" placeholder="VIN" id="vin" required>
-    <input type="text" placeholder="Марка" id="brand" required>
-    <input type="text" placeholder="Модель" id="model" required>
-    <input type="number" placeholder="Пробег (км)" id="mileage">
-    <textarea placeholder="Список работ" id="tasks"></textarea>
-    <button class="button" onclick="saveCar()">Сохранить</button>
-  </div>
-
-  <!-- Список автомобилей -->
-  <div id="cars-list" class="hidden">
-    <div class="card" v-for="car in cars">
-      <h3>{{ car.brand }} {{ car.model }}</h3>
-      <p>VIN: {{ car.vin }}</p>
-      <button class="button" onclick="assignExecutor(car.id)">Назначить исполнителя</button>
+<div class="content-container">
+  <!-- Страница принятия автомобиля -->
+  <div id="acceptance-page" class="page">
+    <div class="mdl-card">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Принятие автомобиля</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <form id="car-acceptance-form">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="brand" name="brand" required>
+            <label class="mdl-textfield__label" for="brand">Марка</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="model" name="model" required>
+            <label class="mdl-textfield__label" for="model">Модель</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="number" id="year" name="year" required>
+            <label class="mdl-textfield__label" for="year">Год выпуска</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="vin" name="vin" required>
+            <label class="mdl-textfield__label" for="vin">VIN-номер</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <textarea class="mdl-textfield__input" id="description" name="description" required></textarea>
+            <label class="mdl-textfield__label" for="description">Описание проблемы или работ</label>
+          </div>
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit">
+            Добавить автомобиль
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 
-  <!-- Модальное окно назначения исполнителя -->
-  <div id="assign-modal" class="hidden">
-    <input type="text" placeholder="Telegram ID исполнителя" id="executor-id">
-    <button onclick="confirmAssignment()">Назначить</button>
+  <!-- Страница списка автомобилей -->
+  <div id="list-page" class="page">
+    <div class="mdl-card">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Автомобили в работе</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <ul id="cars-list" class="mdl-list">
+          <!-- Автомобили будут добавлены здесь -->
+        </ul>
+        <button id="back-to-acceptance" class="mdl-button mdl-js-button mdl-button--raised">
+          Добавить новый автомобиль
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Страница карточки автомобиля -->
+  <div id="card-page" class="page">
+    <div class="mdl-card">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Карточка автомобиля</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <p><strong>Марка:</strong> <span id="card-brand"></span></p>
+        <p><strong>Модель:</strong> <span id="card-model"></span></p>
+        <p><strong>Год выпуска:</strong> <span id="card-year"></span></p>
+        <p><strong>VIN-номер:</strong> <span id="card-vin"></span></p>
+        <p><strong>Описание проблемы или работ:</strong> <span id="card-description"></span></p>
+        <h3>Список работ</h3>
+        <ul id="works-list">
+          <!-- Работы будут добавлены здесь -->
+        </ul>
+        <button id="back-to-list" class="mdl-button mdl-js-button mdl-button--raised">
+          Назад к списку
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
-<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 <script>
+  // Инициализация Telegram Web App
   const tg = window.Telegram.WebApp;
   tg.ready();
 
-  // Аутентификация
-  async function auth() {
-    const userId = tg.initData?.user?.id;
-    // Сохранение в localStorage или отправка на бэкенд
+  // Пример данных (в реальном приложении данные можно хранить на сервере)
+  let cars = [
+    { id: 1, brand: 'Toyota', model: 'Camry', year: 2015, vin: '1234567890', description: 'Замена масла и фильтров', status: 'в работе', works: [{ name: 'Замена масла', status: 'выполнено' }, { name: 'Замена фильтров', status: 'в работе' }] },
+    { id: 2, brand: 'Honda', model: 'Accord', year: 2018, vin: '0987654321', description: 'Диагностика двигателя', status: 'готово', works: [{ name: 'Диагностика двигателя', status: 'выполнено' }] }
+  ];
+
+  let currentCarId = null;
+
+  // Функция для отображения страницы
+  function showPage(pageId) {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => {
+      if (page.id === pageId) {
+        page.classList.add('active');
+      } else {
+        page.classList.remove('active');
+      }
+    });
   }
 
-  // Добавление автомобиля
-  async function saveCar() {
-    const data = {
-      vin: document.getElementById('vin').value,
-      brand: document.getElementById('brand').value,
-      model: document.getElementById('model').value,
-      mileage: document.getElementById('mileage').value,
-      tasks: document.getElementById('tasks').value.split('\n')
+  // Функция для отображения списка автомобилей
+  function displayCars() {
+    const list = document.querySelector('#cars-list');
+    list.innerHTML = '';
+    cars.forEach(car => {
+      const listItem = document.createElement('li');
+      listItem.className = 'mdl-list__item';
+      listItem.innerHTML = `
+          <span class="mdl-list__item-primary-content">
+            ${car.brand} ${car.model} - ${car.status}
+          </span>
+        `;
+      listItem.addEventListener('click', () => {
+        currentCarId = car.id;
+        displayCarCard(car);
+        showPage('card-page');
+      });
+      list.appendChild(listItem);
+    });
+  }
+
+  // Функция для отображения карточки автомобиля
+  function displayCarCard(car) {
+    document.querySelector('#card-brand').textContent = car.brand;
+    document.querySelector('#card-model').textContent = car.model;
+    document.querySelector('#card-year').textContent = car.year;
+    document.querySelector('#card-vin').textContent = car.vin;
+    document.querySelector('#card-description').textContent = car.description;
+
+    const worksList = document.querySelector('#works-list');
+    worksList.innerHTML = '';
+    car.works.forEach(work => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `${work.name} - ${work.status}`;
+      worksList.appendChild(listItem);
+    });
+  }
+
+  // Обработчик формы принятия автомобиля
+  document.querySelector('#car-acceptance-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const brand = document.querySelector('#brand').value;
+    const model = document.querySelector('#model').value;
+    const year = document.querySelector('#year').value;
+    const vin = document.querySelector('#vin').value;
+    const description = document.querySelector('#description').value;
+
+    const newCar = {
+      id: cars.length + 1,
+      brand,
+      model,
+      year,
+      vin,
+      description,
+      status: 'в ожидании',
+      works: []
     };
-    // Отправка на бэкенд
-  }
 
-  // Назначение исполнителя
-  function assignExecutor(carId) {
-    document.getElementById('assign-modal').classList.remove('hidden');
-    // Логика отправки данных
-  }
+    cars.push(newCar);
+    displayCars();
+    showPage('list-page');
+  });
 
-  // Смена темы
-  function applyTheme() {
-    document.body.setAttribute(
-      'data-theme',
-      tg.isDarkMode() ? 'dark' : 'light'
-    );
-  }
-  applyTheme();
-  tg.onUpdate(applyTheme);
+  // Обработчики кнопок
+  document.querySelector('#back-to-acceptance').addEventListener('click', () => {
+    showPage('acceptance-page');
+  });
+
+  document.querySelector('#back-to-list').addEventListener('click', () => {
+    showPage('list-page');
+  });
+
+  // Инициализация
+  showPage('acceptance-page');
+  displayCars();
 </script>
 </body>
 </html>
